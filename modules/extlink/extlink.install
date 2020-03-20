@@ -1,0 +1,46 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function extlink_install() {
+  // Weight needs to be 1 for compatibility with SpamSpan.
+  db_query("UPDATE {system} SET weight = 1 WHERE name = 'extlink'");
+}
+
+/**
+ * Convert variables from Drupal 7 to configuration.
+ */
+function extlink_update_1000() {
+  $config = config('extlink.settings');
+  $config->set('class', update_variable_get('extlink_class', 'ext'));
+  $config->set('label', update_variable_get('extlink_label', '(link is external)'));
+  $config->set('mailto_class', update_variable_get('extlink_mailto_class', 'mailto'));
+  $config->set('mailto_label', update_variable_get('extlink_mailto_label', '(link sends e-mail)'));
+  $config->set('img_class', update_variable_get('extlink_img_class', FALSE));
+  $config->set('subdomains', update_variable_get('extlink_subdomains', TRUE));
+  $config->set('target', update_variable_get('extlink_target', ''));
+  $config->set('alert', update_variable_get('extlink_alert', FALSE));
+  $config->set('alert_text', update_variable_get('extlink_alert_text', 'This link will take you to an external web site.'));
+  $config->set('exclude', update_variable_get('extlink_exclude', ''));
+  $config->set('include', update_variable_get('extlink_include', ''));
+  $config->set('css_exclude', update_variable_get('extlink_css_exclude', ''));
+  $config->set('css_explicit', update_variable_get('extlink_css_explicit', ''));
+  $config->set('icon_placement', update_variable_get('extlink_icon_placement', NULL));
+  $config->save();
+
+  update_variable_del('extlink_class');
+  update_variable_del('extlink_label');
+  update_variable_del('extlink_mailto_class');
+  update_variable_del('extlink_mailto_label');
+  update_variable_del('extlink_img_class');
+  update_variable_del('extlink_subdomains');
+  update_variable_del('extlink_target');
+  update_variable_del('extlink_alert');
+  update_variable_del('extlink_alert_text');
+  update_variable_del('extlink_exclude');
+  update_variable_del('extlink_include');
+  update_variable_del('extlink_css_exclude');
+  update_variable_del('extlink_css_explicit');
+  update_variable_del('extlink_icon_placement');
+}

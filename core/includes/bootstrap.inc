@@ -7,7 +7,7 @@
 /**
  * The current system version.
  */
-define('BACKDROP_VERSION', '1.16.x-dev');
+define('BACKDROP_VERSION', '1.15.0');
 
 /**
  * Core API compatibility.
@@ -822,7 +822,7 @@ function backdrop_settings_initialize() {
   global $base_url, $base_path, $base_root;
 
   // Export these settings.php variables to the global namespace.
-  global $databases, $cookie_domain, $conf, $settings, $installed_profile, $is_https, $base_secure_url, $base_insecure_url, $config_directories, $config;
+  global $databases, $cookie_domain, $conf, $settings, $installed_profile, $is_https, $base_secure_url, $base_insecure_url, $config_directories;
   $conf = array();
   $settings = array();
 

@@ -136,7 +136,7 @@
         <?php endif; ?>
 
         <?php if ($content['footer']): ?>
-          <footer class="l-footer">
+          <footer class="l-footer"  role="footer">
             <?php print $content['footer']; ?>
           </footer>
         <?php endif; ?>

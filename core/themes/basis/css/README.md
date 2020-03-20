@@ -1,4 +1,4 @@
-Basis includes very granular CSS files so that a sub theme can override
+Basis inludes very granular CSS files so that a sub theme can override
 only the files it needs to and inherit the rest.
 
 ## CSS Files

@@ -75,3 +75,8 @@ name = Views fields for Field API
 description = Tests the Views field of the Field API integration.
 group = Field API
 file = field_views.test
+
+; Added by Backdrop CMS packaging script on 2020-01-15
+project = backdrop
+version = 1.15.0
+timestamp = 1579137540

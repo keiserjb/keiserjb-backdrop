@@ -1,0 +1,9 @@
+name = Utility CSS
+description = Provides an autocomplete on CSS class fields for utility-classes
+package = Layout
+backdrop = 1.x
+type = module
+; Added by Backdrop CMS packaging script on 2019-10-09
+project = utlility_css
+version = 1.x-0.2
+timestamp = 1570659392

@@ -1,0 +1,10 @@
+name = Ridiculously Responsive Social Share Buttons
+description = Adds the ability to use the Ridiculously Responsive Social Share Buttons (RRSSB) to your Backdrop site.
+backdrop = 1.x
+type = module
+package = RRSSB
+configure = admin/config/content/rrssb
+; Added by Backdrop CMS packaging script on 2017-11-08
+project = rrssb
+version = 1.x-2.3
+timestamp = 1510176671

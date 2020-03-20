@@ -1,0 +1,164 @@
+<?php
+/**
+ * @file
+ * Create a Jarallax parallax effect on any tagged element.
+ */
+
+/**
+ * Implements hook_config_info().
+ */
+function jarallax_config_info() {
+  return array(
+    'jarallax.settings' => array(
+      'label' => t('jarallax settings'),
+      'group' => t('jarallax'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_library_info().
+ */
+function jarallax_library_info() {
+  return array(
+    'jarallax' => array(
+      'title' => 'Jarallax',
+      'website' => 'https://github.com/nk-o/jarallax',
+      'version' => '1.11.0',
+      'js' => array(
+        backdrop_get_path('module', 'jarallax') . '/library/dist/jarallax.min.js' => array(
+          'scope' => 'footer',
+          'weight' => 1,
+        ),
+      ),
+    ),
+    'jarallaxElement' => array(
+      'title' => 'JarallaxElement',
+      'website' => 'https://github.com/nk-o/jarallax',
+      'version' => '1.11.0',
+      'js' => array(
+        backdrop_get_path('module', 'jarallax') . '/library/dist/jarallax-element.min.js' => array(
+          'scope' => 'footer',
+          'weight' => 2,
+        ),
+      ),
+    ),
+    'jarallaxVideo' => array(
+      'title' => 'JarallaxVideo',
+      'website' => 'https://github.com/nk-o/jarallax',
+      'version' => '1.11.0',
+      'js' => array(
+        backdrop_get_path('module', 'jarallax') . '/library/dist/jarallax-video.min.js' => array(
+          'scope' => 'footer',
+          'weight' => 2,
+        ),
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_init().
+ */
+function jarallax_init() {
+  $module_path = backdrop_get_path('module', 'jarallax');
+  $settings = config_get('jarallax.settings');
+
+  // Check if the library should be loaded on the current path and theme.
+  $path = jarallax_check_path($settings['pages']['visibility'], $settings['pages']['pages']);
+  $theme = jarallax_check_theme($settings['theme']['visibility'], $settings['theme']['themes']);
+
+  if ($path && $theme && isset($settings['triggers_fieldset'])) {
+    // Add library files.
+    backdrop_add_library('jarallax', 'jarallax');
+    backdrop_add_library('jarallax', 'jarallaxElement');
+    backdrop_add_library('jarallax', 'jarallaxVideo');
+
+    // Prepare JS settings.
+    $js_settings = array();
+    foreach ($settings['triggers_fieldset'] as $trigger) {
+      foreach ($trigger as $key => &$value) {
+        // Populate empty values from defaults.
+        if ($value == '') {
+          $value = $settings['config'][$key];
+        }
+
+        // Fix booleans.
+        if ($value === 'true') {
+          $value = TRUE;
+        }
+        elseif ($value === 'false') {
+          $value = FALSE;
+        }
+
+        // Remove values that are still empty in order to use library defaults.
+        if ($value == '') {
+          unset($trigger[$key]);
+        }
+      }
+
+      $js_settings[] = $trigger;
+    }
+
+    // Add custom JS.
+    backdrop_add_js($module_path . '/js/jarallax.custom.js', array(
+      'scope' => 'footer',
+      'weight' => 5,
+    ));
+    backdrop_add_js(array('jarallax' => $js_settings), 'setting');
+  }
+}
+
+/**
+ * Check if the library should be loaded on the current page.
+ *
+ * @see https://api.backdropcms.org/api/backdrop/core%21modules%21layout%21plugins%21access%21path_layout_access.inc/function/PathLayoutAccess%3A%3AcheckAccess/1
+ */
+function jarallax_check_path($visibility, $pages) {
+  $base_path = $_GET['q'];
+  $path = backdrop_get_path_alias($base_path);
+  $page_match = backdrop_match_path($path, $pages);
+
+  if ($path !== $base_path) {
+    $page_match = $page_match || backdrop_match_path($base_path, $pages);
+  }
+
+  if (!$visibility) {
+    $page_match = !$page_match;
+  }
+
+  return $page_match;
+}
+
+/**
+ * Check if the library should be loaded in the current theme.
+ */
+function jarallax_check_theme($visibility, $themes) {
+  global $theme;
+  $theme_match = in_array($theme, $themes);
+
+  // @see jarallax_check_path().
+  if (!$visibility) {
+    $theme_match = !$theme_match;
+  }
+
+  return $theme_match;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function jarallax_menu() {
+  // Admin settings form.
+  return array(
+    'admin/config/user-interface/jarallax' => array(
+      'title' => 'Jarallax',
+      'description' => 'Jarallax parallax effect to any tagged element.',
+      'page callback' => 'backdrop_get_form',
+      'page arguments' => array('jarallax_admin'),
+      'access arguments' => array('administer site configuration'),
+      'file' => 'jarallax.admin.inc',
+    ),
+  );
+}
+

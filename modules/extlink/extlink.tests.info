@@ -1,0 +1,10 @@
+[ExtlinkAdminTestCase]
+name = External Links administration functionality
+description = Testing of the External Links administration interface and functionality.
+group = External Links
+file = extlink.test
+
+; Added by Backdrop CMS packaging script on 2016-08-25
+project = extlink
+version = 1.x-1.18.2
+timestamp = 1472174294

@@ -1,0 +1,9 @@
+type = module
+name = Configurable Block Style
+description = A module that provides custom block style with lots of settings.
+backdrop = 1.x
+tags[] = Layouts
+; Added by Backdrop CMS packaging script on 2019-12-22
+project = configurable_block_style
+version = 1.x-1.0.4
+timestamp = 1577064598

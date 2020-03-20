@@ -15,3 +15,8 @@ name = Configuration UI
 description = Tests the UI for syncing, diffing, importing, and exporting configuration.
 group = Configuration
 file = config.test
+
+; Added by Backdrop CMS packaging script on 2020-01-15
+project = backdrop
+version = 1.15.0
+timestamp = 1579137540

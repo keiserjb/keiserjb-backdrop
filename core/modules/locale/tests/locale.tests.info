@@ -129,3 +129,8 @@ name = Test if a string is safe
 description = Tests locale translation safe string handling.
 group = Locale
 file = locale.test
+
+; Added by Backdrop CMS packaging script on 2020-01-15
+project = backdrop
+version = 1.15.0
+timestamp = 1579137540

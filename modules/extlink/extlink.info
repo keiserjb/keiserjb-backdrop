@@ -1,0 +1,12 @@
+name = External Links
+description = Determine behavior and appearance for external links. Options include: Make external links open in a new window, add icons next to external links and email addresses, display pop-up warnings when users click external links.
+package = User interface
+backdrop = 1.x
+type = module
+configure = admin/config/user-interface/extlink
+stylesheets[all][] = extlink.css
+
+; Added by Backdrop CMS packaging script on 2016-08-25
+project = extlink
+version = 1.x-1.18.2
+timestamp = 1472174294

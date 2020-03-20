@@ -1,0 +1,13 @@
+name = Jarallax - Just Another Parallax plugin
+description = Enables a parallax scrolling effect on selected elements and provides all-in-one parallax field and block.
+backdrop = 1.x
+type = module
+configure = admin/config/user-interface/jarallax
+
+tags[] = Fields
+tags[] = jQuery
+tags[] = User Interface
+; Added by Backdrop CMS packaging script on 2019-08-13
+project = jarallax
+version = 1.x-1.0
+timestamp = 1565732814

@@ -1,0 +1,14 @@
+<?php
+/**
+ * @file
+ * Install, update, and uninstall functions for the Jarallax module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function jarallax_install() {
+  // Add the current theme to config.
+  $theme = config_get('system.core', 'theme_default');
+  config_set('jarallax.settings', 'theme.themes', array($theme => $theme));
+}

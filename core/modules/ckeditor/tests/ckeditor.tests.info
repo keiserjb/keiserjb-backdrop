@@ -3,3 +3,8 @@ name = CKEditor
 description = Check the functionality of CKEditor module.
 group = CKEditor
 file = ckeditor.test
+
+; Added by Backdrop CMS packaging script on 2020-01-15
+project = backdrop
+version = 1.15.0
+timestamp = 1579137540
