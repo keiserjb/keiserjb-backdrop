@@ -2,3 +2,6 @@ name: keiserjb-backdrop
 recipe: backdrop
 config:
   webroot: .
+services:
+  myservice:
+    type: phpmyadmin

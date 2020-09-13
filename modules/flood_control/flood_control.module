@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function flood_control_menu() {
+  $items['admin/config/system/flood-control'] = array(
+    'title' => 'Flood control',
+    'description' => 'Control hidden flood control options.',
+    'page callback' => 'backdrop_get_form',
+    'page arguments' => array('flood_control_settings_form'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'flood_control.admin.inc',
+  );
+  return $items;
+}

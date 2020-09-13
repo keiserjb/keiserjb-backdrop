@@ -4,7 +4,7 @@ backdrop = 1.x
 type = module
 package = RRSSB
 configure = admin/config/content/rrssb
-; Added by Backdrop CMS packaging script on 2017-11-08
+; Added by Backdrop CMS packaging script on 2020-06-16
 project = rrssb
-version = 1.x-2.3
-timestamp = 1510176671
+version = 1.x-2.3.1
+timestamp = 1592323530

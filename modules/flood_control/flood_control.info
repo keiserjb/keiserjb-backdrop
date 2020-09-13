@@ -1,0 +1,10 @@
+name = Flood control
+description = "Interface for hidden flood control options."
+backdrop = 1.x
+configure = admin/config/system/flood-control
+type = module
+
+; Added by Backdrop CMS packaging script on 2016-06-22
+project = flood_control
+version = 1.x-1.0.0
+timestamp = 1466611975
