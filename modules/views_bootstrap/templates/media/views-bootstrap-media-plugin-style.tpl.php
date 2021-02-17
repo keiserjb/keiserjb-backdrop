@@ -14,9 +14,9 @@
 
         <div class="media-body">
           <?php if ($item['heading_field']): ?>
-            <h4 class="media-heading">
+            <h3 class="media-heading">
               <?php print $item['heading_field'] ?>
-            </h4>
+            </h3>
           <?php endif ?>
 
           <?php print $item['body_field'] ?>

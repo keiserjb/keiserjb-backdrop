@@ -29,7 +29,7 @@
   <div class="table-responsive">
 <?php endif ?>
 
-<table <?php if ($classes) { print 'class="'; foreach($classes as $key => $value) { print $value; } print '" '; } ?>>
+<table <?php if ($classes) { print 'class="'. implode(' ', $classes) . '" '; } ?>>
   <?php if (!empty($title) || !empty($caption)) : ?>
     <caption><?php print $caption . $title; ?></caption>
   <?php endif; ?>
@@ -37,7 +37,7 @@
     <thead>
     <tr>
       <?php foreach ($header as $field => $label): ?>
-        <th <?php if ($header_classes[$field]) { print 'class="'. $header_classes[$field] . '" '; } ?>>
+        <th <?php if ($header_classes[$field]) { print 'class="'. implode(' ', $header_classes[$field]) . '" '; } ?>>
           <?php print $label; ?>
         </th>
       <?php endforeach; ?>

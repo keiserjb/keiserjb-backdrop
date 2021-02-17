@@ -8,6 +8,11 @@ all within the configuration settings of the powerful Views module.
 IMPORTANT: If you are not using a Bootstrap theme, you must check
 "Include Bootstrap CSS & JS when used by Views" on the configuration page for this module.
 
+If you are using this module, [please let us know](https://github.com/backdrop-contrib/views_bootstrap/issues/27). 
+It motivates us to work on the module when we hear from actual users. 
+
+
+
 CONTENTS OF THIS FILE
 ---------------------
 
@@ -97,17 +102,16 @@ LICENSE
 
 This project is GPL v2 software. See the LICENSE.txt file in this directory for complete text.
 
-CREDITS
------------
-
-Initial development by Dmitry Demenchuk <http://www.demenchuk.me/>
-
 MAINTAINERS
 -----------
 
 - Tim Erickson (https://github.com/stpaultim)
 - David Radcliffe (https://github.com/radcliffe)
 
-Ported to Backdrop by:
+CREDITS
+-----------
 
-- biolithic <https://github.com/biolithic>
+- Initial development by Dmitry Demenchuk (http://www.demenchuk.me/)
+- Support for this module provided by (https://www.simplo.site)
+- Initial port by biolithic (https://github.com/biolithic)
+- Original Drupal 7 module (https://www.drupal.org/project/views_bootstrap)

@@ -47,7 +47,7 @@ function views_bootstrap_views_api() {
 }
 
  /**
- * Implements hook_page_menu().
+ * Implements hook_menu().
  */
 function views_bootstrap_menu() {
   $items = array();
@@ -63,6 +63,18 @@ function views_bootstrap_menu() {
   );
 
   return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function views_bootstrap_permission() {
+  return array(
+    'access views_bootstrap settings' => array(
+      'title' => t('Access Views Bootstrap settings'),
+      'description' => t('Access Views Bootstrap settings.'),
+    ),
+  );
 }
 
 /**
