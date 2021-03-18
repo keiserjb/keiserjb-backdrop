@@ -7,14 +7,14 @@
     <?php if (isset($titles[$key])): ?>
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h4 class="panel-title">
+          <<?php print $title_tag; ?> class="panel-title">
             <a class="accordion-toggle collapsed"
               data-toggle="collapse"
               data-parent="#views-bootstrap-accordion-<?php print $id ?>"
               href="#collapse-<?php print $id . '-' . $key ?>">
               <?php print $titles[$key] ?>
             </a>
-          </h4>
+          </<?php print $title_tag; ?>>
         </div>
 
         <div id="collapse-<?php print $id . '-' . $key ?>" class="panel-collapse collapse">
