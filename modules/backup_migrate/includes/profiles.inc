@@ -1,13 +1,10 @@
 <?php
 
-
 /**
  * @file
  * All of the settings profiles handling code for Backup and Migrate.
  */
-
 backup_migrate_include('crud');
-
 
 /**
  * Implementation of hook_backup_migrate_profile_subtypes().
@@ -25,7 +22,6 @@ function backup_migrate_backup_migrate_profile_subtypes() {
   );
   return $out;
 }
-
 
 /**
  * Get all the available backup profiles.
@@ -265,15 +261,15 @@ class backup_migrate_profile extends backup_migrate_item {
   function get_list_column_info() {
     $out = parent::get_list_column_info();
     $out = array(
-      'name'                  => array('title' => t('Name')),
-      'source_name'           => array('title' => t('Source')),
-      'filename'              => array('title' => t('Filename')),
+      'name' => array('title' => t('Name')),
+      'source_name' => array('title' => t('Source')),
+      'filename' => array('title' => t('Filename')),
     ) + $out;
     return $out;
   }
 
   /**
-   * Set the source of this setings profile. Takes either a source object or source id.
+   * Set the source of this settings profile. Takes either a source object or source id.
    */
   function set_source($source) {
     if (is_object($source)) {
