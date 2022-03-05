@@ -1,0 +1,25 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the doabarrelroll module.
+ *
+ */
+
+
+/**
+ * Migrate doabarrelroll variables to config.
+ */
+function doabarrelroll_update_1000() {
+  $config = config('doabarrelroll.settings');
+  $config->set('doabarrelroll_style', update_variable_get('doabarrelroll_style', array()));
+  $config->save();
+
+  update_variable_del('doabarrelroll_style');
+}
+
+/**
+ * Implements hook_install().
+ */
+function doabarrelroll_install() {
+  // Dynamically generated variable data was detected.
+}

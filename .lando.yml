@@ -2,6 +2,7 @@ name: keiserjb-backdrop
 recipe: backdrop
 config:
   webroot: .
+  php: 7.4
 services:
   myservice:
     type: phpmyadmin

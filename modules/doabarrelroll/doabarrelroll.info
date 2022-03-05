@@ -1,0 +1,12 @@
+name = Do a barrel roll
+description = Makes your site do a barrel roll
+backdrop = 1.x
+type = module
+stylesheets[screen][] = doabarrelroll.css
+dependencies[] = search
+configure = admin/config/user-interface/doabarrelroll
+
+; Added by Backdrop CMS packaging script on 2021-12-20
+project = doabarrelroll
+version = 1.x-1.0.1
+timestamp = 1640034127
