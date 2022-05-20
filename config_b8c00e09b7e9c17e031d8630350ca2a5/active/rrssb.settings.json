@@ -1,0 +1,101 @@
+{
+    "_config_name": "rrssb.settings",
+    "follow": "1",
+    "chosen": {
+        "twitter": {
+            "enabled": 1,
+            "username": "keiserjb",
+            "weight": "-14"
+        },
+        "instagram": {
+            "enabled": 0,
+            "username": "",
+            "weight": "-20"
+        },
+        "facebook": {
+            "enabled": 0,
+            "username": "",
+            "weight": "-19"
+        },
+        "tumblr": {
+            "enabled": 0,
+            "username": "",
+            "weight": "-18"
+        },
+        "youtube": {
+            "enabled": 0,
+            "username": "",
+            "weight": "-17"
+        },
+        "linkedin": {
+            "enabled": 1,
+            "username": "keiserjb",
+            "weight": "-15"
+        },
+        "pocket": {
+            "enabled": 0,
+            "weight": "-13"
+        },
+        "email": {
+            "enabled": 0,
+            "weight": "-12"
+        },
+        "print": {
+            "enabled": 1,
+            "weight": "-11"
+        },
+        "reddit": {
+            "enabled": 0,
+            "username": "",
+            "weight": "-10"
+        },
+        "whatsapp": {
+            "enabled": 0,
+            "weight": "-9"
+        },
+        "vk": {
+            "enabled": 0,
+            "weight": "-8"
+        },
+        "pinterest": {
+            "enabled": 0,
+            "username": "",
+            "weight": "-7"
+        },
+        "github": {
+            "enabled": 1,
+            "username": "keiserjb",
+            "weight": "-16"
+        },
+        "googleplus": {
+            "enabled": 0,
+            "username": "",
+            "weight": "-6"
+        },
+        "join": {
+            "enabled": 0,
+            "weight": "-5"
+        },
+        "hackernews": {
+            "enabled": 0,
+            "weight": "-4"
+        },
+        "delicious": {
+            "enabled": 0,
+            "weight": "-3"
+        }
+    },
+    "appearance": {
+        "size": "",
+        "shrink": "",
+        "regrow": "",
+        "minRows": "",
+        "maxRows": "",
+        "prefixReserve": "",
+        "prefixHide": "",
+        "alignRight": 0
+    },
+    "prefix": "",
+    "image_tokens": "[node:field_image]|[rrssbsite:logo-url]",
+    "css_file": "public://rrssb/rrssb.b889abfd.css"
+}

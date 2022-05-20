@@ -1,0 +1,12 @@
+{
+    "_config_name": "block.custom.location",
+    "delta": "location",
+    "info": "Location",
+    "title": "Location",
+    "description": "",
+    "body": {
+        "value": "<p>2308 W 7th St<br />\r\nMuncie, IN 47302<br />\r\n904-910-4845<br />\r\n<a href=\"mailto:keiserjb@gmail.com\">keiserjb@gmail.com</a></p>\r\n",
+        "format": "filtered_html"
+    },
+    "default_langcode": "und"
+}

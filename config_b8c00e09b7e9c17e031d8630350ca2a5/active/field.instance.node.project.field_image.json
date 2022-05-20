@@ -1,0 +1,59 @@
+{
+    "_config_name": "field.instance.node.project.field_image",
+    "field_name": "field_image",
+    "entity_type": "node",
+    "bundle": "project",
+    "label": "Image",
+    "widget": {
+        "weight": "1",
+        "type": "image_image",
+        "module": "image",
+        "active": 1,
+        "settings": {
+            "progress_indicator": "throbber",
+            "browser_view": "image_library",
+            "preview_image_style": "thumbnail"
+        }
+    },
+    "description": "",
+    "required": 0,
+    "deleted": 0,
+    "default_value": null,
+    "default_value_function": null,
+    "settings": {
+        "file_directory": "",
+        "file_extensions": "png gif jpg jpeg",
+        "max_filesize": "",
+        "max_dimensions": "",
+        "min_dimensions": "",
+        "alt_field": 1,
+        "title_field": 1,
+        "orientate": 0,
+        "default_image": "",
+        "user_register_form": false
+    },
+    "display": {
+        "default": {
+            "label": "hidden",
+            "type": "image",
+            "weight": "0",
+            "settings": {
+                "image_style": "large",
+                "image_link": "",
+                "image_float": ""
+            },
+            "module": "image"
+        },
+        "teaser": {
+            "label": "hidden",
+            "type": "image",
+            "weight": "0",
+            "settings": {
+                "image_style": "medium",
+                "image_link": "",
+                "image_float": "left"
+            },
+            "module": "image"
+        }
+    }
+}
