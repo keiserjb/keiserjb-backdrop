@@ -19,9 +19,6 @@ function jarallax_admin($form, &$form_state) {
     }
   }
 
-  // Add custom CSS to form.
-  backdrop_add_css(backdrop_get_path('module', 'jarallax') . "/css/jarallax.css");
-
   // Add default value fields.
   $form['config'] = array(
     '#type' => 'fieldset',
@@ -187,6 +184,13 @@ function jarallax_admin_form_submit($form, &$form_state) {
  * Defining the fields once here helps reduce duplication.
  */
 function jarallax_add_form_elements(&$form, $defaults = '', $isset = FALSE, $empty_option = FALSE) {
+  $options['img_element'] = array(
+    '#type' => 'textfield',
+    '#title' => t('imgElement jQuery selector'),
+    '#description' => t("A jQuery selector to identify the image tag that will be used as a background, within the main selector. For example 'img' or '.bgimg'."),
+    '#default_value' => '',
+    '#required' => TRUE,
+  );
   $options['type'] = array(
     '#type' => 'select',
     '#title' => t('Type'),
@@ -204,7 +208,13 @@ function jarallax_add_form_elements(&$form, $defaults = '', $isset = FALSE, $emp
     '#description' => t("Parallax effect speed. Provide numbers from -1.0 to 2.0."),
     '#default_value' => '0.5',
   );
-
+  if (empty($defaults)) {
+    $defaults = array(
+      'type' => 'scroll',
+      'speed' => '0.5',
+      'img_element' => 'img',
+    );
+  }
   foreach ($options as $key => $value) {
     // Set default values.
     if (empty($defaults)) {

@@ -1,27 +1,13 @@
 {
-    "_config_name": "scrollreveal.settings",
+    "_config_name": "jarallax.settings",
     "config": {
-        "origin": "top",
-        "distance": 24,
-        "duration": 500,
-        "delay": 0,
-        "interval": 0,
-        "rotate_x": 0,
-        "rotate_y": 0,
-        "rotate_z": 0,
-        "opacity": 0,
-        "scale": 0.9,
-        "easing": "ease",
-        "mobile": "true",
-        "reset": "false",
-        "useDelay": "always",
-        "viewFactor": 0.2
+        "img_element": ".jarallax-img",
+        "type": "scroll",
+        "speed": ".5"
     },
     "pages": {
-        "visibility": 0,
+        "visibility": "0",
         "pages": "admin/*"
     },
-    "theme": {
-        "visibility": 1
-    }
+    "triggers_fieldset": {}
 }

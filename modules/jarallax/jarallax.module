@@ -24,7 +24,7 @@ function jarallax_library_info() {
     'jarallax' => array(
       'title' => 'Jarallax',
       'website' => 'https://github.com/nk-o/jarallax',
-      'version' => '1.11.0',
+      'version' => '2.0.2',
       'js' => array(
         backdrop_get_path('module', 'jarallax') . '/library/dist/jarallax.min.js' => array(
           'scope' => 'footer',
@@ -32,21 +32,10 @@ function jarallax_library_info() {
         ),
       ),
     ),
-    'jarallaxElement' => array(
-      'title' => 'JarallaxElement',
-      'website' => 'https://github.com/nk-o/jarallax',
-      'version' => '1.11.0',
-      'js' => array(
-        backdrop_get_path('module', 'jarallax') . '/library/dist/jarallax-element.min.js' => array(
-          'scope' => 'footer',
-          'weight' => 2,
-        ),
-      ),
-    ),
     'jarallaxVideo' => array(
       'title' => 'JarallaxVideo',
       'website' => 'https://github.com/nk-o/jarallax',
-      'version' => '1.11.0',
+      'version' => '2.0.2',
       'js' => array(
         backdrop_get_path('module', 'jarallax') . '/library/dist/jarallax-video.min.js' => array(
           'scope' => 'footer',
@@ -71,8 +60,8 @@ function jarallax_init() {
   if ($path && $theme && isset($settings['triggers_fieldset'])) {
     // Add library files.
     backdrop_add_library('jarallax', 'jarallax');
-    backdrop_add_library('jarallax', 'jarallaxElement');
     backdrop_add_library('jarallax', 'jarallaxVideo');
+    backdrop_add_css($module_path . '/css/jarallax.css', 'file');
 
     // Prepare JS settings.
     $js_settings = array();

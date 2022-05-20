@@ -1,1129 +1,760 @@
 /*!
- * Name    : Just Another Parallax [Jarallax]
- * Version : 1.11.0
- * Author  : nK <https://nkdev.info>
- * GitHub  : https://github.com/nk-o/jarallax
+ * Jarallax v2.0.2 (https://github.com/nk-o/jarallax)
+ * Copyright 2022 nK <https://nkdev.info>
+ * Licensed under MIT (https://github.com/nk-o/jarallax/blob/master/LICENSE)
  */
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */,
-/* 1 */,
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.jarallax = factory());
+})(this, (function () { 'use strict';
 
-"use strict";
+  function ready(callback) {
+    if ('complete' === document.readyState || 'interactive' === document.readyState) {
+      // Already ready or interactive, execute callback
+      callback();
+    } else {
+      document.addEventListener('DOMContentLoaded', callback, {
+        capture: true,
+        once: true,
+        passive: true
+      });
+    }
+  }
 
+  /* eslint-disable import/no-mutable-exports */
 
-module.exports = function (callback) {
+  /* eslint-disable no-restricted-globals */
+  let win;
 
-	if (document.readyState === 'complete' || document.readyState === 'interactive') {
-		// Already ready or interactive, execute callback
-		callback.call();
-	} else if (document.attachEvent) {
-		// Old browsers
-		document.attachEvent('onreadystatechange', function () {
-			if (document.readyState === 'interactive') callback.call();
-		});
-	} else if (document.addEventListener) {
-		// Modern browsers
-		document.addEventListener('DOMContentLoaded', callback);
-	}
-};
-
-/***/ }),
-/* 3 */,
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-var win;
-
-if (typeof window !== "undefined") {
+  if ('undefined' !== typeof window) {
     win = window;
-} else if (typeof global !== "undefined") {
+  } else if ('undefined' !== typeof global) {
     win = global;
-} else if (typeof self !== "undefined") {
+  } else if ('undefined' !== typeof self) {
     win = self;
-} else {
+  } else {
     win = {};
-}
+  }
 
-module.exports = win;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5)))
+  var global$1 = win;
 
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
+  const {
+    navigator
+  } = global$1;
+  const isMobile = /*#__PURE__*/ /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  let $deviceHelper;
+  /**
+   * The most popular mobile browsers changes height after page scroll and this generates image jumping.
+   * We can fix it using this workaround with vh units.
+   */
 
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var g;
-
-// This works in non-strict mode
-g = function () {
-	return this;
-}();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-/***/ }),
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(12);
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _liteReady = __webpack_require__(2);
-
-var _liteReady2 = _interopRequireDefault(_liteReady);
-
-var _global = __webpack_require__(4);
-
-var _jarallax = __webpack_require__(13);
-
-var _jarallax2 = _interopRequireDefault(_jarallax);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// no conflict
-var oldPlugin = _global.window.jarallax;
-_global.window.jarallax = _jarallax2.default;
-_global.window.jarallax.noConflict = function () {
-    _global.window.jarallax = oldPlugin;
-    return this;
-};
-
-// jQuery support
-if (typeof _global.jQuery !== 'undefined') {
-    var jQueryPlugin = function jQueryPlugin() {
-        var args = arguments || [];
-        Array.prototype.unshift.call(args, this);
-        var res = _jarallax2.default.apply(_global.window, args);
-        return (typeof res === 'undefined' ? 'undefined' : _typeof(res)) !== 'object' ? res : this;
-    };
-    jQueryPlugin.constructor = _jarallax2.default.constructor;
-
-    // no conflict
-    var oldJqPlugin = _global.jQuery.fn.jarallax;
-    _global.jQuery.fn.jarallax = jQueryPlugin;
-    _global.jQuery.fn.jarallax.noConflict = function () {
-        _global.jQuery.fn.jarallax = oldJqPlugin;
-        return this;
-    };
-}
-
-// data-jarallax initialization
-(0, _liteReady2.default)(function () {
-    (0, _jarallax2.default)(document.querySelectorAll('[data-jarallax]'));
-});
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _liteReady = __webpack_require__(2);
-
-var _liteReady2 = _interopRequireDefault(_liteReady);
-
-var _rafl = __webpack_require__(14);
-
-var _rafl2 = _interopRequireDefault(_rafl);
-
-var _global = __webpack_require__(4);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var isIE = navigator.userAgent.indexOf('MSIE ') > -1 || navigator.userAgent.indexOf('Trident/') > -1 || navigator.userAgent.indexOf('Edge/') > -1;
-var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-var supportTransform = function () {
-    var prefixes = 'transform WebkitTransform MozTransform'.split(' ');
-    var div = document.createElement('div');
-    for (var i = 0; i < prefixes.length; i++) {
-        if (div && div.style[prefixes[i]] !== undefined) {
-            return prefixes[i];
-        }
-    }
-    return false;
-}();
-
-var $deviceHelper = void 0;
-
-/**
- * The most popular mobile browsers changes height after page scroll and this generates image jumping.
- * We can fix it using this workaround with vh units.
- */
-function getDeviceHeight() {
+  function getDeviceHeight() {
     if (!$deviceHelper && document.body) {
-        $deviceHelper = document.createElement('div');
-        $deviceHelper.style.cssText = 'position: fixed; top: -9999px; left: 0; height: 100vh; width: 0;';
-        document.body.appendChild($deviceHelper);
+      $deviceHelper = document.createElement('div');
+      $deviceHelper.style.cssText = 'position: fixed; top: -9999px; left: 0; height: 100vh; width: 0;';
+      document.body.appendChild($deviceHelper);
     }
 
-    return ($deviceHelper ? $deviceHelper.clientHeight : 0) || _global.window.innerHeight || document.documentElement.clientHeight;
-}
+    return ($deviceHelper ? $deviceHelper.clientHeight : 0) || global$1.innerHeight || document.documentElement.clientHeight;
+  } // Window height data
 
-// Window data
-var wndW = void 0;
-var wndH = void 0;
-var wndY = void 0;
-var forceResizeParallax = false;
-var forceScrollParallax = false;
-function updateWndVars(e) {
-    wndW = _global.window.innerWidth || document.documentElement.clientWidth;
 
+  let wndH;
+
+  function updateWndVars() {
     if (isMobile) {
-        wndH = getDeviceHeight();
+      wndH = getDeviceHeight();
     } else {
-        wndH = _global.window.innerHeight || document.documentElement.clientHeight;
+      wndH = global$1.innerHeight || document.documentElement.clientHeight;
+    }
+  }
+
+  updateWndVars();
+  global$1.addEventListener('resize', updateWndVars);
+  global$1.addEventListener('orientationchange', updateWndVars);
+  global$1.addEventListener('load', updateWndVars);
+  ready(() => {
+    updateWndVars();
+  }); // list with all jarallax instances
+  // need to render all in one scroll/resize event
+
+  const jarallaxList = []; // get all parents of the element.
+
+  function getParents(elem) {
+    const parents = [];
+
+    while (null !== elem.parentElement) {
+      elem = elem.parentElement;
+
+      if (1 === elem.nodeType) {
+        parents.push(elem);
+      }
     }
 
-    if ((typeof e === 'undefined' ? 'undefined' : _typeof(e)) === 'object' && (e.type === 'load' || e.type === 'dom-loaded')) {
-        forceResizeParallax = true;
-    }
-}
-updateWndVars();
-_global.window.addEventListener('resize', updateWndVars);
-_global.window.addEventListener('orientationchange', updateWndVars);
-_global.window.addEventListener('load', updateWndVars);
-(0, _liteReady2.default)(function () {
-    updateWndVars({
-        type: 'dom-loaded'
-    });
-});
+    return parents;
+  }
 
-// list with all jarallax instances
-// need to render all in one scroll/resize event
-var jarallaxList = [];
-
-// Animate if changed window size or scrolled page
-var oldPageData = false;
-function updateParallax() {
+  function updateParallax() {
     if (!jarallaxList.length) {
+      return;
+    }
+
+    jarallaxList.forEach((data, k) => {
+      const {
+        instance,
+        oldData
+      } = data;
+      const clientRect = instance.$item.getBoundingClientRect();
+      const newData = {
+        width: clientRect.width,
+        height: clientRect.height,
+        top: clientRect.top,
+        bottom: clientRect.bottom,
+        wndW: global$1.innerWidth,
+        wndH
+      };
+      const isResized = !oldData || oldData.wndW !== newData.wndW || oldData.wndH !== newData.wndH || oldData.width !== newData.width || oldData.height !== newData.height;
+      const isScrolled = isResized || !oldData || oldData.top !== newData.top || oldData.bottom !== newData.bottom;
+      jarallaxList[k].oldData = newData;
+
+      if (isResized) {
+        instance.onResize();
+      }
+
+      if (isScrolled) {
+        instance.onScroll();
+      }
+    });
+    global$1.requestAnimationFrame(updateParallax);
+  }
+
+  let instanceID = 0; // Jarallax class
+
+  class Jarallax {
+    constructor(item, userOptions) {
+      const self = this;
+      self.instanceID = instanceID;
+      instanceID += 1;
+      self.$item = item;
+      self.defaults = {
+        type: 'scroll',
+        // type of parallax: scroll, scale, opacity, scale-opacity, scroll-opacity
+        speed: 0.5,
+        // supported value from -1 to 2
+        imgSrc: null,
+        imgElement: '.jarallax-img',
+        imgSize: 'cover',
+        imgPosition: '50% 50%',
+        imgRepeat: 'no-repeat',
+        // supported only for background, not for <img> tag
+        keepImg: false,
+        // keep <img> tag in it's default place
+        elementInViewport: null,
+        zIndex: -100,
+        disableParallax: false,
+        disableVideo: false,
+        // video
+        videoSrc: null,
+        videoStartTime: 0,
+        videoEndTime: 0,
+        videoVolume: 0,
+        videoLoop: true,
+        videoPlayOnlyVisible: true,
+        videoLazyLoading: true,
+        // events
+        onScroll: null,
+        // function(calculations) {}
+        onInit: null,
+        // function() {}
+        onDestroy: null,
+        // function() {}
+        onCoverImage: null // function() {}
+
+      }; // prepare data-options
+
+      const dataOptions = self.$item.dataset || {};
+      const pureDataOptions = {};
+      Object.keys(dataOptions).forEach(key => {
+        const loweCaseOption = key.substr(0, 1).toLowerCase() + key.substr(1);
+
+        if (loweCaseOption && 'undefined' !== typeof self.defaults[loweCaseOption]) {
+          pureDataOptions[loweCaseOption] = dataOptions[key];
+        }
+      });
+      self.options = self.extend({}, self.defaults, pureDataOptions, userOptions);
+      self.pureOptions = self.extend({}, self.options); // prepare 'true' and 'false' strings to boolean
+
+      Object.keys(self.options).forEach(key => {
+        if ('true' === self.options[key]) {
+          self.options[key] = true;
+        } else if ('false' === self.options[key]) {
+          self.options[key] = false;
+        }
+      }); // fix speed option [-1.0, 2.0]
+
+      self.options.speed = Math.min(2, Math.max(-1, parseFloat(self.options.speed))); // prepare disableParallax callback
+
+      if ('string' === typeof self.options.disableParallax) {
+        self.options.disableParallax = new RegExp(self.options.disableParallax);
+      }
+
+      if (self.options.disableParallax instanceof RegExp) {
+        const disableParallaxRegexp = self.options.disableParallax;
+
+        self.options.disableParallax = () => disableParallaxRegexp.test(navigator.userAgent);
+      }
+
+      if ('function' !== typeof self.options.disableParallax) {
+        self.options.disableParallax = () => false;
+      } // prepare disableVideo callback
+
+
+      if ('string' === typeof self.options.disableVideo) {
+        self.options.disableVideo = new RegExp(self.options.disableVideo);
+      }
+
+      if (self.options.disableVideo instanceof RegExp) {
+        const disableVideoRegexp = self.options.disableVideo;
+
+        self.options.disableVideo = () => disableVideoRegexp.test(navigator.userAgent);
+      }
+
+      if ('function' !== typeof self.options.disableVideo) {
+        self.options.disableVideo = () => false;
+      } // custom element to check if parallax in viewport
+
+
+      let elementInVP = self.options.elementInViewport; // get first item from array
+
+      if (elementInVP && 'object' === typeof elementInVP && 'undefined' !== typeof elementInVP.length) {
+        [elementInVP] = elementInVP;
+      } // check if dom element
+
+
+      if (!(elementInVP instanceof Element)) {
+        elementInVP = null;
+      }
+
+      self.options.elementInViewport = elementInVP;
+      self.image = {
+        src: self.options.imgSrc || null,
+        $container: null,
+        useImgTag: false,
+        // 1. Position fixed is needed for the most of browsers because absolute position have glitches
+        // 2. On MacOS with smooth scroll there is a huge lags with absolute position - https://github.com/nk-o/jarallax/issues/75
+        // 3. Previously used 'absolute' for mobile devices. But we re-tested on iPhone 12 and 'fixed' position is working better, then 'absolute', so for now position is always 'fixed'
+        position: 'fixed'
+      };
+
+      if (self.initImg() && self.canInitParallax()) {
+        self.init();
+      }
+    } // add styles to element
+    // eslint-disable-next-line class-methods-use-this
+
+
+    css(el, styles) {
+      if ('string' === typeof styles) {
+        return global$1.getComputedStyle(el).getPropertyValue(styles);
+      }
+
+      Object.keys(styles).forEach(key => {
+        el.style[key] = styles[key];
+      });
+      return el;
+    } // Extend like jQuery.extend
+    // eslint-disable-next-line class-methods-use-this
+
+
+    extend(out, ...args) {
+      out = out || {};
+      Object.keys(args).forEach(i => {
+        if (!args[i]) {
+          return;
+        }
+
+        Object.keys(args[i]).forEach(key => {
+          out[key] = args[i][key];
+        });
+      });
+      return out;
+    } // get window size and scroll position. Useful for extensions
+    // eslint-disable-next-line class-methods-use-this
+
+
+    getWindowData() {
+      return {
+        width: global$1.innerWidth || document.documentElement.clientWidth,
+        height: wndH,
+        y: document.documentElement.scrollTop
+      };
+    } // Jarallax functions
+
+
+    initImg() {
+      const self = this; // find image element
+
+      let $imgElement = self.options.imgElement;
+
+      if ($imgElement && 'string' === typeof $imgElement) {
+        $imgElement = self.$item.querySelector($imgElement);
+      } // check if dom element
+
+
+      if (!($imgElement instanceof Element)) {
+        if (self.options.imgSrc) {
+          $imgElement = new Image();
+          $imgElement.src = self.options.imgSrc;
+        } else {
+          $imgElement = null;
+        }
+      }
+
+      if ($imgElement) {
+        if (self.options.keepImg) {
+          self.image.$item = $imgElement.cloneNode(true);
+        } else {
+          self.image.$item = $imgElement;
+          self.image.$itemParent = $imgElement.parentNode;
+        }
+
+        self.image.useImgTag = true;
+      } // true if there is img tag
+
+
+      if (self.image.$item) {
+        return true;
+      } // get image src
+
+
+      if (null === self.image.src) {
+        self.image.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+        self.image.bgImage = self.css(self.$item, 'background-image');
+      }
+
+      return !(!self.image.bgImage || 'none' === self.image.bgImage);
+    }
+
+    canInitParallax() {
+      return !this.options.disableParallax();
+    }
+
+    init() {
+      const self = this;
+      const containerStyles = {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        overflow: 'hidden'
+      };
+      let imageStyles = {
+        pointerEvents: 'none',
+        transformStyle: 'preserve-3d',
+        backfaceVisibility: 'hidden',
+        willChange: 'transform,opacity'
+      };
+
+      if (!self.options.keepImg) {
+        // save default user styles
+        const curStyle = self.$item.getAttribute('style');
+
+        if (curStyle) {
+          self.$item.setAttribute('data-jarallax-original-styles', curStyle);
+        }
+
+        if (self.image.useImgTag) {
+          const curImgStyle = self.image.$item.getAttribute('style');
+
+          if (curImgStyle) {
+            self.image.$item.setAttribute('data-jarallax-original-styles', curImgStyle);
+          }
+        }
+      } // set relative position and z-index to the parent
+
+
+      if ('static' === self.css(self.$item, 'position')) {
+        self.css(self.$item, {
+          position: 'relative'
+        });
+      }
+
+      if ('auto' === self.css(self.$item, 'z-index')) {
+        self.css(self.$item, {
+          zIndex: 0
+        });
+      } // container for parallax image
+
+
+      self.image.$container = document.createElement('div');
+      self.css(self.image.$container, containerStyles);
+      self.css(self.image.$container, {
+        'z-index': self.options.zIndex
+      }); // it will remove some image overlapping
+      // overlapping occur due to an image position fixed inside absolute position element
+      // needed only when background in fixed position
+
+      if ('fixed' === this.image.position) {
+        self.css(self.image.$container, {
+          '-webkit-clip-path': 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+          'clip-path': 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
+        });
+      }
+
+      self.image.$container.setAttribute('id', `jarallax-container-${self.instanceID}`);
+      self.$item.appendChild(self.image.$container); // use img tag
+
+      if (self.image.useImgTag) {
+        imageStyles = self.extend({
+          'object-fit': self.options.imgSize,
+          'object-position': self.options.imgPosition,
+          'max-width': 'none'
+        }, containerStyles, imageStyles); // use div with background image
+      } else {
+        self.image.$item = document.createElement('div');
+
+        if (self.image.src) {
+          imageStyles = self.extend({
+            'background-position': self.options.imgPosition,
+            'background-size': self.options.imgSize,
+            'background-repeat': self.options.imgRepeat,
+            'background-image': self.image.bgImage || `url("${self.image.src}")`
+          }, containerStyles, imageStyles);
+        }
+      }
+
+      if ('opacity' === self.options.type || 'scale' === self.options.type || 'scale-opacity' === self.options.type || 1 === self.options.speed) {
+        self.image.position = 'absolute';
+      } // 1. Check if one of parents have transform style (without this check, scroll transform will be inverted if used parallax with position fixed)
+      //    discussion - https://github.com/nk-o/jarallax/issues/9
+      // 2. Check if parents have overflow scroll
+
+
+      if ('fixed' === self.image.position) {
+        const $parents = getParents(self.$item).filter(el => {
+          const styles = global$1.getComputedStyle(el);
+          const parentTransform = styles['-webkit-transform'] || styles['-moz-transform'] || styles.transform;
+          const overflowRegex = /(auto|scroll)/;
+          return parentTransform && 'none' !== parentTransform || overflowRegex.test(styles.overflow + styles['overflow-y'] + styles['overflow-x']);
+        });
+        self.image.position = $parents.length ? 'absolute' : 'fixed';
+      } // add position to parallax block
+
+
+      imageStyles.position = self.image.position; // insert parallax image
+
+      self.css(self.image.$item, imageStyles);
+      self.image.$container.appendChild(self.image.$item); // set initial position and size
+
+      self.onResize();
+      self.onScroll(true); // call onInit event
+
+      if (self.options.onInit) {
+        self.options.onInit.call(self);
+      } // remove default user background
+
+
+      if ('none' !== self.css(self.$item, 'background-image')) {
+        self.css(self.$item, {
+          'background-image': 'none'
+        });
+      }
+
+      self.addToParallaxList();
+    } // add to parallax instances list
+
+
+    addToParallaxList() {
+      jarallaxList.push({
+        instance: this
+      });
+
+      if (1 === jarallaxList.length) {
+        global$1.requestAnimationFrame(updateParallax);
+      }
+    } // remove from parallax instances list
+
+
+    removeFromParallaxList() {
+      const self = this;
+      jarallaxList.forEach((data, key) => {
+        if (data.instance.instanceID === self.instanceID) {
+          jarallaxList.splice(key, 1);
+        }
+      });
+    }
+
+    destroy() {
+      const self = this;
+      self.removeFromParallaxList(); // return styles on container as before jarallax init
+
+      const originalStylesTag = self.$item.getAttribute('data-jarallax-original-styles');
+      self.$item.removeAttribute('data-jarallax-original-styles'); // null occurs if there is no style tag before jarallax init
+
+      if (!originalStylesTag) {
+        self.$item.removeAttribute('style');
+      } else {
+        self.$item.setAttribute('style', originalStylesTag);
+      }
+
+      if (self.image.useImgTag) {
+        // return styles on img tag as before jarallax init
+        const originalStylesImgTag = self.image.$item.getAttribute('data-jarallax-original-styles');
+        self.image.$item.removeAttribute('data-jarallax-original-styles'); // null occurs if there is no style tag before jarallax init
+
+        if (!originalStylesImgTag) {
+          self.image.$item.removeAttribute('style');
+        } else {
+          self.image.$item.setAttribute('style', originalStylesTag);
+        } // move img tag to its default position
+
+
+        if (self.image.$itemParent) {
+          self.image.$itemParent.appendChild(self.image.$item);
+        }
+      } // remove additional dom elements
+
+
+      if (self.image.$container) {
+        self.image.$container.parentNode.removeChild(self.image.$container);
+      } // call onDestroy event
+
+
+      if (self.options.onDestroy) {
+        self.options.onDestroy.call(self);
+      } // delete jarallax from item
+
+
+      delete self.$item.jarallax;
+    } // Fallback for removed function.
+    // Does nothing now.
+    // eslint-disable-next-line class-methods-use-this
+
+
+    clipContainer() {}
+
+    coverImage() {
+      const self = this;
+      const rect = self.image.$container.getBoundingClientRect();
+      const contH = rect.height;
+      const {
+        speed
+      } = self.options;
+      const isScroll = 'scroll' === self.options.type || 'scroll-opacity' === self.options.type;
+      let scrollDist = 0;
+      let resultH = contH;
+      let resultMT = 0; // scroll parallax
+
+      if (isScroll) {
+        // scroll distance and height for image
+        if (0 > speed) {
+          scrollDist = speed * Math.max(contH, wndH);
+
+          if (wndH < contH) {
+            scrollDist -= speed * (contH - wndH);
+          }
+        } else {
+          scrollDist = speed * (contH + wndH);
+        } // size for scroll parallax
+
+
+        if (1 < speed) {
+          resultH = Math.abs(scrollDist - wndH);
+        } else if (0 > speed) {
+          resultH = scrollDist / speed + Math.abs(scrollDist);
+        } else {
+          resultH += (wndH - contH) * (1 - speed);
+        }
+
+        scrollDist /= 2;
+      } // store scroll distance
+
+
+      self.parallaxScrollDistance = scrollDist; // vertical center
+
+      if (isScroll) {
+        resultMT = (wndH - resultH) / 2;
+      } else {
+        resultMT = (contH - resultH) / 2;
+      } // apply result to item
+
+
+      self.css(self.image.$item, {
+        height: `${resultH}px`,
+        marginTop: `${resultMT}px`,
+        left: 'fixed' === self.image.position ? `${rect.left}px` : '0',
+        width: `${rect.width}px`
+      }); // call onCoverImage event
+
+      if (self.options.onCoverImage) {
+        self.options.onCoverImage.call(self);
+      } // return some useful data. Used in the video cover function
+
+
+      return {
+        image: {
+          height: resultH,
+          marginTop: resultMT
+        },
+        container: rect
+      };
+    }
+
+    isVisible() {
+      return this.isElementInViewport || false;
+    }
+
+    onScroll(force) {
+      const self = this;
+      const rect = self.$item.getBoundingClientRect();
+      const contT = rect.top;
+      const contH = rect.height;
+      const styles = {}; // check if in viewport
+
+      let viewportRect = rect;
+
+      if (self.options.elementInViewport) {
+        viewportRect = self.options.elementInViewport.getBoundingClientRect();
+      }
+
+      self.isElementInViewport = 0 <= viewportRect.bottom && 0 <= viewportRect.right && viewportRect.top <= wndH && viewportRect.left <= global$1.innerWidth; // stop calculations if item is not in viewport
+
+      if (force ? false : !self.isElementInViewport) {
         return;
-    }
+      } // calculate parallax helping variables
 
-    if (_global.window.pageYOffset !== undefined) {
-        wndY = _global.window.pageYOffset;
-    } else {
-        wndY = (document.documentElement || document.body.parentNode || document.body).scrollTop;
-    }
 
-    var isResized = forceResizeParallax || !oldPageData || oldPageData.width !== wndW || oldPageData.height !== wndH;
-    var isScrolled = forceScrollParallax || isResized || !oldPageData || oldPageData.y !== wndY;
+      const beforeTop = Math.max(0, contT);
+      const beforeTopEnd = Math.max(0, contH + contT);
+      const afterTop = Math.max(0, -contT);
+      const beforeBottom = Math.max(0, contT + contH - wndH);
+      const beforeBottomEnd = Math.max(0, contH - (contT + contH - wndH));
+      const afterBottom = Math.max(0, -contT + wndH - contH);
+      const fromViewportCenter = 1 - 2 * ((wndH - contT) / (wndH + contH)); // calculate on how percent of section is visible
 
-    forceResizeParallax = false;
-    forceScrollParallax = false;
+      let visiblePercent = 1;
 
-    if (isResized || isScrolled) {
-        jarallaxList.forEach(function (item) {
-            if (isResized) {
-                item.onResize();
-            }
-            if (isScrolled) {
-                item.onScroll();
-            }
+      if (contH < wndH) {
+        visiblePercent = 1 - (afterTop || beforeBottom) / contH;
+      } else if (beforeTopEnd <= wndH) {
+        visiblePercent = beforeTopEnd / wndH;
+      } else if (beforeBottomEnd <= wndH) {
+        visiblePercent = beforeBottomEnd / wndH;
+      } // opacity
+
+
+      if ('opacity' === self.options.type || 'scale-opacity' === self.options.type || 'scroll-opacity' === self.options.type) {
+        styles.transform = 'translate3d(0,0,0)';
+        styles.opacity = visiblePercent;
+      } // scale
+
+
+      if ('scale' === self.options.type || 'scale-opacity' === self.options.type) {
+        let scale = 1;
+
+        if (0 > self.options.speed) {
+          scale -= self.options.speed * visiblePercent;
+        } else {
+          scale += self.options.speed * (1 - visiblePercent);
+        }
+
+        styles.transform = `scale(${scale}) translate3d(0,0,0)`;
+      } // scroll
+
+
+      if ('scroll' === self.options.type || 'scroll-opacity' === self.options.type) {
+        let positionY = self.parallaxScrollDistance * fromViewportCenter; // fix if parallax block in absolute position
+
+        if ('absolute' === self.image.position) {
+          positionY -= contT;
+        }
+
+        styles.transform = `translate3d(0,${positionY}px,0)`;
+      }
+
+      self.css(self.image.$item, styles); // call onScroll event
+
+      if (self.options.onScroll) {
+        self.options.onScroll.call(self, {
+          section: rect,
+          beforeTop,
+          beforeTopEnd,
+          afterTop,
+          beforeBottom,
+          beforeBottomEnd,
+          afterBottom,
+          visiblePercent,
+          fromViewportCenter
         });
-
-        oldPageData = {
-            width: wndW,
-            height: wndH,
-            y: wndY
-        };
+      }
     }
 
-    (0, _rafl2.default)(updateParallax);
-}
-
-// ResizeObserver
-var resizeObserver = global.ResizeObserver ? new global.ResizeObserver(function (entry) {
-    if (entry && entry.length) {
-        (0, _rafl2.default)(function () {
-            entry.forEach(function (item) {
-                if (item.target && item.target.jarallax) {
-                    if (!forceResizeParallax) {
-                        item.target.jarallax.onResize();
-                    }
-                    forceScrollParallax = true;
-                }
-            });
-        });
-    }
-}) : false;
-
-var instanceID = 0;
-
-// Jarallax class
-
-var Jarallax = function () {
-    function Jarallax(item, userOptions) {
-        _classCallCheck(this, Jarallax);
-
-        var self = this;
-
-        self.instanceID = instanceID++;
-
-        self.$item = item;
-
-        self.defaults = {
-            type: 'scroll', // type of parallax: scroll, scale, opacity, scale-opacity, scroll-opacity
-            speed: 0.5, // supported value from -1 to 2
-            imgSrc: null,
-            imgElement: '.jarallax-img',
-            imgSize: 'cover',
-            imgPosition: '50% 50%',
-            imgRepeat: 'no-repeat', // supported only for background, not for <img> tag
-            keepImg: false, // keep <img> tag in it's default place
-            elementInViewport: null,
-            zIndex: -100,
-            disableParallax: false,
-            disableVideo: false,
-            automaticResize: true, // use ResizeObserver to recalculate position and size of parallax image
-
-            // video
-            videoSrc: null,
-            videoStartTime: 0,
-            videoEndTime: 0,
-            videoVolume: 0,
-            videoLoop: true,
-            videoPlayOnlyVisible: true,
-            videoLazyLoading: true,
-
-            // events
-            onScroll: null, // function(calculations) {}
-            onInit: null, // function() {}
-            onDestroy: null, // function() {}
-            onCoverImage: null // function() {}
-        };
-
-        // prepare data-options
-        var dataOptions = self.$item.dataset || {};
-        var pureDataOptions = {};
-        Object.keys(dataOptions).forEach(function (key) {
-            var loweCaseOption = key.substr(0, 1).toLowerCase() + key.substr(1);
-            if (loweCaseOption && typeof self.defaults[loweCaseOption] !== 'undefined') {
-                pureDataOptions[loweCaseOption] = dataOptions[key];
-            }
-        });
-
-        self.options = self.extend({}, self.defaults, pureDataOptions, userOptions);
-        self.pureOptions = self.extend({}, self.options);
-
-        // prepare 'true' and 'false' strings to boolean
-        Object.keys(self.options).forEach(function (key) {
-            if (self.options[key] === 'true') {
-                self.options[key] = true;
-            } else if (self.options[key] === 'false') {
-                self.options[key] = false;
-            }
-        });
-
-        // fix speed option [-1.0, 2.0]
-        self.options.speed = Math.min(2, Math.max(-1, parseFloat(self.options.speed)));
-
-        // prepare disableParallax callback
-        if (typeof self.options.disableParallax === 'string') {
-            self.options.disableParallax = new RegExp(self.options.disableParallax);
-        }
-        if (self.options.disableParallax instanceof RegExp) {
-            var disableParallaxRegexp = self.options.disableParallax;
-            self.options.disableParallax = function () {
-                return disableParallaxRegexp.test(navigator.userAgent);
-            };
-        }
-        if (typeof self.options.disableParallax !== 'function') {
-            self.options.disableParallax = function () {
-                return false;
-            };
-        }
-
-        // prepare disableVideo callback
-        if (typeof self.options.disableVideo === 'string') {
-            self.options.disableVideo = new RegExp(self.options.disableVideo);
-        }
-        if (self.options.disableVideo instanceof RegExp) {
-            var disableVideoRegexp = self.options.disableVideo;
-            self.options.disableVideo = function () {
-                return disableVideoRegexp.test(navigator.userAgent);
-            };
-        }
-        if (typeof self.options.disableVideo !== 'function') {
-            self.options.disableVideo = function () {
-                return false;
-            };
-        }
-
-        // custom element to check if parallax in viewport
-        var elementInVP = self.options.elementInViewport;
-        // get first item from array
-        if (elementInVP && (typeof elementInVP === 'undefined' ? 'undefined' : _typeof(elementInVP)) === 'object' && typeof elementInVP.length !== 'undefined') {
-            var _elementInVP = elementInVP;
-
-            var _elementInVP2 = _slicedToArray(_elementInVP, 1);
-
-            elementInVP = _elementInVP2[0];
-        }
-        // check if dom element
-        if (!(elementInVP instanceof Element)) {
-            elementInVP = null;
-        }
-        self.options.elementInViewport = elementInVP;
-
-        self.image = {
-            src: self.options.imgSrc || null,
-            $container: null,
-            useImgTag: false,
-
-            // position fixed is needed for the most of browsers because absolute position have glitches
-            // on MacOS with smooth scroll there is a huge lags with absolute position - https://github.com/nk-o/jarallax/issues/75
-            // on mobile devices better scrolled with absolute position
-            position: /iPad|iPhone|iPod|Android/.test(navigator.userAgent) ? 'absolute' : 'fixed'
-        };
-
-        if (self.initImg() && self.canInitParallax()) {
-            self.init();
-        }
+    onResize() {
+      this.coverImage();
     }
 
-    // add styles to element
+  } // global definition
 
 
-    _createClass(Jarallax, [{
-        key: 'css',
-        value: function css(el, styles) {
-            if (typeof styles === 'string') {
-                return _global.window.getComputedStyle(el).getPropertyValue(styles);
-            }
-
-            // add transform property with vendor prefix
-            if (styles.transform && supportTransform) {
-                styles[supportTransform] = styles.transform;
-            }
-
-            Object.keys(styles).forEach(function (key) {
-                el.style[key] = styles[key];
-            });
-            return el;
-        }
-
-        // Extend like jQuery.extend
-
-    }, {
-        key: 'extend',
-        value: function extend(out) {
-            var _arguments = arguments;
-
-            out = out || {};
-            Object.keys(arguments).forEach(function (i) {
-                if (!_arguments[i]) {
-                    return;
-                }
-                Object.keys(_arguments[i]).forEach(function (key) {
-                    out[key] = _arguments[i][key];
-                });
-            });
-            return out;
-        }
-
-        // get window size and scroll position. Useful for extensions
-
-    }, {
-        key: 'getWindowData',
-        value: function getWindowData() {
-            return {
-                width: wndW,
-                height: wndH,
-                y: wndY
-            };
-        }
-
-        // Jarallax functions
-
-    }, {
-        key: 'initImg',
-        value: function initImg() {
-            var self = this;
-
-            // find image element
-            var $imgElement = self.options.imgElement;
-            if ($imgElement && typeof $imgElement === 'string') {
-                $imgElement = self.$item.querySelector($imgElement);
-            }
-            // check if dom element
-            if (!($imgElement instanceof Element)) {
-                $imgElement = null;
-            }
-
-            if ($imgElement) {
-                if (self.options.keepImg) {
-                    self.image.$item = $imgElement.cloneNode(true);
-                } else {
-                    self.image.$item = $imgElement;
-                    self.image.$itemParent = $imgElement.parentNode;
-                }
-                self.image.useImgTag = true;
-            }
-
-            // true if there is img tag
-            if (self.image.$item) {
-                return true;
-            }
-
-            // get image src
-            if (self.image.src === null) {
-                self.image.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-                self.image.bgImage = self.css(self.$item, 'background-image');
-            }
-            return !(!self.image.bgImage || self.image.bgImage === 'none');
-        }
-    }, {
-        key: 'canInitParallax',
-        value: function canInitParallax() {
-            return supportTransform && !this.options.disableParallax();
-        }
-    }, {
-        key: 'init',
-        value: function init() {
-            var self = this;
-            var containerStyles = {
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                overflow: 'hidden',
-                pointerEvents: 'none'
-            };
-            var imageStyles = {};
-
-            if (!self.options.keepImg) {
-                // save default user styles
-                var curStyle = self.$item.getAttribute('style');
-                if (curStyle) {
-                    self.$item.setAttribute('data-jarallax-original-styles', curStyle);
-                }
-                if (self.image.useImgTag) {
-                    var curImgStyle = self.image.$item.getAttribute('style');
-                    if (curImgStyle) {
-                        self.image.$item.setAttribute('data-jarallax-original-styles', curImgStyle);
-                    }
-                }
-            }
-
-            // set relative position and z-index to the parent
-            if (self.css(self.$item, 'position') === 'static') {
-                self.css(self.$item, {
-                    position: 'relative'
-                });
-            }
-            if (self.css(self.$item, 'z-index') === 'auto') {
-                self.css(self.$item, {
-                    zIndex: 0
-                });
-            }
-
-            // container for parallax image
-            self.image.$container = document.createElement('div');
-            self.css(self.image.$container, containerStyles);
-            self.css(self.image.$container, {
-                'z-index': self.options.zIndex
-            });
-
-            // fix for IE https://github.com/nk-o/jarallax/issues/110
-            if (isIE) {
-                self.css(self.image.$container, {
-                    opacity: 0.9999
-                });
-            }
-
-            self.image.$container.setAttribute('id', 'jarallax-container-' + self.instanceID);
-            self.$item.appendChild(self.image.$container);
-
-            // use img tag
-            if (self.image.useImgTag) {
-                imageStyles = self.extend({
-                    'object-fit': self.options.imgSize,
-                    'object-position': self.options.imgPosition,
-                    // support for plugin https://github.com/bfred-it/object-fit-images
-                    'font-family': 'object-fit: ' + self.options.imgSize + '; object-position: ' + self.options.imgPosition + ';',
-                    'max-width': 'none'
-                }, containerStyles, imageStyles);
-
-                // use div with background image
-            } else {
-                self.image.$item = document.createElement('div');
-                if (self.image.src) {
-                    imageStyles = self.extend({
-                        'background-position': self.options.imgPosition,
-                        'background-size': self.options.imgSize,
-                        'background-repeat': self.options.imgRepeat,
-                        'background-image': self.image.bgImage || 'url("' + self.image.src + '")'
-                    }, containerStyles, imageStyles);
-                }
-            }
-
-            if (self.options.type === 'opacity' || self.options.type === 'scale' || self.options.type === 'scale-opacity' || self.options.speed === 1) {
-                self.image.position = 'absolute';
-            }
-
-            // check if one of parents have transform style (without this check, scroll transform will be inverted if used parallax with position fixed)
-            // discussion - https://github.com/nk-o/jarallax/issues/9
-            if (self.image.position === 'fixed') {
-                var parentWithTransform = 0;
-                var $itemParents = self.$item;
-                while ($itemParents !== null && $itemParents !== document && parentWithTransform === 0) {
-                    var parentTransform = self.css($itemParents, '-webkit-transform') || self.css($itemParents, '-moz-transform') || self.css($itemParents, 'transform');
-                    if (parentTransform && parentTransform !== 'none') {
-                        parentWithTransform = 1;
-                        self.image.position = 'absolute';
-                    }
-                    $itemParents = $itemParents.parentNode;
-                }
-            }
-
-            // add position to parallax block
-            imageStyles.position = self.image.position;
-
-            // insert parallax image
-            self.css(self.image.$item, imageStyles);
-            self.image.$container.appendChild(self.image.$item);
-
-            // set initial position and size
-            self.onResize();
-            self.onScroll(true);
-
-            // ResizeObserver
-            if (self.options.automaticResize && resizeObserver) {
-                resizeObserver.observe(self.$item);
-            }
-
-            // call onInit event
-            if (self.options.onInit) {
-                self.options.onInit.call(self);
-            }
-
-            // remove default user background
-            if (self.css(self.$item, 'background-image') !== 'none') {
-                self.css(self.$item, {
-                    'background-image': 'none'
-                });
-            }
-
-            self.addToParallaxList();
-        }
-
-        // add to parallax instances list
-
-    }, {
-        key: 'addToParallaxList',
-        value: function addToParallaxList() {
-            jarallaxList.push(this);
-
-            if (jarallaxList.length === 1) {
-                updateParallax();
-            }
-        }
-
-        // remove from parallax instances list
-
-    }, {
-        key: 'removeFromParallaxList',
-        value: function removeFromParallaxList() {
-            var self = this;
-
-            jarallaxList.forEach(function (item, key) {
-                if (item.instanceID === self.instanceID) {
-                    jarallaxList.splice(key, 1);
-                }
-            });
-        }
-    }, {
-        key: 'destroy',
-        value: function destroy() {
-            var self = this;
-
-            self.removeFromParallaxList();
-
-            // return styles on container as before jarallax init
-            var originalStylesTag = self.$item.getAttribute('data-jarallax-original-styles');
-            self.$item.removeAttribute('data-jarallax-original-styles');
-            // null occurs if there is no style tag before jarallax init
-            if (!originalStylesTag) {
-                self.$item.removeAttribute('style');
-            } else {
-                self.$item.setAttribute('style', originalStylesTag);
-            }
-
-            if (self.image.useImgTag) {
-                // return styles on img tag as before jarallax init
-                var originalStylesImgTag = self.image.$item.getAttribute('data-jarallax-original-styles');
-                self.image.$item.removeAttribute('data-jarallax-original-styles');
-                // null occurs if there is no style tag before jarallax init
-                if (!originalStylesImgTag) {
-                    self.image.$item.removeAttribute('style');
-                } else {
-                    self.image.$item.setAttribute('style', originalStylesTag);
-                }
-
-                // move img tag to its default position
-                if (self.image.$itemParent) {
-                    self.image.$itemParent.appendChild(self.image.$item);
-                }
-            }
-
-            // remove additional dom elements
-            if (self.$clipStyles) {
-                self.$clipStyles.parentNode.removeChild(self.$clipStyles);
-            }
-            if (self.image.$container) {
-                self.image.$container.parentNode.removeChild(self.image.$container);
-            }
-
-            // call onDestroy event
-            if (self.options.onDestroy) {
-                self.options.onDestroy.call(self);
-            }
-
-            // delete jarallax from item
-            delete self.$item.jarallax;
-        }
-
-        // it will remove some image overlapping
-        // overlapping occur due to an image position fixed inside absolute position element
-
-    }, {
-        key: 'clipContainer',
-        value: function clipContainer() {
-            // needed only when background in fixed position
-            if (this.image.position !== 'fixed') {
-                return;
-            }
-
-            var self = this;
-            var rect = self.image.$container.getBoundingClientRect();
-            var width = rect.width,
-                height = rect.height;
-
-
-            if (!self.$clipStyles) {
-                self.$clipStyles = document.createElement('style');
-                self.$clipStyles.setAttribute('type', 'text/css');
-                self.$clipStyles.setAttribute('id', 'jarallax-clip-' + self.instanceID);
-                var head = document.head || document.getElementsByTagName('head')[0];
-                head.appendChild(self.$clipStyles);
-            }
-
-            var styles = '#jarallax-container-' + self.instanceID + ' {\n           clip: rect(0 ' + width + 'px ' + height + 'px 0);\n           clip: rect(0, ' + width + 'px, ' + height + 'px, 0);\n        }';
-
-            // add clip styles inline (this method need for support IE8 and less browsers)
-            if (self.$clipStyles.styleSheet) {
-                self.$clipStyles.styleSheet.cssText = styles;
-            } else {
-                self.$clipStyles.innerHTML = styles;
-            }
-        }
-    }, {
-        key: 'coverImage',
-        value: function coverImage() {
-            var self = this;
-
-            var rect = self.image.$container.getBoundingClientRect();
-            var contH = rect.height;
-            var speed = self.options.speed;
-
-            var isScroll = self.options.type === 'scroll' || self.options.type === 'scroll-opacity';
-            var scrollDist = 0;
-            var resultH = contH;
-            var resultMT = 0;
-
-            // scroll parallax
-            if (isScroll) {
-                // scroll distance and height for image
-                if (speed < 0) {
-                    scrollDist = speed * Math.max(contH, wndH);
-
-                    if (wndH < contH) {
-                        scrollDist -= speed * (contH - wndH);
-                    }
-                } else {
-                    scrollDist = speed * (contH + wndH);
-                }
-
-                // size for scroll parallax
-                if (speed > 1) {
-                    resultH = Math.abs(scrollDist - wndH);
-                } else if (speed < 0) {
-                    resultH = scrollDist / speed + Math.abs(scrollDist);
-                } else {
-                    resultH += (wndH - contH) * (1 - speed);
-                }
-
-                scrollDist /= 2;
-            }
-
-            // store scroll distance
-            self.parallaxScrollDistance = scrollDist;
-
-            // vertical center
-            if (isScroll) {
-                resultMT = (wndH - resultH) / 2;
-            } else {
-                resultMT = (contH - resultH) / 2;
-            }
-
-            // apply result to item
-            self.css(self.image.$item, {
-                height: resultH + 'px',
-                marginTop: resultMT + 'px',
-                left: self.image.position === 'fixed' ? rect.left + 'px' : '0',
-                width: rect.width + 'px'
-            });
-
-            // call onCoverImage event
-            if (self.options.onCoverImage) {
-                self.options.onCoverImage.call(self);
-            }
-
-            // return some useful data. Used in the video cover function
-            return {
-                image: {
-                    height: resultH,
-                    marginTop: resultMT
-                },
-                container: rect
-            };
-        }
-    }, {
-        key: 'isVisible',
-        value: function isVisible() {
-            return this.isElementInViewport || false;
-        }
-    }, {
-        key: 'onScroll',
-        value: function onScroll(force) {
-            var self = this;
-
-            var rect = self.$item.getBoundingClientRect();
-            var contT = rect.top;
-            var contH = rect.height;
-            var styles = {};
-
-            // check if in viewport
-            var viewportRect = rect;
-            if (self.options.elementInViewport) {
-                viewportRect = self.options.elementInViewport.getBoundingClientRect();
-            }
-            self.isElementInViewport = viewportRect.bottom >= 0 && viewportRect.right >= 0 && viewportRect.top <= wndH && viewportRect.left <= wndW;
-
-            // stop calculations if item is not in viewport
-            if (force ? false : !self.isElementInViewport) {
-                return;
-            }
-
-            // calculate parallax helping variables
-            var beforeTop = Math.max(0, contT);
-            var beforeTopEnd = Math.max(0, contH + contT);
-            var afterTop = Math.max(0, -contT);
-            var beforeBottom = Math.max(0, contT + contH - wndH);
-            var beforeBottomEnd = Math.max(0, contH - (contT + contH - wndH));
-            var afterBottom = Math.max(0, -contT + wndH - contH);
-            var fromViewportCenter = 1 - 2 * (wndH - contT) / (wndH + contH);
-
-            // calculate on how percent of section is visible
-            var visiblePercent = 1;
-            if (contH < wndH) {
-                visiblePercent = 1 - (afterTop || beforeBottom) / contH;
-            } else if (beforeTopEnd <= wndH) {
-                visiblePercent = beforeTopEnd / wndH;
-            } else if (beforeBottomEnd <= wndH) {
-                visiblePercent = beforeBottomEnd / wndH;
-            }
-
-            // opacity
-            if (self.options.type === 'opacity' || self.options.type === 'scale-opacity' || self.options.type === 'scroll-opacity') {
-                styles.transform = 'translate3d(0,0,0)';
-                styles.opacity = visiblePercent;
-            }
-
-            // scale
-            if (self.options.type === 'scale' || self.options.type === 'scale-opacity') {
-                var scale = 1;
-                if (self.options.speed < 0) {
-                    scale -= self.options.speed * visiblePercent;
-                } else {
-                    scale += self.options.speed * (1 - visiblePercent);
-                }
-                styles.transform = 'scale(' + scale + ') translate3d(0,0,0)';
-            }
-
-            // scroll
-            if (self.options.type === 'scroll' || self.options.type === 'scroll-opacity') {
-                var positionY = self.parallaxScrollDistance * fromViewportCenter;
-
-                // fix if parallax block in absolute position
-                if (self.image.position === 'absolute') {
-                    positionY -= contT;
-                }
-
-                styles.transform = 'translate3d(0,' + positionY + 'px,0)';
-            }
-
-            self.css(self.image.$item, styles);
-
-            // call onScroll event
-            if (self.options.onScroll) {
-                self.options.onScroll.call(self, {
-                    section: rect,
-
-                    beforeTop: beforeTop,
-                    beforeTopEnd: beforeTopEnd,
-                    afterTop: afterTop,
-                    beforeBottom: beforeBottom,
-                    beforeBottomEnd: beforeBottomEnd,
-                    afterBottom: afterBottom,
-
-                    visiblePercent: visiblePercent,
-                    fromViewportCenter: fromViewportCenter
-                });
-            }
-        }
-    }, {
-        key: 'onResize',
-        value: function onResize() {
-            this.coverImage();
-            this.clipContainer();
-        }
-    }]);
-
-    return Jarallax;
-}();
-
-// global definition
-
-
-var plugin = function plugin(items) {
+  const jarallax = function (items, options, ...args) {
     // check for dom element
     // thanks: http://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object
-    if ((typeof HTMLElement === 'undefined' ? 'undefined' : _typeof(HTMLElement)) === 'object' ? items instanceof HTMLElement : items && (typeof items === 'undefined' ? 'undefined' : _typeof(items)) === 'object' && items !== null && items.nodeType === 1 && typeof items.nodeName === 'string') {
-        items = [items];
+    if ('object' === typeof HTMLElement ? items instanceof HTMLElement : items && 'object' === typeof items && null !== items && 1 === items.nodeType && 'string' === typeof items.nodeName) {
+      items = [items];
     }
 
-    var options = arguments[1];
-    var args = Array.prototype.slice.call(arguments, 2);
-    var len = items.length;
-    var k = 0;
-    var ret = void 0;
+    const len = items.length;
+    let k = 0;
+    let ret;
 
-    for (k; k < len; k++) {
-        if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object' || typeof options === 'undefined') {
-            if (!items[k].jarallax) {
-                items[k].jarallax = new Jarallax(items[k], options);
-            }
-        } else if (items[k].jarallax) {
-            // eslint-disable-next-line prefer-spread
-            ret = items[k].jarallax[options].apply(items[k].jarallax, args);
+    for (k; k < len; k += 1) {
+      if ('object' === typeof options || 'undefined' === typeof options) {
+        if (!items[k].jarallax) {
+          items[k].jarallax = new Jarallax(items[k], options);
         }
-        if (typeof ret !== 'undefined') {
-            return ret;
-        }
+      } else if (items[k].jarallax) {
+        // eslint-disable-next-line prefer-spread
+        ret = items[k].jarallax[options].apply(items[k].jarallax, args);
+      }
+
+      if ('undefined' !== typeof ret) {
+        return ret;
+      }
     }
 
     return items;
-};
-plugin.constructor = Jarallax;
+  };
 
-exports.default = plugin;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5)))
+  jarallax.constructor = Jarallax;
 
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
+  const $ = global$1.jQuery; // jQuery support
 
-"use strict";
+  if ('undefined' !== typeof $) {
+    const $Plugin = function (...args) {
+      Array.prototype.unshift.call(args, this);
+      const res = jarallax.apply(global$1, args);
+      return 'object' !== typeof res ? res : this;
+    };
+
+    $Plugin.constructor = jarallax.constructor; // no conflict
+
+    const old$Plugin = $.fn.jarallax;
+    $.fn.jarallax = $Plugin;
+
+    $.fn.jarallax.noConflict = function () {
+      $.fn.jarallax = old$Plugin;
+      return this;
+    };
+  } // data-jarallax initialization
 
 
-var global = __webpack_require__(15);
+  ready(() => {
+    jarallax(document.querySelectorAll('[data-jarallax]'));
+  });
 
-/**
- * `requestAnimationFrame()`
- */
+  return jarallax;
 
-var request = global.requestAnimationFrame || global.webkitRequestAnimationFrame || global.mozRequestAnimationFrame || fallback;
-
-var prev = +new Date();
-function fallback(fn) {
-  var curr = +new Date();
-  var ms = Math.max(0, 16 - (curr - prev));
-  var req = setTimeout(fn, ms);
-  return prev = curr, req;
-}
-
-/**
- * `cancelAnimationFrame()`
- */
-
-var cancel = global.cancelAnimationFrame || global.webkitCancelAnimationFrame || global.mozCancelAnimationFrame || clearTimeout;
-
-if (Function.prototype.bind) {
-  request = request.bind(global);
-  cancel = cancel.bind(global);
-}
-
-exports = module.exports = request;
-exports.cancel = cancel;
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-var win;
-
-if (typeof window !== "undefined") {
-    win = window;
-} else if (typeof global !== "undefined") {
-    win = global;
-} else if (typeof self !== "undefined") {
-    win = self;
-} else {
-    win = {};
-}
-
-module.exports = win;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5)))
-
-/***/ })
-/******/ ]);
+}));
+//# sourceMappingURL=jarallax.js.map

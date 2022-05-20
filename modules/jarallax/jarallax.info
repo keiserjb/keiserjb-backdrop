@@ -7,7 +7,7 @@ configure = admin/config/user-interface/jarallax
 tags[] = Fields
 tags[] = jQuery
 tags[] = User Interface
-; Added by Backdrop CMS packaging script on 2019-08-13
+; Added by Backdrop CMS packaging script on 2022-04-08
 project = jarallax
-version = 1.x-1.0
-timestamp = 1565732814
+version = 1.x-1.1.0
+timestamp = 1649445050
