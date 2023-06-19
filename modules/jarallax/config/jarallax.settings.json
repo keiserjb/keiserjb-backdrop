@@ -9,5 +9,9 @@
         "visibility": "0",
         "pages": "admin/*"
     },
+    "theme": {
+        "visibility": "1",
+        "themes": {}
+    },
     "triggers_fieldset": {}
 }

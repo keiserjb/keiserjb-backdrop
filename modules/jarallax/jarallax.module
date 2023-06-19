@@ -24,7 +24,7 @@ function jarallax_library_info() {
     'jarallax' => array(
       'title' => 'Jarallax',
       'website' => 'https://github.com/nk-o/jarallax',
-      'version' => '2.0.2',
+      'version' => '2.1.3',
       'js' => array(
         backdrop_get_path('module', 'jarallax') . '/library/dist/jarallax.min.js' => array(
           'scope' => 'footer',
@@ -35,7 +35,7 @@ function jarallax_library_info() {
     'jarallaxVideo' => array(
       'title' => 'JarallaxVideo',
       'website' => 'https://github.com/nk-o/jarallax',
-      'version' => '2.0.2',
+      'version' => '2.1.3',
       'js' => array(
         backdrop_get_path('module', 'jarallax') . '/library/dist/jarallax-video.min.js' => array(
           'scope' => 'footer',
@@ -150,4 +150,3 @@ function jarallax_menu() {
     ),
   );
 }
-

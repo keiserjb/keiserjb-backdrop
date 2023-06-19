@@ -136,5 +136,6 @@
         "create terms in tags",
         "configure barrel roll",
         "administer comment settings"
-    ]
+    ],
+    "description": ""
 }
