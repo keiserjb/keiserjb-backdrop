@@ -1254,8 +1254,9 @@ function path_to_theme() {
  * @param $prefixes
  *   An array of prefixes to test, in reverse order of importance.
  *
- * @return $implementations
- *   The functions found, suitable for returning from hook_theme;
+ * @return array
+ *   An array of the functions found, suitable for returning from hook_theme.
+ *   Keyed by the theme hook and includes the function that implements it.
  */
 function backdrop_find_theme_functions($cache, $prefixes) {
   $implementations = array();
@@ -1499,6 +1500,9 @@ function theme_get_setting($setting_name, $theme = NULL) {
  *   TRUE if the theme has settings, FALSE otherwise.
  */
 function theme_has_settings($theme) {
+  if (config_get_names_with_prefix($theme . '.settings')) {
+    return TRUE;
+  }
   $themes = list_themes();
   $theme_info = $themes[$theme];
   if (!empty($theme_info->info['settings'])) {
@@ -1643,6 +1647,9 @@ function theme_enable($theme_list) {
       ->condition('type', 'theme')
       ->condition('name', $key)
       ->execute();
+
+    // Copy any default configuration data to the system config directory.
+    config_install_default_config($key);
   }
 
   list_themes(TRUE);
@@ -1676,6 +1683,8 @@ function theme_disable($theme_list) {
       ->condition('type', 'theme')
       ->condition('name', $key)
       ->execute();
+
+    config_uninstall_config($key);
   }
 
   list_themes(TRUE);
@@ -2041,7 +2050,7 @@ function theme_breadcrumb($variables) {
   $output = '';
   if (!empty($breadcrumb)) {
     $output .= '<nav class="breadcrumb" aria-label="' . t('Website Orientation') . '">';
-    $output .= '<ol><li>' . implode(' » </li><li>', $breadcrumb) . '</li></ol>';
+    $output .= '<ol><li>' . implode('<span class="breadcrumb-separator" aria-hidden="true"> » </span></li><li>', $breadcrumb) . '</li></ol>';
     $output .= '</nav>';
   }
   return $output;

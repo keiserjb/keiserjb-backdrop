@@ -11,7 +11,11 @@
  * @ingroup backup_migrate_destinations
  */
 class backup_migrate_destination_filesource extends backup_migrate_source {
-  var $supported_ops = array('restore', 'configure', 'delete', 'source');
+  public $supported_ops = array('restore', 'configure', 'delete', 'source');
+  public $settings = array();
+  public $name = "";
+  public $location = "";
+  public $machine_name = "";
 
   function type_name() {
     return t("Files Directory");
@@ -31,7 +35,7 @@ class backup_migrate_destination_filesource extends backup_migrate_source {
       'show_in_list' => FALSE,
     ));
 
-    if (config_get('backup_migrate.settings', 'file_private_path')) {
+    if (config_get('system.core', 'file_private_path')) {
       $out['files_private'] = backup_migrate_create_destination('filesource', array(
         'machine_name' => 'files',
         'location' => 'private://',

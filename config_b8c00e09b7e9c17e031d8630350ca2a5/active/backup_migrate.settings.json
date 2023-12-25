@@ -28,7 +28,7 @@
     "backup_migrate_smart_keep_hourly": 24,
     "backup_migrate_smart_keep_daily": 30,
     "backup_migrate_smart_keep_weekly": 2147483647,
-    "backup_migrate_schedule_buffer": 0.01000000000000000020816681711721685132943093776702880859375,
+    "backup_migrate_schedule_buffer": 0.01,
     "backup_migrate_default_schedule": 3600,
     "backup_migrate_source_id": "files",
     "backup_migrate_destination_id": "download",
@@ -36,5 +36,9 @@
     "backup_migrate_backup_max_time": 1200,
     "backup_migrate_restore_max_time": 1200,
     "backup_migrate_timeout_buffer": 5,
-    "nodesquirrel_schedule_keep": -2
+    "nodesquirrel_schedule_keep": -2,
+    "backup_migrate_memory_limit": "256M",
+    "backup_migrate_verbose": null,
+    "backup_migrate_disable_cron": false,
+    "backup_migrate_data_rows_per_query": 50000
 }

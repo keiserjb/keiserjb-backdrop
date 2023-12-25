@@ -107,9 +107,9 @@
     "user_password_reject_weak": false,
     "user_password_strength_threshold": 50,
     "config_sync_clear_staging": 1,
-    "block_interest_cohort": 1,
     "messages_dismissible": 1,
     "log_max_length": 56,
     "file_not_normalized_schemes": [],
-    "user_editor_role": ""
+    "user_editor_role": "",
+    "jquery_version": "legacy"
 }

@@ -2,7 +2,18 @@ name: keiserjb-backdrop
 recipe: backdrop
 config:
   webroot: .
-  php: 7.4
+  php: 8.2
 services:
-  myservice:
+  pma:
     type: phpmyadmin
+  appserver:
+    extras:
+      - apt-get update -y
+      - apt-get install sudo nano jq -y
+      - wget -qO bee.zip https://github.com/backdrop-contrib/bee/archive/1.x-1.x.zip
+      - unzip -q bee.zip && rm bee.zip
+      - mv bee-1.x-1.x /usr/local/bin/bee
+tooling:
+  bee:
+    service: appserver
+    cmd: /usr/local/bin/bee/bee.php

@@ -90,6 +90,10 @@ may panic now. MAKE SURE THAT THIS MODULE IS NOT YOUR ONLY FORM OF BACKUP.
 
 -------------------------------------------------------------------------------
 
+Wiki
+----
+
+The [WIKI pages](https://github.com/backdrop-contrib/backup_migrate/wiki) of this module contain some tips and tricks that may help people troubleshoot configuration issues.
 
 License
 -------
@@ -101,6 +105,8 @@ Current Maintainers
 -------------------
 
 - Jason Ramsey (https://github.com/quackers8me)
+- [argiepiano](https://github.com/argiepiano)
+- Luke McCormick (https://github.com/cellear)
 
 Credits
 -------
