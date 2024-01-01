@@ -12,6 +12,18 @@
             "rmef_hide": 0,
             "rmef_link_text": "Read more<span class=\"element-invisible\"> about @title</span>",
             "rmef_link_class": ""
+        },
+        "node--post": {
+            "rmef_enable": 0,
+            "rmef_hide": 0,
+            "rmef_link_text": "Read more<span class=\"element-invisible\"> about @title</span>",
+            "rmef_link_class": ""
+        },
+        "node--page": {
+            "rmef_enable": 0,
+            "rmef_hide": 0,
+            "rmef_link_text": "Read more<span class=\"element-invisible\"> about @title</span>",
+            "rmef_link_class": ""
         }
     }
 }

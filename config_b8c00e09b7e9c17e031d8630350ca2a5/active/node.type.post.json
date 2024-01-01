@@ -11,7 +11,7 @@
         "sticky_enabled": 1,
         "sticky_default": 0,
         "revision_enabled": 1,
-        "revision_default": 0,
+        "revision_default": 1,
         "show_submitted_info": true,
         "comment_default": "2",
         "node_submitted": 0,
