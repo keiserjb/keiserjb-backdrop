@@ -1,0 +1,75 @@
+{
+    "_config_name": "navbar.settings",
+    "navbar_shortcut_max_slots": 7,
+    "components": [
+        "navbar.shortcut",
+        "navbar.user",
+        "navbar.user_count",
+        "navbar.alert",
+        "navbar.search"
+    ],
+    "navbar_theme": "light",
+    "navbar-shortcut-set-1": {
+        "set_name": "navbar-shortcut-set-1",
+        "title": "Default",
+        "links": [
+            {
+                "menu_name": "navbar-shortcut-set-1",
+                "plid": "0",
+                "link_path": "node/add",
+                "router_path": "node/add",
+                "link_title": "Add content",
+                "langcode": "und",
+                "options": [],
+                "module": "menu",
+                "hidden": "0",
+                "external": "0",
+                "has_children": "0",
+                "expanded": "0",
+                "weight": "-20",
+                "depth": "1",
+                "customized": "0",
+                "p1": "423",
+                "p2": "0",
+                "p3": "0",
+                "p4": "0",
+                "p5": "0",
+                "p6": "0",
+                "p7": "0",
+                "p8": "0",
+                "p9": "0",
+                "updated": "0"
+            },
+            {
+                "menu_name": "navbar-shortcut-set-1",
+                "plid": "0",
+                "link_path": "admin/content",
+                "router_path": "admin/content",
+                "link_title": "Find content",
+                "langcode": "und",
+                "options": [],
+                "module": "menu",
+                "hidden": "0",
+                "external": "0",
+                "has_children": "0",
+                "expanded": "0",
+                "weight": "-19",
+                "depth": "1",
+                "customized": "0",
+                "p1": "424",
+                "p2": "0",
+                "p3": "0",
+                "p4": "0",
+                "p5": "0",
+                "p6": "0",
+                "p7": "0",
+                "p8": "0",
+                "p9": "0",
+                "updated": "0"
+            }
+        ]
+    },
+    "navbar_shortcut_sets": [
+        "navbar-shortcut-set-1"
+    ]
+}

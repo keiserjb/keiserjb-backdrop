@@ -1,0 +1,15 @@
+{
+    "_config_name": "axioma.settings",
+    "style": "dropdown",
+    "depth": "0",
+    "clickdown": 1,
+    "collapse": "default",
+    "accordion": 0,
+    "header_menu_sticky": 0,
+    "align_main_menu": "center",
+    "align_management": "center",
+    "align_user_menu": "center",
+    "font_thin": 0,
+    "hero_art": 0,
+    "color": null
+}

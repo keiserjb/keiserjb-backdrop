@@ -1,0 +1,17 @@
+{
+    "_config_name": "extlink.settings",
+    "class": "ext",
+    "label": "(link is external)",
+    "mailto_class": "mailto",
+    "mailto_label": "(link sends e-mail)",
+    "img_class": false,
+    "subdomains": true,
+    "target": "",
+    "alert": false,
+    "alert_text": "This link will take you to an external web site.",
+    "exclude": "",
+    "include": "",
+    "css_exclude": "",
+    "css_explicit": "",
+    "icon_placement": null
+}
