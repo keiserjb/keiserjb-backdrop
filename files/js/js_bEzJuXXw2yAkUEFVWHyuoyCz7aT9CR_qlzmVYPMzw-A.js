@@ -1,0 +1,188 @@
+
+/**
+ * Cookie plugin 1.0
+ *
+ * Copyright (c) 2006 Klaus Hartl (stilbuero.de)
+ * Dual licensed under the MIT and GPL licenses:
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.gnu.org/licenses/gpl.html
+ *
+ */
+jQuery.cookie=function(b,j,m){if(typeof j!="undefined"){m=m||{};if(j===null){j="";m.expires=-1}var e="";if(m.expires&&(typeof m.expires=="number"||m.expires.toUTCString)){var f;if(typeof m.expires=="number"){f=new Date();f.setTime(f.getTime()+(m.expires*24*60*60*1000))}else{f=m.expires}e="; expires="+f.toUTCString()}var l=m.path?"; path="+(m.path):"";var g=m.domain?"; domain="+(m.domain):"";var a=m.secure?"; secure":"";document.cookie=[b,"=",encodeURIComponent(j),e,l,g,a].join("")}else{var d=null;if(document.cookie&&document.cookie!=""){var k=document.cookie.split(";");for(var h=0;h<k.length;h++){var c=jQuery.trim(k[h]);if(c.substring(0,b.length+1)==(b+"=")){d=decodeURIComponent(c.substring(b.length+1));break}}}return d}};
+;
+/**
+ * @file layout.admin.js
+ *
+ * Behaviors for editing a layout.
+ */
+
+(function ($) {
+
+"use strict";
+
+/**
+ * Behavior for showing a list of layouts.
+ *
+ * Detect flexbox support for displaying our list of layouts with vertical
+ * height matching for each row of layout template icons.
+ */
+Backdrop.behaviors.gridFloatFallback = {
+  attach: function() {
+    var $body = $('body');
+    if (!$body.hasClass('grid-float-fallback-processed') && !Backdrop.featureDetect.flexbox()) {
+      $('head').append('<link rel="stylesheet" type="text/css" href="/core/modules/layout/css/grid-float.css">');
+      $body.addClass('grid-float-fallback-processed');
+    }
+  }
+};
+
+})(jQuery);
+;
+/**
+ * @file
+ * Attaches behaviors for the Contextual module.
+ */
+
+(function ($) {
+
+Backdrop.contextualLinks = Backdrop.contextualLinks || {};
+
+/**
+ * Attaches outline behavior for regions associated with contextual links.
+ */
+Backdrop.behaviors.contextualLinks = {
+  attach: function (context) {
+    $('.contextual-links-wrapper', context).once('contextual-links', function () {
+      var $wrapper = $(this);
+      var $region = $wrapper.closest('.contextual-links-region');
+      var $links = $wrapper.find('ul.contextual-links');
+      var $trigger = $('<a class="contextual-links-trigger" href="#" />').text(Backdrop.t('Configure')).on('click',
+        function () {
+          $links.stop(true, true).slideToggle(100);
+          $wrapper.toggleClass('contextual-links-active');
+          return false;
+        }
+      );
+
+      // Attach hover behavior to trigger and ul.contextual-links.
+      $trigger.add($links).on('mouseenter', function () {
+        $region.addClass('contextual-links-region-active');
+      });
+      $trigger.add($links).on('mouseleave', function () {
+        $region.removeClass('contextual-links-region-active');
+      });
+
+      // Hide the contextual links when user clicks a link or rolls out of the
+      // .contextual-links-region.
+      $region.on('mouseleave click', Backdrop.contextualLinks.mouseleave);
+      $region.on('mouseenter', function() {
+        $trigger.addClass('contextual-links-trigger-active');
+      });
+      $region.on('mouseleave', function() {
+        $trigger.removeClass('contextual-links-trigger-active');
+      });
+
+      // Prepend the trigger.
+      $wrapper.prepend($trigger);
+    });
+
+    /**
+     * Adjusts trigger positions in contextual links to avoid overlaps.
+     */
+    function adjustContextualLinks() {
+      // Get all wrappers anywhere on the page and some info about each.
+      var allWrappers = [];
+      $('.contextual-links-wrapper', context).each(function() {
+        allWrappers.push({
+          '$wrapper': $(this),
+          'regionOffsetBottom': $(this).parent().offset().top + $(this).parent().height(),
+          'hShift': 0,
+          'vShift': 0
+        });
+      });
+
+      // Reset margins on all wrappers.
+      allWrappers.forEach(function(info) {
+        info.$wrapper.css('margin', '0');
+      });
+
+      // Recalculate margins to avoid collisions.
+      var dir = $('html').attr('dir');
+      const hSize = 28; // width of trigger wrapper
+      const vSize = 19; // height of trigger wrapper
+      var n = allWrappers.length;
+      for (let i = 0; i < n; i++) {
+        var follower = allWrappers[i];
+        // Compare follower against all of its predecessors in the list (any of
+        // which may have already been adjusted).
+        for (let j = 0; j < i; j++) {
+          var leader = allWrappers[j];
+          // Adjust the position of follower if necessary to avoid collision
+          // with leader.
+          var leaderOffset = leader.$wrapper.offset();
+          var followerOffset = follower.$wrapper.offset();
+          // Check vertical overlap.
+          if (!(followerOffset.top >= leaderOffset.top && followerOffset.top < leaderOffset.top + vSize)) {
+            continue;
+          }
+          if (dir == 'ltr') {
+            // Check horizontal overlap.
+            if (followerOffset.left >= leaderOffset.left - hSize && followerOffset.left < leaderOffset.left + hSize) {
+              // We have a collision; shift the follower down if there's room,
+              // otherwise left.
+              if (followerOffset.top + 2 * vSize <= follower.regionOffsetBottom) {
+                // Shift down
+                follower.vShift += vSize;
+                follower.$wrapper.css('margin-top', follower.vShift);
+              }
+              else {
+                // Shift left and start a new column.
+                follower.vShift = 0;
+                follower.hShift += hSize;
+                follower.$wrapper.css('margin-top', follower.vShift);
+                follower.$wrapper.css('margin-right', follower.hShift);
+              }
+            }
+          }
+          else { // rtl
+            // Check horizontal overlap.
+            if (followerOffset.left > leaderOffset.left - hSize && followerOffset.left <= leaderOffset.left + hSize) {
+              // We have a collision; shift the follower down if there's room,
+              // otherwise right.
+              if (followerOffset.top + 2 * vSize <= follower.regionOffsetBottom) {
+                // Shift down
+                follower.vShift += vSize;
+                follower.$wrapper.css('margin-top', follower.vShift);
+              }
+              else {
+                // Shift right and start a new column.
+                follower.vShift = 0;
+                follower.hShift += hSize;
+                follower.$wrapper.css('margin-top', follower.vShift);
+                follower.$wrapper.css('margin-left', follower.hShift);
+              }
+            }
+          }
+        }
+      }
+    }
+    $(document).ready(adjustContextualLinks);
+
+    // Usually Backdrop.optimizedResize() would be used for a window resize
+    // event, but this potentially expensive operation should be limited to
+    // firing infrequently, so Backdrop.debounce() is used here instead.
+    $(window).on('resize', Backdrop.debounce(adjustContextualLinks, 500));
+  }
+};
+
+/**
+ * Disables outline for the region contextual links are associated with.
+ */
+Backdrop.contextualLinks.mouseleave = function () {
+  $(this)
+    .find('.contextual-links-active').removeClass('contextual-links-active')
+    .find('ul.contextual-links').hide();
+};
+
+})(jQuery);
+;

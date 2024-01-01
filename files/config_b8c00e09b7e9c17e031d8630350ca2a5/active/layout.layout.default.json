@@ -1,0 +1,435 @@
+{
+    "_config_name": "layout.layout.default",
+    "path": "",
+    "name": "default",
+    "title": "Default Layout",
+    "description": null,
+    "renderer_name": "standard",
+    "module": "layout",
+    "weight": 0,
+    "storage": 2,
+    "layout_template": "moscone_flipped",
+    "disabled": false,
+    "settings": {
+        "title": "",
+        "title_display": "default",
+        "title_block": null
+    },
+    "positions": {
+        "header": [
+            "afb0c064-d4eb-472e-a700-ef1a71461017"
+        ],
+        "top": [
+            "7ddd08a1-0ead-47e3-8c25-3775f4e540ad",
+            "ac638d4c-a0a0-4c7f-ac00-e74a1501a4c9",
+            "37cb0596-2b5e-44c3-a000-ad37125df78a"
+        ],
+        "content": [
+            "default"
+        ],
+        "sidebar": [
+            "7f89df9b-12b7-4f38-9337-55650a6c546c",
+            "d0e614cf-083c-4325-a832-50e9e47c3b74"
+        ],
+        "bottom": [
+            "569712a8-554b-4746-9d45-697a91f52a3e",
+            "8586946d-12ab-4898-8c04-4efe4cc81c5f"
+        ],
+        "footer": [
+            "426b9349-8fe6-4164-a600-cce2e0622208"
+        ],
+        "title": []
+    },
+    "contexts": [],
+    "relationships": [],
+    "content": {
+        "afb0c064-d4eb-472e-a700-ef1a71461017": {
+            "plugin": "copy_blocks:region_copy",
+            "data": {
+                "status": 1,
+                "module": "copy_blocks",
+                "delta": "region_copy",
+                "settings": {
+                    "title_display": "default",
+                    "title": "",
+                    "style": "default",
+                    "block_settings": [],
+                    "contexts": [],
+                    "admin_label": "",
+                    "admin_description": "",
+                    "source_region": "home:header"
+                },
+                "uuid": "afb0c064-d4eb-472e-a700-ef1a71461017",
+                "style": {
+                    "plugin": "default",
+                    "data": {
+                        "settings": {
+                            "classes": ""
+                        }
+                    }
+                }
+            }
+        },
+        "7ddd08a1-0ead-47e3-8c25-3775f4e540ad": {
+            "plugin": "system:breadcrumb",
+            "data": {
+                "status": 1,
+                "module": "system",
+                "delta": "breadcrumb",
+                "settings": {
+                    "title_display": "default",
+                    "title": "",
+                    "style": "default",
+                    "block_settings": {
+                        "current": 1
+                    },
+                    "contexts": []
+                },
+                "uuid": "7ddd08a1-0ead-47e3-8c25-3775f4e540ad",
+                "style": {
+                    "plugin": "default",
+                    "data": {
+                        "settings": {
+                            "classes": ""
+                        }
+                    }
+                }
+            }
+        },
+        "ac638d4c-a0a0-4c7f-ac00-e74a1501a4c9": {
+            "plugin": "layout:hero",
+            "data": {
+                "status": 0,
+                "module": "layout",
+                "delta": "hero",
+                "settings": {
+                    "title_display": "default",
+                    "title": "",
+                    "style": "configurable",
+                    "block_settings": [],
+                    "contexts": [],
+                    "content": "",
+                    "format": "filtered_html",
+                    "image": "5",
+                    "image_path": "/files/hero/podcast-mic.jpg"
+                },
+                "uuid": "ac638d4c-a0a0-4c7f-ac00-e74a1501a4c9",
+                "style": {
+                    "plugin": "configurable",
+                    "data": {
+                        "settings": {
+                            "classes": "",
+                            "content_container": 0,
+                            "content_padding": 0,
+                            "color_type": "default",
+                            "background_color": "#ffffff",
+                            "text_color": "#000000",
+                            "padding_top": "40",
+                            "padding_right": "30",
+                            "padding_bottom": "30",
+                            "padding_left": "30",
+                            "height_type": "background",
+                            "height_amount": "500",
+                            "mn_height_amount": "250",
+                            "rel_height_amount": "40",
+                            "mx_height_amount": "500",
+                            "height_unit": "px",
+                            "tint": false,
+                            "tint_value": "0",
+                            "border_type": "default",
+                            "border_size": "2",
+                            "border_style": "solid",
+                            "border_color": "#000000",
+                            "corner_type": "default",
+                            "corner_size": "8",
+                            "shadow_type": "default",
+                            "shadow_size": "4",
+                            "shadow_color": "#000000"
+                        }
+                    }
+                },
+                "conditions": [
+                    {
+                        "plugin": "path",
+                        "data": {
+                            "settings": {
+                                "visibility_setting": "1",
+                                "paths": "about",
+                                "load_condition_nojs": "Load condition"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "37cb0596-2b5e-44c3-a000-ad37125df78a": {
+            "plugin": "layout:hero",
+            "data": {
+                "status": 0,
+                "module": "layout",
+                "delta": "hero",
+                "settings": {
+                    "title_display": "default",
+                    "title": "",
+                    "style": "configurable",
+                    "block_settings": [],
+                    "contexts": [],
+                    "content": "",
+                    "format": "filtered_html",
+                    "image": "8",
+                    "image_path": "/files/hero/code-1076536_1920.jpg"
+                },
+                "uuid": "37cb0596-2b5e-44c3-a000-ad37125df78a",
+                "style": {
+                    "plugin": "configurable",
+                    "data": {
+                        "settings": {
+                            "classes": "",
+                            "content_container": 0,
+                            "content_padding": 0,
+                            "color_type": "default",
+                            "background_color": "#ffffff",
+                            "text_color": "#000000",
+                            "padding_top": "40",
+                            "padding_right": "30",
+                            "padding_bottom": "30",
+                            "padding_left": "30",
+                            "height_type": "background",
+                            "height_amount": "500",
+                            "mn_height_amount": "250",
+                            "rel_height_amount": "40",
+                            "mx_height_amount": "500",
+                            "height_unit": "px",
+                            "tint": false,
+                            "tint_value": "0",
+                            "border_type": "default",
+                            "border_size": "2",
+                            "border_style": "solid",
+                            "border_color": "#000000",
+                            "corner_type": "default",
+                            "corner_size": "8",
+                            "shadow_type": "default",
+                            "shadow_size": "4",
+                            "shadow_color": "#000000"
+                        }
+                    }
+                },
+                "conditions": [
+                    {
+                        "plugin": "path",
+                        "data": {
+                            "settings": {
+                                "visibility_setting": "1",
+                                "paths": "projects",
+                                "load_condition_nojs": "Load condition"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "default": {
+            "plugin": "system:main",
+            "data": {
+                "status": 1,
+                "module": "system",
+                "delta": "main",
+                "settings": {
+                    "title_display": "default",
+                    "title": "",
+                    "style": "default",
+                    "block_settings": [],
+                    "contexts": []
+                },
+                "uuid": "default",
+                "style": {
+                    "plugin": "default",
+                    "data": {
+                        "settings": {
+                            "classes": ""
+                        }
+                    }
+                }
+            }
+        },
+        "7f89df9b-12b7-4f38-9337-55650a6c546c": {
+            "plugin": "views:blog-block_1",
+            "data": {
+                "status": 1,
+                "module": "views",
+                "delta": "blog-block_1",
+                "settings": {
+                    "link_to_view": 0,
+                    "more_link": false,
+                    "use_pager": false,
+                    "pager_id": 0,
+                    "items_per_page": "5",
+                    "offset": 0,
+                    "path": "blog",
+                    "fields_override": null,
+                    "title_display": "default",
+                    "title": "",
+                    "style": "default",
+                    "block_settings": [],
+                    "contexts": [],
+                    "allowed": [],
+                    "path_override": false,
+                    "exposed": [],
+                    "admin_label": "",
+                    "admin_description": ""
+                },
+                "uuid": "7f89df9b-12b7-4f38-9337-55650a6c546c",
+                "style": {
+                    "plugin": "default",
+                    "data": {
+                        "settings": {
+                            "classes": ""
+                        }
+                    }
+                },
+                "conditions": [
+                    {
+                        "plugin": "path",
+                        "data": {
+                            "settings": {
+                                "visibility_setting": "0",
+                                "paths": "blog",
+                                "load_condition_nojs": "Load condition"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "d0e614cf-083c-4325-a832-50e9e47c3b74": {
+            "plugin": "views:projects-block",
+            "data": {
+                "status": 1,
+                "module": "views",
+                "delta": "projects-block",
+                "settings": {
+                    "link_to_view": 0,
+                    "more_link": false,
+                    "use_pager": false,
+                    "pager_id": 0,
+                    "items_per_page": "1",
+                    "offset": 0,
+                    "path": "projects",
+                    "fields_override": null,
+                    "title_display": "none",
+                    "title": "",
+                    "style": "default",
+                    "block_settings": [],
+                    "contexts": [],
+                    "allowed": [],
+                    "path_override": false,
+                    "exposed": [],
+                    "admin_label": "",
+                    "admin_description": ""
+                },
+                "uuid": "d0e614cf-083c-4325-a832-50e9e47c3b74",
+                "style": {
+                    "plugin": "default",
+                    "data": {
+                        "settings": {
+                            "classes": ""
+                        }
+                    }
+                },
+                "conditions": [
+                    {
+                        "plugin": "path",
+                        "data": {
+                            "settings": {
+                                "visibility_setting": "0",
+                                "paths": "projects",
+                                "load_condition_nojs": "Load condition"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "569712a8-554b-4746-9d45-697a91f52a3e": {
+            "plugin": "block:location",
+            "data": {
+                "status": 1,
+                "module": "block",
+                "delta": "location",
+                "settings": {
+                    "title_display": "none",
+                    "title": "",
+                    "style": "default",
+                    "block_settings": {
+                        "delta": "location",
+                        "description": "",
+                        "reusable": true
+                    },
+                    "contexts": [],
+                    "admin_label": "",
+                    "admin_description": ""
+                },
+                "uuid": "569712a8-554b-4746-9d45-697a91f52a3e",
+                "style": {
+                    "plugin": "default",
+                    "data": {
+                        "settings": {
+                            "classes": ""
+                        }
+                    }
+                }
+            }
+        },
+        "8586946d-12ab-4898-8c04-4efe4cc81c5f": {
+            "plugin": "rrssb:rrssb",
+            "data": {
+                "status": 1,
+                "module": "rrssb",
+                "delta": "rrssb",
+                "settings": {
+                    "title_display": "none",
+                    "title": "",
+                    "style": "default",
+                    "block_settings": [],
+                    "contexts": []
+                },
+                "uuid": "8586946d-12ab-4898-8c04-4efe4cc81c5f",
+                "style": {
+                    "plugin": "default",
+                    "data": {
+                        "settings": {
+                            "classes": ""
+                        }
+                    }
+                }
+            }
+        },
+        "426b9349-8fe6-4164-a600-cce2e0622208": {
+            "plugin": "copy_blocks:region_copy",
+            "data": {
+                "status": 1,
+                "module": "copy_blocks",
+                "delta": "region_copy",
+                "settings": {
+                    "title_display": "default",
+                    "title": "",
+                    "style": "default",
+                    "block_settings": [],
+                    "contexts": [],
+                    "admin_label": "",
+                    "admin_description": "",
+                    "source_region": "home:footer"
+                },
+                "uuid": "426b9349-8fe6-4164-a600-cce2e0622208",
+                "style": {
+                    "plugin": "default",
+                    "data": {
+                        "settings": {
+                            "classes": ""
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

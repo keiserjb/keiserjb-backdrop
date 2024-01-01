@@ -1,0 +1,48 @@
+{
+    "_config_name": "field.instance.node.project.field_tags",
+    "field_name": "field_tags",
+    "entity_type": "node",
+    "bundle": "project",
+    "label": "Tags",
+    "widget": {
+        "weight": "5",
+        "type": "taxonomy_autocomplete",
+        "module": "taxonomy",
+        "active": 1,
+        "settings": {
+            "follow_content_language": true,
+            "size": 60,
+            "autocomplete_path": "taxonomy/autocomplete"
+        }
+    },
+    "description": "",
+    "required": 0,
+    "deleted": 0,
+    "default_value": null,
+    "default_value_function": null,
+    "settings": {
+        "user_register_form": false
+    },
+    "display": {
+        "default": {
+            "label": "hidden",
+            "type": "taxonomy_term_reference_link",
+            "weight": "3",
+            "settings": {
+                "field_wrappers": {
+                    "field_wrapper": "-",
+                    "label_wrapper": "-",
+                    "item_wrapper": "-",
+                    "field_wrapper_class": ""
+                }
+            },
+            "module": "taxonomy"
+        },
+        "teaser": {
+            "label": "hidden",
+            "type": "hidden",
+            "weight": "4",
+            "settings": []
+        }
+    }
+}
