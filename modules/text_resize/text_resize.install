@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * This file handles uninstallation of Text Resize variables.
+ */
+
+/**
+ * Implements hook_uninstall().().
+ */
+function text_resize_uninstall() {
+  db_query("DELETE FROM {variable} WHERE name LIKE 'text_resize_%'");
+}
+
+/**
+ * Migrate text_resize variables to config.
+ */
+function text_resize_update_1000() {
+  $config = config('text_resize.settings');
+  $config->set('text_resize_scope', update_variable_get('text_resize_scope', 'main'));
+  $config->set('text_resize_minimum', update_variable_get('text_resize_minimum', '12'));
+  $config->set('text_resize_maximum', update_variable_get('text_resize_maximum', '25'));
+  $config->set('text_resize_reset_button', update_variable_get('text_resize_reset_button', array()));
+  $config->set('text_resize_line_height_allow', update_variable_get('text_resize_line_height_allow', array()));
+  $config->set('text_resize_line_height_min', update_variable_get('text_resize_line_height_min', '16'));
+  $config->set('text_resize_line_height_max', update_variable_get('text_resize_line_height_max', '36'));
+  $config->save();
+
+  update_variable_del('text_resize_scope');
+  update_variable_del('text_resize_minimum');
+  update_variable_del('text_resize_maximum');
+  update_variable_del('text_resize_reset_button');
+  update_variable_del('text_resize_line_height_allow');
+  update_variable_del('text_resize_line_height_min');
+  update_variable_del('text_resize_line_height_max');
+}
+
+/**
+ * Implements hook_install().
+ */
+function text_resize_install() {
+  // Dynamically generated variable data was detected.
+}

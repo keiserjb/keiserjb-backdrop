@@ -1,0 +1,230 @@
+<?php
+
+/**
+ * @file
+ * Link base test file - contains common functions for testing links.
+ */
+
+class SaveDraftTestCase extends BackdropWebTestCase {
+
+  protected $admin_user;
+  protected $save_draft_user;
+  protected $title_key;
+  protected $body_key;
+
+  /**
+   * Button text variables.
+   */
+  private $button_unpublish;
+  private $button_publish;
+  private $button_save_draft;
+  private $button_save;
+  private $button_preview;
+  private $button_delete;
+
+  /**
+   * Return a basic info array .
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Save draft',
+      'description' => 'Make sure the node form still works with Save Draft enabled.',
+      'group' => 'Save draft',
+    );
+  }
+
+  /**
+   * Setup title, body and user.
+   */
+  public function setUp() {
+    parent::setUp(array('save_draft'));
+    $this->admin_user = $this->BackdropCreateUser(array(
+      'administer nodes',
+      'bypass node access',
+    ));
+    $this->save_draft_user = $this->BackdropCreateUser(array(
+      'create post content',
+      'edit any post content',
+      'view own unpublished content',
+      'save draft',
+    ));
+    $langcode = LANGUAGE_NONE;
+    $this->title_key = "title";
+    $this->body_key = "body[$langcode][0][value]";
+
+    $this->button_unpublish = $this->button_unpublish;
+    $this->button_publish = $this->button_publish;
+    $this->button_save_draft = $this->button_save_draft;
+    $this->button_save = t('Save');
+    $this->button_preview = t('Preview');
+    $this->button_delete = t('Delete');
+  }
+
+  /**
+   * Return a basic $edit array that can be used to save a node.
+   */
+  public function getNodeArray() {
+    $edit = array();
+    $edit[$this->title_key] = $this->randomName(8);
+    $edit[$this->body_key] = $this->randomName(8);
+    return $edit;
+  }
+
+  /**
+   * Make sure nodes save with the right publication status.
+   */
+  public function testNodeSave() {
+    // Log in as a user who should see the save draft button.
+    $this->BackdropLogin($this->save_draft_user);
+
+    // Make sure save draft is enabled for posts.
+    config_set('node.type.post','settings.draft_enabled', SAVE_DRAFT_ENABLED);
+
+    // Make sure the save draft button is present when adding a node and drafts
+    // are enabled.
+    $this->BackdropGet('node/add/post');
+    $this->assertRaw('<input class="button-secondary form-submit" type="submit" id="edit-draft" name="op" value="' . $this->button_save_draft . '" />', t('Save draft enabled successfully on node create.'));
+    // Publish a node, and make sure it's published.
+    $edit = $this->getNodeArray();
+    $this->BackdropPost('node/add/post', $edit, $this->button_publish);
+    $node = $this->BackdropGetNodeByTitle($edit[$this->title_key]);
+    $this->assertEqual($node->status, NODE_PUBLISHED, t('Node saved correctly.'));
+
+    // Make sure the unpublish button is present when on a published node and
+    // drafts are enabled.
+    $this->BackdropGet('node/' . $node->nid . '/edit');
+    $this->assertRaw('<input class="button-secondary form-submit" type="submit" id="edit-draft" name="op" value="' . $this->button_unpublish . '" />', t('Save draft enabled successfully on published node edit.'));
+    // Unpublish it, and make sure it's unpublished.
+    $this->BackdropPost('node/' . $node->nid . '/edit', array(), $this->button_unpublish);
+    $node = node_load($node->nid, NULL, TRUE);
+    $this->assertEqual($node->status, NODE_NOT_PUBLISHED, t('Node unpublished correctly.'));
+
+    // Save a new node as a draft, and make sure it's unpublished.
+    $edit = $this->getNodeArray();
+    $this->BackdropPost('node/add/post', $edit, $this->button_save_draft);
+    $node = $this->BackdropGetNodeByTitle($edit[$this->title_key]);
+    $this->assertEqual($node->status, NODE_NOT_PUBLISHED, t('Node saved correctly as draft.'));
+
+    // Make sure the unpublish button is present when on a draft node and
+    // drafts are enabled.
+    $this->BackdropGet('node/' . $node->nid . '/edit');
+    $this->assertRaw('<input class="button-primary form-submit" type="submit" id="edit-draft" name="op" value="' . $this->button_save_draft . '" />', t('Save draft enabled successfully on draft node edit.'));
+    // Publish the node, and make sure it's published.
+    $this->BackdropPost('node/' . $node->nid . '/edit', array(), $this->button_publish);
+    $node = node_load($node->nid, NULL, TRUE);
+    $this->assertEqual($node->status, NODE_PUBLISHED, t('Node published correctly.'));
+
+    // Make sure save draft is disabled for posts.
+    config_set('node.type.post','settings.draft_enabled', SAVE_DRAFT_DISABLED);
+
+    // Make sure the save draft button is not present when adding a node and
+    // drafts are disabled.
+    $this->BackdropGet('node/add/post');
+    $this->assertNoRaw('<input class="button-secondary form-submit" type="submit" id="edit-draft" name="op" value="' . $this->button_save_draft . '" />', t('Save draft disabled successfully on node create.'));
+    // Publish a node and edit it again.
+    $edit = $this->getNodeArray();
+    $this->BackdropPost('node/add/post', $edit, $this->button_save);
+    $node = $this->BackdropGetNodeByTitle($edit[$this->title_key]);
+    // Make sure the unpublish button is present when on a published node and
+    // drafts are disabled.
+    $this->BackdropGet('node/' . $node->nid . '/edit');
+    $this->assertNoRaw('<input class="button-secondary form-submit" type="submit" id="edit-draft" name="op" value="' . $this->button_unpublish . '" />', t('Save draft disabled successfully on published node edit.'));
+  }
+
+  /**
+   * Make sure node validation still runs even after we've altered the form.
+   */
+  public function testNodeValidation() {
+    // Log in as an administrator, who should be able to see the save draft
+    // button and also edit the node's author.
+    $this->BackdropLogin($this->admin_user);
+
+    // Enable save draft functionality.
+    variable_set('save_draft_enabled_article', SAVE_DRAFT_ENABLED);
+
+    // Test with & without required validation.
+    foreach (array(TRUE, FALSE) as $skip_required_validation) {
+      debug('Skip required validation: ' . ($skip_required_validation ? 'true' : 'false'));
+      config_set('node.type.post','settings.skip_required', $skip_required_validation);
+
+      // Test clicking all the different buttons on the node add page.
+      foreach (array($this->button_publish, $this->button_save_draft) as $button_value) {
+        debug('Node add. Button value: ' . $button_value);
+        // Try to create a node with a nonexistent author.
+        $edit = $this->getNodeArray();
+        // Remove the title, which is a required field.
+        unset($edit[$this->title_key]);
+        // This username does not exist.
+        $edit['name'] = $this->randomName(8);
+        $this->BackdropPost('node/add/post', $edit, $button_value);
+
+        // Username validation should always fail.
+        $this->assertRaw(t('The username %name does not exist.', array('%name' => $edit['name'])));
+        // Required validation for the title should have passed, unless we are
+        // clicking the Publish button, or skip_required_validation is FALSE, in
+        // which case title should be required.
+        // t() functions are like this to replicate how the string would
+        // normally be created.
+        if (!$skip_required_validation || $button_value == $this->button_publish) {
+          $this->assertRaw(t('!name field is required.', array('!name' => t('Title'))));
+        }
+        else {
+          $this->assertNoRaw(t('!name field is required.', array('!name' => t('Title'))));
+        }
+      }
+      // Test clicking all the different buttons on the node edit page of a
+      // published node.
+      foreach (array($this->button_save, $this->button_unpublish, $this->button_delete) as $button_value) {
+        debug('Published node edit. Button value: ' . $button_value);
+        $edit = $this->getNodeArray();
+        $this->BackdropPost('node/add/post', $edit, $this->button_publish);
+        $node = $this->BackdropGetNodeByTitle($edit[$this->title_key]);
+        // Remove the title, which is a required field.
+        $edit[$this->title_key] = '';
+        // This username does not exist.
+        $edit['name'] = $this->randomName(8);
+        $this->BackdropPost('node/' . $node->nid . '/edit', $edit, $button_value);
+        // Username validation should always fail.
+        $this->assertRaw(t('The username %name does not exist.', array('%name' => $edit['name'])));
+        // Required validation for the title should have passed, unless we are
+        // clicking the Save button, or skip_required_validation is FALSE, in
+        // which case title should be required.
+        // t() functions are like this to replicate how the string would
+        // normally be created.
+        if (!$skip_required_validation || $button_value == $this->button_save) {
+          $this->assertRaw(t('!name field is required.', array('!name' => t('Title'))));
+        }
+        else {
+          $this->assertNoRaw(t('!name field is required.', array('!name' => t('Title'))));
+        }
+      }
+      // Test clicking all the different buttons on the node edit page of a
+      // draft node.
+      foreach (array($this->button_save_draft, $this->button_publish, $this->button_delete) as $button_value) {
+        debug('Draft node edit. Button value: ' . $button_value);
+        $edit = $this->getNodeArray();
+        $this->BackdropPost('node/add/post', $edit, $this->button_save_draft);
+        $node = $this->BackdropGetNodeByTitle($edit[$this->title_key]);
+        // Remove the title, which is a required field.
+        $edit[$this->title_key] = '';
+        // This username does not exist.
+        $edit['name'] = $this->randomName(8);
+        $this->BackdropPost('node/' . $node->nid . '/edit', $edit, $button_value);
+        // Username validation should always fail.
+        $this->assertRaw(t('The username %name does not exist.', array('%name' => $edit['name'])));
+        // Required validation for the title should have passed, unless we are
+        // clicking the Publish button, or skip_required_validation is FALSE, in
+        // which case title should be required.
+        // t() functions are like this to replicate how the string would
+        // normally be created.
+        if (!$skip_required_validation || $button_value == $this->button_publish) {
+          $this->assertRaw(t('!name field is required.', array('!name' => t('Title'))));
+        }
+        else {
+          $this->assertNoRaw(t('!name field is required.', array('!name' => t('Title'))));
+        }
+      }
+    }
+  }
+
+}

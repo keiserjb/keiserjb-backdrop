@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Read More Extra Field module.
+ */
+
+// TODO The old hook_update_N functions cannot be applied to Backdrop.
+function readmore_extrafield_update_7001() { }
+
+/**
+ * Implements hook_uninstall().().
+ */
+function readmore_extrafield_uninstall() {
+  config_clear('readmore_extrafield.settings', 'readmore_extrafield_variables');
+
+  // Uninstall extra field display settings which are stored in the Field module variables
+  foreach (entity_get_info() as $entity_type => $info) {
+    $full_info = entity_get_info($entity_type);
+    if (isset($full_info['fieldable'], $full_info['bundles']) && $full_info['fieldable']) {
+      foreach (array_keys($full_info['bundles']) as $bundle) {
+        $settings = field_bundle_settings($entity_type, $bundle);
+        if (isset($settings['extra_fields']['display']['readmore_extrafield'])) {
+          unset($settings['extra_fields']['display']['readmore_extrafield']);
+          field_bundle_settings($entity_type, $bundle, $settings);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_update_last_removed().
+ */
+function readmore_extrafield_update_last_removed() {
+  return 7001;
+}
+
+/**
+ * Migrate readmore_extrafield variables to config.
+ */
+function readmore_extrafield_update_1000() {
+  $config = config('readmore_extrafield.settings');
+  $config->set('readmore_extrafield_variables', update_variable_get('readmore_extrafield_variables', array()));
+  $config->save();
+
+  update_variable_del('readmore_extrafield_variables');
+}
+
+/**
+ * Implements hook_install().
+ */
+function readmore_extrafield_install() {
+  // Dynamically generated variable data was detected.
+}

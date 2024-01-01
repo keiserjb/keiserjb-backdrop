@@ -1,0 +1,521 @@
+<?php
+/**
+ * @file
+ * Provides primary Backdrop hook implementations.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function devel_subthemer_permission() {
+  return array(
+    'administer subthemer' => array(
+      'title' => t('Administer Devel Subthemer'),
+      'description' => t('Administer Devel Subthemer.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function devel_subthemer_menu() {
+  $items['admin/config/development/devel-subthemer'] = array(
+    'title' => 'Create subtheme',
+    'description' => 'Create subtheme from a base theme.',
+    'page callback' => 'backdrop_get_form',
+    'page arguments' => array('devel_subthemer_form'),
+    'access arguments' => array('administer subthemer'),
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  return $items;
+}
+
+/**
+ * Form builder for the subtheme creation form.
+ */
+function devel_subthemer_form($form, &$form_state, $theme = NULL) {
+  $form['#tree'] = FALSE;
+  $themes = system_rebuild_theme_data();
+  $page_title = t('Create subtheme');
+  $hide_theme_selection = FALSE;
+
+  $options = array();
+  foreach ($themes as $theme_name => $theme_info) {
+    $options[$theme_name] = $theme_info->info['name'];
+  }
+
+  $default = 'basis';
+  if (isset($form_state['values']['base_theme'])) {
+    $default = $form_state['values']['base_theme'];
+  }
+  elseif ($theme) {
+    $default = $theme;
+    $page_title = t('Create subtheme from @theme', array('@theme' => $options[$theme]));
+    $hide_theme_selection = TRUE;
+  }
+  $form_state['theme_name'] = $default;
+  $form_state['themes'] = $themes;
+
+  backdrop_set_title($page_title);
+
+  $form['intro'] = array(
+    '#type' => 'help',
+    '#markup' => t('This form automates the initial creation of a subtheme. A new folder will be created in your themes directory, with all the necessary files (according to selected options below). For more information, see the documentation on <a href="@link">creating a subtheme</a>.', array('@link' => url('https://docs.backdropcms.org/documentation/creating-sub-themes'))),
+  );
+
+  $form['name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subtheme name'),
+    '#maxlength' => 64,
+    '#description' => t('Human-readable subtheme name.'),
+    '#required' => TRUE,
+    '#id' => 'subtheme-name',
+  );
+  $form['subtheme_name'] = array(
+    '#type' => 'machine_name',
+    '#maxlength' => 128,
+    '#machine_name' => array(
+      'exists' => 'devel_subthemer_theme_exists',
+      'source' => array('name'),
+    ),
+    '#description' => t('Subtheme machine name'),
+  );
+  if ($hide_theme_selection) {
+    $form['base_theme'] = array(
+      '#type' => 'hidden',
+      '#value' => $default,
+    );
+  }
+  else {
+    $form['base_theme'] = array(
+      '#type' => 'select',
+      '#title' => t('Base theme'),
+      '#options' => $options,
+      '#parents' => array('base_theme'),
+      '#default_value' => $default,
+      '#ajax' => array(
+        'callback' => 'base_theme_wrapper_change_callback',
+        'wrapper' => 'base_theme_wrapper',
+        'event' => 'change',
+        'method' => 'replace',
+        'effect' => 'fade',
+      ),
+    );
+  }
+  $form['base_theme_wrapper'] = array(
+    '#type' => 'container',
+    '#id' => 'base_theme_wrapper',
+    '#attributes' => array(
+      'class' => array('base-theme-wrapper clearfix'),
+    ),
+  );
+  if (theme_has_color_support($default)) {
+    $form['base_theme_wrapper']['copy_color'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Copy color settings'),
+    '#description' => t('Include this if you plan to modify the color module settings.'),
+    );
+  }
+  if (!empty($themes[$default]->info['settings'])) {
+    $form['base_theme_wrapper']['copy_settings'] = array(
+    '#type' => 'checkbox',
+    '#parent' => 'settings',
+    '#title' => t('Copy theme settings'),
+    );
+  }
+  $form['base_theme_wrapper']['copy_template_php'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Create blank template.php'),
+    '#parent' => 'copy_template_php',
+    '#description' => t('Useful if you plan to include any custom php in your subtheme.'),
+  );
+
+  $template_list = devel_subthemer_theme_templates($default);
+
+  if (!empty($template_list)) {
+    $form['base_theme_wrapper']['template_list'] = array(
+      '#type' => 'checkboxes',
+      '#options' => $template_list,
+      '#title' => t('Copy template files'),
+      '#parent' => 'template_list',
+      '#description' => t('Now is a good time to add any template files you know you will be editing, or you can add them manually later.'),
+    );
+  }
+  $form['styles'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Add stylesheet paths'),
+    '#description' => t('Enter relative paths, one per line. A blank CSS file will be created at this path. For example <em>css/custom.css</em> (file placed in a "css" folder) or <em>style.css</em> (file placed in root).'),
+    '#rows' => 3,
+    '#default_value' => 'css/custom.css',
+  );
+  $form['scripts'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Add script paths'),
+    '#description' => t('Enter relative paths, one per line. A blank JS file will be created at this path. For example <em>js/scripts.js</em> (file placed in a "js" folder) or <em>js-scripts.js</em> (file placed in root).'),
+    '#rows' => 3,
+  );
+  $form['actions'] = array('#type' => 'actions');
+  $form['actions']['create_subtheme'] = array(
+    '#type' => 'submit',
+    '#validate' => array('devel_subthemer_form_validate'),
+    '#submit' => array('devel_subthemer_form_submit'),
+    '#value' => t('Create subtheme'),
+  );
+
+  return $form;
+}
+
+/**
+ * AJAX callback to update the condition settings.
+ */
+function base_theme_wrapper_change_callback($form, $form_state) {
+  return $form['base_theme_wrapper'];
+}
+
+function devel_subthemer_theme_templates($theme_name) {
+  $dir_path = backdrop_get_path('theme', $theme_name);
+  $template_list = array();
+  $files = file_scan_directory($dir_path, '/.*tpl\.php/');
+  foreach ($files as $file) {
+    $template_list[$file->uri] = $file->filename;
+  }
+  return $template_list;
+    
+}
+
+function devel_subthemer_theme_exists($theme_name) {
+  $themes = list_themes();
+  return isset($themes[$theme_name]);
+}
+
+/**
+ * Validation handler for the subtheme creation form.
+ */
+function devel_subthemer_form_validate($form, &$form_state) {
+  // @Todo: Need sanitizing?
+  if (!empty($form_state['values']['styles'])) {
+    $styles = explode("\n", $form_state['values']['styles']);
+    $styles = array_map('trim', $styles);
+    $styles = array_filter($styles, 'strlen');
+    foreach ($styles as $key => $style) {
+      $pathinfo = pathinfo($style);
+      if (valid_url($style) && strpos($pathinfo['dirname'], ".") === false && isset($pathinfo['extension']) && $pathinfo['extension'] == 'css') {
+        $styles[$key] = $style;
+      }
+      else {
+        form_set_error('styles', t('One or more of your stylesheet paths is not valid.'));
+      }
+    }
+    $form_state['values']['styles'] = $styles;
+  }
+  if (!empty($form_state['values']['scripts'])) {
+    $scripts = explode("\n", $form_state['values']['scripts']);
+    $scripts = array_map('trim', $scripts);
+    $scripts = array_filter($scripts, 'strlen');
+    foreach ($scripts as $key => $script) {
+      $pathinfo = pathinfo($script);
+      if (valid_url($script) && strpos($pathinfo['dirname'], ".") === false && isset($pathinfo['extension']) && $pathinfo['extension'] == 'js') {
+        $scripts[$key] = $script;
+      }
+      else {
+        form_set_error('scripts', t('One or more of your script paths is not valid.'));
+      }
+    }
+    $form_state['values']['scripts'] = $scripts;
+  }
+}
+
+/**
+ * Submit handler for the subtheme creation form.
+ */
+function devel_subthemer_form_submit($form, &$form_state) {
+  $success = devel_subthemer_process_theme_directory($form_state);
+  if ($success) {
+    backdrop_set_message(t('Subtheme %subtheme was created successfully.', array('%subtheme' => $form_state['values']['name'])));
+    $form_state['redirect'] = 'admin/appearance';
+  }
+  else {
+    backdrop_set_message(t('Subtheme creation failed to complete.'), 'error');
+  }
+}
+
+/**
+ * Converts files in a theme directory.
+ */
+function devel_subthemer_process_theme_directory($form_state) {
+  $theme_name = check_plain($form_state['theme_name']);
+  $values = $form_state['values'];
+  $dirname = BACKDROP_ROOT . '/' . backdrop_get_path('theme', $form_state['theme_name']);
+  $new_dirname = BACKDROP_ROOT . '/themes/' . check_plain($values['subtheme_name']);
+
+  // Create an output directory we can write to.
+  if (!is_dir($new_dirname)) {
+    file_prepare_directory($new_dirname, FILE_CREATE_DIRECTORY);
+  }
+  else {
+    backdrop_set_message(t('The subtheme directory already exists.'), 'error');
+    return FALSE;
+  }
+
+  // Copy the favicon, logo, theme-settings.php
+  $allowed_filenames = array(
+    'favicon.ico',
+    'logo.png',
+  );
+  if (!empty($values['copy_settings'])) {
+    $allowed_filenames[] = 'theme-settings.php';
+  }
+    
+  foreach ($allowed_filenames as $filename) {
+    if (file_exists($dirname . '/' . $filename)) {
+      copy($dirname . '/' . $filename, $new_dirname . '/' . $filename);
+      devel_subthemer_convert_file($new_dirname . '/' . $filename, $form_state);
+    }
+  }
+
+  // Create a color directory if needed.
+  if (!empty($values['copy_color'])) {
+    $copy_color_item = array(
+      'old_dir' => $dirname . '/color',
+      'new_dir' => $new_dirname . '/color',
+    );
+    devel_subthemer_copy_dir($copy_color_item);
+  }
+
+  // Create a templates directory if needed.
+  // Copy over the tpl.php files.
+  if (isset($values['template_list'])) {
+    $template_list = array_filter($values['template_list']);
+    if (!empty($template_list)) {
+      $template_directory = $new_dirname . '/templates';
+      file_prepare_directory($template_directory, FILE_CREATE_DIRECTORY);
+      foreach ($template_list as $template_path) {
+        $file = basename($template_path);         // $file is set to "index.php"
+        $dest = $template_directory . '/' . $file;
+        $source = BACKDROP_ROOT . '/' . $template_path;
+        copy($source, $dest);
+      }
+    }
+  }
+
+  // Create CSS and JS folders.
+  if (!empty($values['styles'])) {
+    foreach ($values['styles'] as $style) {
+      $pathinfo = pathinfo($style);
+      $path = $new_dirname . '/' . $pathinfo['dirname'];
+      file_prepare_directory($path, FILE_CREATE_DIRECTORY);
+      file_put_contents($new_dirname . '/' . $style, '');
+    }
+  }
+  if (!empty($values['scripts'])) {
+    foreach ($values['scripts'] as $script) {
+      $pathinfo = pathinfo($script);
+      $path = $new_dirname . '/' . $pathinfo['dirname'];
+      file_prepare_directory($path, FILE_CREATE_DIRECTORY);
+      file_put_contents($new_dirname . '/' . $script, '');
+    }
+  }
+  
+  // Modify the template.php code.
+  if (!empty($values['copy_template_php'])) {
+    $template_php_content = "<?php\n";
+    $template_php_content .= "/**\n";
+    $template_php_content .= " * @file\n";
+    $template_php_content .= " * " . $values['name'] . " preprocess functions and theme function overrides.\n";
+    $template_php_content .= " */\n";
+
+    file_put_contents($new_dirname . '/template.php', $template_php_content);
+  }
+
+  // Build the info file.
+  $themes = system_rebuild_theme_data();
+  $values['theme_name'] = $theme_name;
+  $info_file_array = devel_subthemer_build_info_file_array($themes, $values);
+
+  $info_file = devel_subthemer_build_info_file($info_file_array);
+  $info_file_path = $new_dirname . '/' . $values['subtheme_name'] . '.info';
+  file_put_contents($info_file_path, $info_file);
+
+  return TRUE;
+
+}
+
+/**
+ * Converts a file.
+ *
+ * @param string $filename
+ *   The new name of the file to convert.
+ */
+function devel_subthemer_convert_file($filename, $form_state) {
+  if (!file_exists($filename)) {
+    return FALSE;
+  }
+
+  $extension = pathinfo($filename, PATHINFO_EXTENSION);
+
+  // Read the file and copy the contents.
+  $cur = file_get_contents($filename);
+  $new = $cur;
+
+  if ($extension != 'js') {
+    // String replacement of the base theme human readable name.
+    $theme_full_name = $form_state['themes'][$form_state['theme_name']]->info['name'];
+    $new = str_replace($theme_full_name, $form_state['values']['name'], $new);
+    // String replacement of the base theme machine name.
+    $new = str_replace($form_state['theme_name'], $form_state['values']['subtheme_name'], $new);
+  }
+
+  // Write the new file.
+  if ($new != $cur) {
+    if (file_put_contents($filename, $new) === FALSE) {
+      return FALSE;
+    }
+    return TRUE;
+  }
+}
+
+/**
+ * Recursively copy a directory.
+ *
+ * @param array $item
+ *   Array of a directory containing the files to convert.
+ */
+function devel_subthemer_copy_dir($item) {
+  $dirname = $item['old_dir'];
+  $new_dirname = $item['new_dir'];
+
+  // Create an output directory we can write to.
+  if (!is_dir($new_dirname)) {
+    mkdir($new_dirname);
+    chmod($new_dirname, 0757);
+  }
+  else {
+    backdrop_set_message(t('Unable to copy directory.'), 'error');
+  }
+
+  static $ignore = array(/*'.', '..', '.bzr', '.git', '.svn',*/ 'CVS');
+
+  // Loop on files.
+  $filenames = scandir($dirname . '/');
+  foreach ($filenames as $filename) {
+    if (is_dir($dirname . '/' . $filename)) {
+
+      if (substr(basename($filename), 0, 1) == '.' || in_array(basename($filename), $ignore)) {
+        // Ignore all hidden directories and CVS directory.
+        continue;
+      }
+
+      $new_item = array(
+        'old_dir' => $dirname . '/' . $filename,
+        'new_dir' => $new_dirname . '/' . $filename,
+      );
+      devel_subthemer_copy_dir($new_item);
+    }
+    elseif (!is_dir($dirname . '/' . $filename)) {
+      copy($dirname . '/' . $filename, $new_dirname . '/' . $filename);
+      devel_subthemer_convert_file($new_dirname . '/' . $filename);
+    }
+  }
+}
+
+/**
+ * Build an info file content structure array.
+ */
+function devel_subthemer_build_info_file_array($themes, $values) {
+  $theme_name = $values['theme_name'];
+  $data = $themes[$theme_name]->info;
+  $info_file_array['name'] = $values['name'];
+  $info_file_array['description'] = t('Subtheme of ') . $data['name'];
+  $info_file_array['type'] = 'theme';
+  $info_file_array['backdrop'] = '1.x';
+  $info_file_array['base theme'] = $theme_name;
+  $info_file_array['newline1'] = 'newline';
+
+  if (!empty($values['copy_color'])) {
+    $values['styles'][] = 'css/colors.css';
+  }
+  if (!empty($values['styles'])) {
+    $info_file_array['stylesheets'] = array('all' => backdrop_map_assoc($values['styles']));
+  }
+  $info_file_array['newline2'] = 'newline';
+
+  if (!empty($values['styles'])) {
+    $info_file_array['scripts'] = $values['scripts'];
+  }
+  $info_file_array['newline3'] = 'newline';
+
+  if (empty($values['copy_settings']) && !empty($values['copy_color'])) {
+    $info_file_array['settings']['color'] = 'true';
+  }
+
+  backdrop_alter('devel_subthemer_build_info_file', $info_file_array);
+
+  return $info_file_array;
+}
+
+/**
+ * Build an info file content structure.
+ */
+function devel_subthemer_build_info_file($info_file_array) {
+  $content = "";
+  foreach ($info_file_array as $key => $elem) {
+    if (is_array($elem)) { 
+      foreach ($elem as $subkey => $data) { 
+        if (is_array($data)) { 
+          foreach ($data as $subsubkey => $subdata) {
+            $rendered_key = is_numeric($subkey) ? '' : $subkey;
+            $content .= $key ."[" . $rendered_key . "][] = " . devel_subthemer_bool_to_string($data[$subsubkey]) . "\n";
+          }
+        }
+        else {
+          $rendered_key = is_numeric($subkey) ? '' : $subkey;
+          $content .= $key ."[" . $rendered_key . "] = " . devel_subthemer_bool_to_string($elem[$subkey]) . "\n";
+        }
+      } 
+    } 
+    elseif ($elem == "newline") {
+      $content .= "\n";
+    }
+    elseif ($elem == "") {
+    }
+    elseif ($elem == "newline") {
+      $content .= "\n";
+    }
+    else {
+      $content .= $key . " = " . devel_subthemer_bool_to_string($elem) . "\n";
+    }      
+  }
+  return $content;
+}
+
+/**
+ * Returns string instead of bool.
+ */
+function devel_subthemer_bool_to_string($value) {
+  return is_bool($value) ? (TRUE ? "true" : "false") : $value;
+}
+
+/**
+ * Implements hook_system_theme_page_alter().
+ */
+function devel_subthemer_system_themes_page_alter(&$theme_groups) {
+  if (user_access('administer subthemer')) {
+    $all_currently_available_themes = array_keys(list_themes());
+
+    foreach ($theme_groups as $group => $members) {
+      if (!empty($group)) {
+        foreach ($members as $key => $theme) {
+          if (in_array($theme->name, $all_currently_available_themes)) {
+            $theme_groups[$group][$key]->operations[] = array(
+              'title' => t('Create subtheme'),
+              'href' => 'admin/config/development/devel-subthemer/' . $theme->name,
+              'attributes' => array('title' => t('Create subtheme of @theme', array('@theme' => $theme->info['name']))),
+            );
+          }
+        }
+      }
+    }
+  }
+}

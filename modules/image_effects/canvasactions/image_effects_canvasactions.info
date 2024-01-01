@@ -1,0 +1,13 @@
+name = Image Effects Canvas Actions
+description = Provides image effects for manipulating image canvases: define canvas, image mask, watermark, underlay background image, rounded corners, composite source to image and resize by percent effect. Also provides an aspect switcher (portrait/landscape).
+package = Media
+backdrop = 1.x
+type = module
+
+dependencies[] = image_effects
+dependencies[] = image
+
+; Added by Backdrop CMS packaging script on 2023-09-25
+project = image_effects
+version = 1.x-1.14.0
+timestamp = 1695668698

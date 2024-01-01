@@ -1,0 +1,202 @@
+<?php
+
+/**
+ * @file
+ * Provides formatter settings for choosing HTML wrapper elements for fields.
+ *
+ */
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ */
+function field_wrappers_field_formatter_info_alter(&$info) {
+  // Added to all formatters.
+  $wrapper_types = _field_wrapper_types();
+  $wrapper_elements = field_wrapper_elements();
+  foreach ($info as $formatter_key => &$formatter) {
+    foreach ($wrapper_types as $wrapper_key => $wrapper_key_label) {
+      $formatter['settings']['field_wrappers'][$wrapper_key] = '-';
+    }
+    $formatter['settings']['field_wrappers']['field_wrapper_class'] = '';
+  }
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary_alter().
+ */
+function field_wrappers_field_formatter_settings_summary_alter(&$summary, $context) {
+  $settings = $context['instance']['display'][$context['view_mode']]['settings'];
+
+  $wrapper_types = _field_wrapper_types();
+  $wrapper_elements = field_wrapper_elements();
+  foreach ($wrapper_types as $wrapper_key => $wrapper_key_label) {
+    // Don't update the summary if it's set to the default
+    if (isset($settings['field_wrappers']) && $settings['field_wrappers'][$wrapper_key] != '-') {
+      if (!empty($summary)) {
+        $summary .= '<br />';
+      }
+      $summary .= t('@wrappertype: @element', array('@wrappertype' => $wrapper_key_label, '@element' => $wrapper_elements[$settings['field_wrappers'][$wrapper_key]]));
+    }
+  }
+  if (!empty($settings['field_wrappers']['field_wrapper_class'])) {
+    if (!empty($summary)) {
+      $summary .= '<br />';
+    }
+    $summary .= t('Class: @field', array('@field' => filter_xss($settings['field_wrappers']['field_wrapper_class'], array())));
+  }
+
+  if (empty($summary)) {
+    $summary = t('Field wrappers: default');
+  }
+}
+
+/**
+ * Implements hook_field_formatter_settings_form_alter().
+ */
+function field_wrappers_field_formatter_settings_form_alter(&$settings_form, $context) {
+  $settings = $context['instance']['display'][$context['view_mode']]['settings'];
+  $wrapper_types = _field_wrapper_types();
+  $wrapper_elements = field_wrapper_elements();
+  $settings_form['field_wrappers'] = array (
+    '#type' => 'fieldset',
+    '#title' => t('Field Wrappers'),
+  );
+  foreach ($wrapper_types as $wrapper_key => $wrapper_key_label) {
+    $settings_form['field_wrappers'][$wrapper_key] = array(
+      '#type' => 'select',
+      '#title' => $wrapper_key_label,
+      '#options' => $wrapper_elements,
+      '#empty_option' => t('Use default'),
+      '#empty_value' => '-',
+      '#default_value' => (isset($settings['field_wrappers'][$wrapper_key]) ? $settings['field_wrappers'][$wrapper_key] : '-'),
+    );
+  }
+  $settings_form['field_wrappers']['field_wrapper_class'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Field Wrapper Class'),
+    '#default_value' => (!empty($settings['field_wrappers']['field_wrapper_class'])) ? $settings['field_wrappers']['field_wrapper_class'] : '',
+    '#states' => array(
+        'invisible' => array(
+            ':input[name="fields[' . $context['field']['field_name'] . '][settings_edit_form][settings][field_wrappers][field_wrapper]"]' => array('value' => '0'),
+        ),
+    ),
+  );
+  $settings_form['field_wrappers']['field_wrapper_class_token'] = array(
+    '#type' => 'container',
+    '#theme' => 'token_tree_link',
+    '#token_types' => array($context['instance']['entity_type']),
+    '#dialog' => TRUE,
+    '#states' => array(
+        'invisible' => array(
+            ':input[name="fields[' . $context['field']['field_name'] . '][settings_edit_form][settings][field_wrappers][field_wrapper]"]' => array('value' => '0'),
+        ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_attach_view_alter().
+ */
+function field_wrappers_field_attach_view_alter(&$output, $context) {
+
+  if (isset($output['#entity_type']) && isset($output['#bundle'])) {
+
+    $entity_type = $output['#entity_type'];
+    $bundle = $output['#bundle'];
+    $view_mode = $context['view_mode'];
+    
+    foreach (element_children($output) as $field_name) {
+      $element = &$output[$field_name];
+      $instance = field_read_instance($entity_type, $field_name, $bundle);
+      $display_mode_settings = field_view_mode_settings($entity_type, $bundle);
+      if (isset($display_mode_settings[$view_mode])) {
+        $display_mode_active = $display_mode_settings[$view_mode]['custom_settings'];
+      } else {
+        $display_mode_active = 0;
+      }
+      $display = ($display_mode_active && isset($instance['display'][$view_mode]) ? $instance['display'][$view_mode] : $instance['display']['default']);
+      foreach (array_keys(_field_wrapper_types()) as $wrapper_key) {
+        if (isset($display['settings']['field_wrappers'][$wrapper_key])) {
+          $element['#' . $wrapper_key] = $display['settings']['field_wrappers'][$wrapper_key];
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function field_wrappers_preprocess_field(&$variables) {
+  $element = $variables['element'];
+  foreach (array_keys(_field_wrapper_types()) as $wrapper_key) {
+    // Set the default wrapper.
+    $variables[$wrapper_key] = 'div';
+    if (isset($element['#' . $wrapper_key]) && $element['#' . $wrapper_key] !== '-') {
+      $variables[$wrapper_key] = ($element['#' . $wrapper_key] == '0' ? '' : $element['#' . $wrapper_key]);
+    }
+  }
+  $entity_type = !empty($variables['element']['#entity_type']) ? $variables['element']['#entity_type'] : '';
+  $field_name = !empty($variables['element']['#field_name']) ? $variables['element']['#field_name'] : '';
+  $bundle = !empty($variables['element']['#bundle']) ? $variables['element']['#bundle'] : '';
+  $view_mode = !empty($variables['element']['#view_mode']) ? $variables['element']['#view_mode'] : '';
+  if (isset($variables['element']['#object'])) {
+    $object = $variables['element']['#object'];
+  }
+  $formatter_info = field_formatter_settings_get_instance_display_settings($entity_type, $field_name, $bundle, $view_mode);
+  // Add class for whole field.
+  if (!empty($formatter_info['field_wrappers']['field_wrapper_class'])) {
+    $class = $formatter_info['field_wrappers']['field_wrapper_class'];
+    $class = token_replace($class, array($entity_type => $object));
+    $class = filter_xss($class, array());
+
+    $variables['classes'][] = $class;
+  }
+
+}
+
+/**
+ * Implements hook_process_field().
+ */
+function field_wrappers_theme_registry_alter(&$theme_registry) {
+  /// Only overwrite the template file if it isn't overwriteen by a theme.
+  if (!isset($theme_registry['field']['path'])) {
+    $theme_registry['field']['template'] = backdrop_get_path('module', 'field_wrappers') . '/templates/field';
+    unset($theme_registry['field']['function']);
+  }
+}
+
+/**
+ *
+ */
+function field_wrapper_elements() {
+  $wrapper_elements = array(
+    '-' => t('Use default'),
+    '0' => t('- None -'),
+    'div' => t('DIV'),
+    'span' => t('SPAN'),
+    'h1' => t('H1'),
+    'h2' => t('H2'),
+    'h3' => t('H3'),
+    'h4' => t('H4'),
+    'h5' => t('H5'),
+    'h6' => t('H6'),
+    'p' => t('P'),
+    'strong' => t('STRONG'),
+    'em' => t('EM'),
+  );
+  backdrop_alter('field_wrapper_elements', $wrapper_elements);
+
+  return $wrapper_elements;
+}
+
+/**
+ *
+ */
+function _field_wrapper_types() {
+  return array(
+    'field_wrapper' => t('Field wrapper'),
+    'label_wrapper' => t('Label wrapper'),
+    'item_wrapper' => t('Item wrapper'),
+  );
+}

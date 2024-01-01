@@ -1,0 +1,11 @@
+name = Save Draft
+description = Adds a 'Save as Draft' button to content types.
+backdrop = 1.x
+type = module
+package = User interface
+
+dependencies[] = system (>1.9.99)
+; Added by Backdrop CMS packaging script on 2018-06-07
+project = save_draft
+version = 1.x-1.4.4
+timestamp = 1528386891

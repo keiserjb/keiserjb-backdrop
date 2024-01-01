@@ -1,0 +1,267 @@
+<?php
+
+/**
+ * @file
+ * Make blocks collapsible.
+ */
+
+// Scalar (JSON) constant for php 5.*
+define('COLLAPSIBLOCK_ACTION_OPTIONS', serialize(array(
+  1 => t('None.'),
+  2 => t('Collapsible, expanded by default.'),
+  3 => t('Collapsible, collapsed by default.'),
+  5 => t('Collapsible, expanded all the time.'),
+  4 => t('Collapsible, collapsed all the time.'),
+)));
+
+/**
+ * Create a new permission to administer Collapsiblock.
+ *
+ * This permission can be given to any role.
+ */
+function collapsiblock_permission() {
+
+  return array(
+    'administer collapsiblock settings' => array(
+      'title' => t('Administer collapsiblock settings'),
+      'description' => t('Allow users to administer collapsiblock settings'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_config_info().
+ */
+function collapsiblock_config_info() {
+  $prefixes['collapsiblock.settings'] = array(
+    'label' => t('Collapsiblock settings'),
+    'group' => t('Configuration'),
+  );
+  return $prefixes;
+}
+
+/**
+ * Implements hook_init().
+ * ().
+ */
+function collapsiblock_init() {
+  $config = config('collapsiblock.settings');
+  //load the settings
+  backdrop_add_library('system', 'jquery.cookie');
+  backdrop_add_js(array(
+    'collapsiblock' => array(
+      'active_pages' => $config->get('collapsiblock_active_pages'),
+      'slide_type' => $config->get('collapsiblock_slide_type'),
+      'slide_speed' => $config->get('collapsiblock_slide_speed'),
+    ),
+  ), array(
+    'type' => 'setting',
+    'scope' => JS_DEFAULT,
+  ));
+}
+
+/**
+ * Implements hook_menu().
+ * ().
+ */
+function collapsiblock_menu() {
+  $items = array();
+
+  $items['admin/config/user-interface/collapsiblock'] = array(
+    'title' => 'Collapsiblock',
+    'description' => 'Configuration for collapsible blocks',
+    'page callback' => 'backdrop_get_form',
+    'page arguments' => array('collapsiblock_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+  );
+
+  return $items;
+}
+
+/**
+ * Admin settings.
+ */
+function collapsiblock_admin_settings($form, &$form_state) {
+  $config = config('collapsiblock.settings');
+  $form = array();
+  $form['#config'] = 'collapsiblock.settings';
+  $form['collapsiblock_default_state'] = array(
+    '#type' => 'radios',
+    '#title' => t('Default block collapse behavior'),
+    '#options' => unserialize(COLLAPSIBLOCK_ACTION_OPTIONS),
+    '#default_value' => $config->get('collapsiblock_default_state'),
+  );
+  $form['collapsiblock_active_pages'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Remember collapsed state on active pages'),
+    '#default_value' => $config->get('collapsiblock_active_pages'),
+    '#description' => t('Block can collapse even if it contains an active link (such as in menu blocks).'),
+  );
+  $form['collapsiblock_slide_type'] = array(
+    '#type' => 'radios',
+    '#title' => t('Default animation type'),
+    '#options' => array(
+      1 => t('Slide'),
+      2 => t('Fade and slide'),
+    ),
+    '#description' => t('Slide is the Backdrop default while Fade and slide adds a nice fade effect.'),
+    '#default_value' => $config->get('collapsiblock_slide_type'),
+  );
+  $form['collapsiblock_slide_speed'] = array(
+    '#type' => 'select',
+    '#title' => t('Animation speed'),
+    '#options' => backdrop_map_assoc(array(
+      '50',
+      '100',
+      '200',
+      '300',
+      '400',
+      '500',
+      '700',
+      '1000',
+      '1300',
+    )),
+    '#description' => t('The animation speed in milliseconds.'),
+    '#default_value' => $config->get('collapsiblock_slide_speed'),
+  );
+
+  return system_settings_form($form);
+}
+
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Alter block edit form to add configuration field.
+ */
+function collapsiblock_form_alter(&$form, $form_state, $form_id) {
+  if (user_access('administer collapsiblock settings') && ($form_id == 'layout_block_configure_form')) {
+    $block = $form_state['block'];
+    $block_delta = $block->module . '_' . $form_state['block']->delta;
+    $block_delta = str_replace('-', '_', $block_delta);
+
+    //$form['#submit'][] = 'collapsiblock_submit';
+    $form['collapsiblock'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Collapsible'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#states' => array(
+        'invisible' => array(
+          'form.layout-block-configure-form :input[name="title_display"]' =>
+          array('value' => LAYOUT_TITLE_NONE),
+        ),
+      ),
+    );
+
+    // Add the global default to the list of options for the per-block setting.
+    $options = unserialize(COLLAPSIBLOCK_ACTION_OPTIONS);
+    $default = config_get('collapsiblock.settings', 'collapsiblock_default_state');
+    $default = $options[$default];
+    $options = array(0 => 'Global default, currently set to: ' . $default) + $options;
+
+
+    $collapse_data = config_get('collapsiblock.settings', 'collapsiblock_current_state');
+    $collapse = isset($collapse_data[$block_delta]) ? $collapse_data[$block_delta] : 0;
+
+    $form['collapsiblock']['collapsiblock_action'] = [
+      '#type' => 'radios',
+      '#title' => t('Block behavior'),
+      '#options' => $options,
+      '#default_value' => !empty($collapse) ? $collapse : 0,
+    ];
+    $form['#submit'][] = 'collapsiblock_form_submit';
+  }
+}
+
+/**
+ * Form submission handler for block_admin_configure().
+ *
+ * @see block_admin_configure()
+ * @see collapsiblock_form_alter()
+ */
+function collapsiblock_form_submit($form, &$form_state) {
+  $values = $form_state['values'];
+  if ($form_state['values']['form_id'] == 'layout_block_configure_form') {
+    // Only save if value has changed.
+    if (isset($form_state['values']['collapsiblock']['collapsiblock_action'])) {
+
+      $block = $form_state['block'];
+      $block_delta = $block->module . '_' . $form_state['block']->delta;
+      $block_delta = str_replace('-', '_', $block_delta);
+      $collapse = $values['collapsiblock']['collapsiblock_action'];
+      $collapse_data = config_get('collapsiblock.settings', 'collapsiblock_current_state');
+      if (!empty($collapse)) {
+        $collapse_data[$block_delta] = $collapse;
+      } elseif (isset($collapse_data[$block_delta])) {
+        unset($collapse_data[$block_delta]);
+      }
+
+      config_set(
+        'collapsiblock.settings',
+        'collapsiblock_current_state',
+        $collapse_data
+      );
+    }
+  }
+}
+
+/**
+ *
+ * Helper function to inject Collapsiblock values into blocks that have
+ * collapsing turned on.
+ *
+ * @param $variables
+ */
+function collapsiblock_helper(&$variables) {
+  $block = $variables['block'];
+  $block_id = str_replace('-', '_', $block->module . '_' . $block->delta);
+  $block_delta = str_replace('_', '-', $block_id);
+  $action_data = config_get('collapsiblock.settings', 'collapsiblock_current_state');
+  $action = 0;
+  if (!empty($action_data) && isset($action_data[$block_id])) {
+    $action = $action_data[$block_id];
+  }
+  // If the block is set to global default, get that default and use it instead
+  // of 0.
+
+  if ($action == 0) {
+    $action = config_get(
+      'collapsiblock.settings',
+      'collapsiblock_default_state'
+    );
+  }
+
+  // If the action is anything other than 'none', create our wrapper elements.
+  if ($action != 1) {
+
+    $id = 'collapsiblock-wrapper-' . $block_delta;
+    $classes[] = 'collapsiblock';
+
+    $variables['title_prefix'] = $variables['title_prefix'] . '<div id="' . $id . '"
+      class="' . implode(' ', $classes) . '" data-collapsiblock-action="' . $action . '">';
+
+    $variables['title_suffix'] = '</div>' . $variables['title_suffix'];
+  }
+  return $variables;
+}
+
+/**
+ * Implements hook_preprocess_block().
+ * ().
+ *
+ * Inject Collapsiblock values into blocks that have collapsing turned on.
+ *
+ * @param $variables
+ */
+function collapsiblock_preprocess_block(&$variables) {
+  return collapsiblock_helper($variables);
+}
+
+function collapsiblock_preprocess_block_configurable(&$variables) {
+  return collapsiblock_helper($variables);
+}
+
+function collapsiblock_preprocess_block_dynamic(&$variables) {
+  return collapsiblock_helper($variables);
+}

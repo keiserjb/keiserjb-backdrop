@@ -1,0 +1,13 @@
+name = Text Resize
+description = Creates a block that allows your users to resize text on the page.
+backdrop = 1.x
+type = module
+
+
+configure = admin/config/user-interface/text_resize
+
+
+; Added by Backdrop CMS packaging script on 2021-12-29
+project = text_resize
+version = 1.x-1.0.0
+timestamp = 1640787037

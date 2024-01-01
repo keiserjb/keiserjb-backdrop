@@ -1,0 +1,12 @@
+name = Sticky Nav
+description = Make navigation sticky when you scroll down the page.
+type = module
+backdrop = 1.x
+configure = admin/config/user-interface/stickynav
+
+dependencies[] = system (>=1.20.0)
+
+; Added by Backdrop CMS packaging script on 2023-03-31
+project = stickynav
+version = 1.x-1.0.4
+timestamp = 1680300667

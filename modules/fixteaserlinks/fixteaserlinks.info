@@ -1,0 +1,10 @@
+name = Fix Teaser Links
+description = Mange the visibility of the links that appear below content teasers.
+backdrop = 1.x
+type = module
+configure = admin/config/system/fixteaserlinks
+
+; Added by Backdrop CMS packaging script on 2016-06-19
+project = fixteaserlinks
+version = 1.x-1.0.0
+timestamp = 1466375388

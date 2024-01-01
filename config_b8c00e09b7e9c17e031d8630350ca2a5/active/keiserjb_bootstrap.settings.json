@@ -1,0 +1,15 @@
+{
+    "_config_name": "keiserjb_bootstrap.settings",
+    "bootstrap__active_tab": "",
+    "bootstrap5_lite_cdn": "5.3.1",
+    "keiserjb_bootstrap_bootswatch": "",
+    "keiserjb_bootstrap_navbar_position": "fixed-top",
+    "keiserjb_bootstrap_navbar_menu_position": "",
+    "keiserjb_bootstrap_navbar_inverse": 0,
+    "keiserjb_bootstrap_navbar_user_menu": 0,
+    "keiserjb_bootstrap_breadcrumb_home": 0,
+    "keiserjb_bootstrap_breadcrumb_title": 0,
+    "keiserjb_bootstrap_container": "container",
+    "keiserjb_bootstrap_datetime": 0,
+    "keiserjb_bootstrap_cdn": ""
+}

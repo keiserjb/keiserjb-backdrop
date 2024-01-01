@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Fix Teaser Links module.
+ */
+
+/**
+ * Implements hook_update_last_removed().
+ */
+function fixteaserlinks_update_last_removed() {
+  return 7000;
+}
+
+/**
+ * Move Fix Teaser Links variables to config.
+ */
+function fixteaserlinks_update_1000() {
+  // Migrate variables to config.
+  $config = config('fixteaserlinks.settings');
+  $config->set('comment', update_variable_get('fixteaserlinks_comment', TRUE));
+  $config->set('readmore', update_variable_get('fixteaserlinks_readmore', FALSE));
+  $config->save();
+
+  // Delete variables.
+  update_variable_del('fixteaserlinks_comment');
+  update_variable_del('fixteaserlinks_readmore');
+}

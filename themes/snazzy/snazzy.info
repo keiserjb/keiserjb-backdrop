@@ -1,0 +1,30 @@
+name = Snazzy
+description = Stylish modern theme with Color module support.
+type = theme
+backdrop = 1.x
+
+stylesheets[all][] = css/spectral-font.css
+stylesheets[all][] = css/style.css
+stylesheets[all][] = css/components/header.css
+stylesheets[all][] = css/components/backdrop-form.css
+stylesheets[all][] = css/components/comment.css
+stylesheets[all][] = css/components/fieldset.css
+stylesheets[all][] = css/components/vertical-tabs.css
+stylesheets[all][] = css/components/search.css
+stylesheets[all][] = css/components/pager.css
+stylesheets[all][] = css/components/cards.css
+stylesheets[all][] = css/colors.css
+stylesheets[screen][] = css/maintenance.css
+
+ckeditor_stylesheets[] = css/spectral-font.css
+ckeditor_stylesheets[] = css/style.css
+
+tinymce_content_css[] = css/spectral-font.css
+tinymce_content_css[] = css/style.css
+
+settings[front_header_split] = TRUE
+
+; Added by Backdrop CMS packaging script on 2023-12-21
+project = snazzy
+version = 1.x-2.0.3
+timestamp = 1703168917

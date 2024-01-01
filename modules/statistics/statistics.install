@@ -1,0 +1,242 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the Statistics module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function statistics_schema() {
+  $schema['accesslog'] = array(
+    'description' => 'Stores site access information for statistics.',
+    'fields' => array(
+      'aid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique accesslog ID.',
+      ),
+      'sid' => array(
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Browser session ID of user that visited page.',
+      ),
+      'title' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'description' => 'Title of page visited.',
+      ),
+      'path' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'description' => 'Internal path to page visited (relative to Backdrop root.)',
+      ),
+      'url' => array(
+        'type' => 'text',
+        'not null' => FALSE,
+        'description' => 'Referrer URI.',
+      ),
+      'hostname' => array(
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => FALSE,
+        'description' => 'Hostname of user that visited the page.',
+      ),
+      'uid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => 0,
+        'description' => 'User {users}.uid that visited the page.',
+      ),
+      'timer' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Time in milliseconds that the page took to load.',
+      ),
+      'timestamp' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Timestamp of when the page was visited.',
+      ),
+    ),
+    'indexes' => array(
+      'accesslog_timestamp' => array('timestamp'),
+      'uid' => array('uid'),
+    ),
+    'primary key' => array('aid'),
+    'foreign keys' => array(
+      'visitor' => array(
+        'table' => 'users',
+        'columns' => array('uid' => 'uid'),
+      ),
+    ),
+  );
+
+  $schema['node_counter'] = array(
+    'description' => 'Access statistics for {node}s.',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'The {node}.nid for these statistics.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'totalcount' => array(
+        'description' => 'The total number of times the {node} has been viewed.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'big',
+      ),
+      'daycount' => array(
+        'description' => 'The total number of times the {node} has been viewed today.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'medium',
+      ),
+      'weekcount' => array(
+        'description' => 'The total number of times the {node} has been viewed today.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'medium',
+      ),
+      'monthcount' => array(
+        'description' => 'The total number of times the {node} has been viewed in the past month.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'medium',
+      ),
+      'yearcount' => array(
+        'description' => 'The total number of times the {node} has been viewed in the past year.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'medium',
+      ),
+      'timestamp' => array(
+        'description' => 'The most recent time the {node} has been viewed.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('nid'),
+  );
+
+  return $schema;
+}
+
+/**
+ * Return the last update function that is no longer available.
+ */
+function statistics_update_last_removed() {
+  return 7000;
+}
+
+/**
+ * Migrate statistics variables to config.
+ */
+function statistics_update_1000() {
+  $config = config('statistics.settings');
+  $config->set('count_content_views', update_variable_get('statistics_count_content_views', ''));
+  $config->set('count_content_views_ajax', update_variable_get('statistics_count_content_views_ajax', ''));
+  $config->set('enable_access_log', update_variable_get('statistics_enable_access_log', ''));
+  $config->set('flush_accesslog_timer', update_variable_get('statistics_flush_accesslog_timer', ''));
+  $config->set('day_timestamp', update_variable_get('statistics_day_timestamp', ''));
+  $config->set('block_top_day_num', update_variable_get('statistics_block_top_day_num', ''));
+  $config->set('block_top_all_num', update_variable_get('statistics_block_top_all_num', ''));
+  $config->set('block_top_last_num', update_variable_get('statistics_block_top_last_num', ''));
+  $config->set('cron_views_scale', update_variable_get('node_cron_views_scale', ''));
+  $config->save();
+
+  update_variable_del('statistics_count_content_views');
+  update_variable_del('statistics_count_content_views_ajax');
+  update_variable_del('statistics_enable_access_log');
+  update_variable_del('statistics_flush_accesslog_timer');
+  update_variable_del('statistics_day_timestamp');
+  update_variable_del('statistics_block_top_day_num');
+  update_variable_del('statistics_block_top_all_num');
+  update_variable_del('statistics_block_top_last_num');
+}
+
+/**
+ * Add database columns if we are migrating from Drupal 7.
+ */
+function statistics_update_1001() {
+  // Adding this as a separate update function in case a user previously updated
+  // from Drupal 7 and so already ran update_1000. So when this update runs, the
+  // db may or may not have the extra tables added for the Backdrop version.
+  if (!db_field_exists('node_counter', 'weekcount')) {
+    db_add_field('node_counter', 'weekcount', array(
+      'description' => 'The total number of times the {node} has been viewed today.',
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 0,
+      'size' => 'medium',
+    ));
+  }
+  if (!db_field_exists('node_counter', 'monthcount')) {
+    db_add_field('node_counter', 'monthcount', array(
+      'description' => 'The total number of times the {node} has been viewed  in the past month.',
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 0,
+      'size' => 'medium',
+    ));
+  }
+  if (!db_field_exists('node_counter', 'yearcount')) {
+    db_add_field('node_counter', 'yearcount', array(
+      'description' => 'The total number of times the {node} has been viewed in the past year.',
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 0,
+      'size' => 'medium',
+    ));
+  }
+}
+
+/**
+ * Move some regularly changing config variables to state.
+ */
+function statistics_update_1002() {
+  $config = config('statistics.settings');
+
+  state_set('statistics_cron_views_scale', $config->get('cron_views_scale'));
+  $config->clear('cron_views_scale');
+
+  state_set('statistics_day_timestamp', $config->get('day_timestamp'));
+  $config->clear('day_timestamp');
+
+  state_set('statistics_week_timestamp', $config->get('week_timestamp'));
+  $config->clear('week_timestamp');
+
+  state_set('statistics_month_timestamp', $config->get('month_timestamp'));
+  $config->clear('month_timestamp');
+
+  state_set('statistics_year_timestamp', $config->get('year_timestamp'));
+  $config->clear('year_timestamp');
+
+  $config->save();
+}

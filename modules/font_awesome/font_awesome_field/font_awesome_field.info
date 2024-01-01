@@ -1,0 +1,12 @@
+name = Font Awesome Field
+description = Provides a field formatter for displaying Font Awesome icons.
+backdrop = 1.x
+type = module
+dependencies[] = font_awesome
+package = Fields
+
+
+; Added by Backdrop CMS packaging script on 2023-09-18
+project = font_awesome
+version = 1.x-1.4.0
+timestamp = 1695046094

@@ -36,20 +36,28 @@
             "title": ""
         },
         "rel_remove": "default",
-        "user_register_form": false
+        "user_register_form": false,
+        "type": "both"
     },
     "display": {
         "default": {
             "label": "hidden",
             "type": "link_default",
             "weight": "2",
-            "settings": [],
+            "settings": {
+                "field_wrappers": {
+                    "field_wrapper": "-",
+                    "label_wrapper": "-",
+                    "item_wrapper": "-",
+                    "field_wrapper_class": ""
+                }
+            },
             "module": "link"
         },
         "teaser": {
             "label": "hidden",
             "type": "hidden",
-            "weight": "2",
+            "weight": "3",
             "settings": []
         }
     }

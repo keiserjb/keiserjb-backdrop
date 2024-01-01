@@ -1,0 +1,9 @@
+name = keiserjb-bootstrap
+description = Subtheme of Bootstrap 5 Lite
+type = theme
+backdrop = 1.x
+base theme = bootstrap5_lite
+
+stylesheets[all][] = css/custom.css
+
+

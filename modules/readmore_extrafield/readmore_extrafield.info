@@ -1,0 +1,12 @@
+name = Read More Extra Field
+description = Render the Read More link as an extra field
+backdrop = 1.x
+type = module
+package = Fields
+configure = admin/config/content/readmore_extrafield
+dependencies[] = field
+
+; Added by Backdrop CMS packaging script on 2023-01-11
+project = readmore_extrafield
+version = 1.x-1.0.0
+timestamp = 1673456388

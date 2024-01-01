@@ -1,0 +1,12 @@
+name = Copyright Notice
+description = Provides a tokenized block to display a copyright notice.
+backdrop = 1.x
+package = Layout
+type = module
+dependencies[] = block
+configure = admin/structure/layouts
+
+; Added by Backdrop CMS packaging script on 2016-02-02
+project = copyright_notice
+version = 1.x-1.0.0
+timestamp = 1454435243

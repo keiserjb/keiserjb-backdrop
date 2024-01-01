@@ -1,0 +1,16 @@
+name = Smart Trim
+description = Provides a more robust alternative to "summary or trimmed" textfield format
+backdrop = 1.x
+package = Fields
+
+files[] = smart_trim.module
+dependencies[] = filter
+dependencies[] = text
+
+type = module
+version = BACKDROP_VERSION
+
+; Added by Backdrop CMS packaging script on 2018-12-24
+project = smart_trim
+version = 1.x-1.1.3
+timestamp = 1545652790

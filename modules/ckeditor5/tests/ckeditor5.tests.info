@@ -1,0 +1,16 @@
+[CKEditor5TestCase]
+name = CKEditor5
+description = Check the functionality of CKEditor5 module.
+group = CKEditor5
+file = ckeditor5.test
+
+[CKEditor5RtlTestCase]
+name = CKEditor5 RTL
+description = Check the functionality of CKEditor5 with right-to-left languages.
+group = CKEditor5
+file = ckeditor5_rtl.test
+
+; Added by Backdrop CMS packaging script on 2023-11-23
+project = ckeditor5
+version = 1.x-0.9.0-alpha4
+timestamp = 1700754503

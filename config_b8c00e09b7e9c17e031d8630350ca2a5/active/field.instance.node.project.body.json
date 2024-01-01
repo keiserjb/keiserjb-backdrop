@@ -16,22 +16,36 @@
     "settings": {
         "display_summary": true,
         "text_processing": 1,
-        "user_register_form": false
+        "user_register_form": false,
+        "allowed_formats": []
     },
     "display": {
         "default": {
             "label": "hidden",
             "type": "text_default",
             "weight": "1",
-            "settings": [],
+            "settings": {
+                "field_wrappers": {
+                    "field_wrapper": "-",
+                    "label_wrapper": "-",
+                    "item_wrapper": "-",
+                    "field_wrapper_class": ""
+                }
+            },
             "module": "text"
         },
         "teaser": {
             "label": "hidden",
             "type": "text_summary_or_trimmed",
-            "weight": "1",
+            "weight": "2",
             "settings": {
-                "trim_length": 600
+                "trim_length": 600,
+                "field_wrappers": {
+                    "field_wrapper": "-",
+                    "label_wrapper": "-",
+                    "item_wrapper": "-",
+                    "field_wrapper_class": ""
+                }
             },
             "module": "text"
         }

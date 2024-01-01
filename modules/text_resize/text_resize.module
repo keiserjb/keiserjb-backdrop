@@ -1,0 +1,171 @@
+<?php
+
+/**
+ * @file
+ * Creates a small block with jQuery links that resize text within the BODY tag.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function text_resize_menu() {
+  $items = array();
+  $items['admin/config/user-interface/text_resize'] = array(
+    'title' => 'Text Resize',
+    'description' => 'Settings for your Text Resize block.',
+    'access arguments' => array('administer site configuration'),
+    'page callback' => 'backdrop_get_form',
+    'page arguments' => array('_text_resize_admin_settings'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_config_info().
+ */
+function text_resize_config_info() {
+  $prefixes['text_resize.settings'] = array(
+    'label' => t('Text Resize settings'),
+    'group' => t('Configuration'),
+  );
+  return $prefixes;
+}
+
+/**
+ * Builder function for admin settings form.
+ */
+function _text_resize_admin_settings() {
+  $config = config('text_resize.settings');
+  $form = array();
+  $form['#config'] = 'text_resize.settings';
+
+  $form['text_resize_scope'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Text Resize Scope'),
+    '#default_value' => $config->get('text_resize_scope'),
+    '#description' => t('Which portion of the body would you like to be resized by the Text Resize block? You may enter either the CSS class attribute, the CSS id attribute, or an HTML tag.<br />For example, if you want all text within &lt;div id="my-container"&gt; to be resized, enter the ID <strong>my-container</strong>.<br />If, on the other hand, you would like all text within the BODY tag to be resized, enter <strong>body</strong>.'),
+    '#required' => TRUE,
+  );
+  $form['text_resize_minimum'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Default/Minimum Text Size'),
+    '#maxlength' => 2,
+    '#default_value' => $config->get('text_resize_minimum'),
+    '#description' => t('What is the smallest font size (in pixels) that your text can be resized to by users?'),
+    '#required' => TRUE,
+  );
+  $form['text_resize_maximum'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Maximum Text Size'),
+    '#maxlength' => 2,
+    '#default_value' => $config->get('text_resize_maximum'),
+    '#description' => t('What is the largest font size (in pixels) that your text can be resized to by users?'),
+    '#required' => TRUE,
+  );
+  $form['text_resize_reset_button'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Add Reset Button'),
+    '#default_value' => $config->get('text_resize_reset_button'),
+    '#description' => t('Do you want to add an extra button to the block to allow the font size to be reset to the default/minimum size set above?'),
+  );
+  $form['text_resize_line_height_allow'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Allow Line-Height Adjustment'),
+    '#default_value' => $config->get('text_resize_line_height_allow'),
+    '#description' => t('Do you want to allow Text Resize to change the spacing between the lines of text?'),
+  );
+  $form['text_resize_line_height_min'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Minimum Line-Height'),
+    '#maxlength' => 2,
+    '#default_value' => $config->get('text_resize_line_height_min'),
+    '#description' => t('What is the smallest line-height (in pixels) that your text can be resized to by users?'),
+  );
+  $form['text_resize_line_height_max'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Maximum Line-Height'),
+    '#maxlength' => 2,
+    '#default_value' => $config->get('text_resize_line_height_max'),
+    '#description' => t('What is the largest line-height (in pixels) that your text can be resized to by users?'),
+  );
+  $form = system_settings_form($form);
+  // Rebuild the menu after updating the settings.
+  $form['#submit'][] = 'menu_rebuild';
+  return $form;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function text_resize_block_info() {
+  // Makes it show up on /admin/build/block page.
+  $blocks[0] = array(
+    'info' => t('Text Resize'),
+    'cache' => BACKDROP_CACHE_PER_PAGE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function text_resize_block_view() {
+  // Show the block.
+  $block['subject'] = t('Text Resize');
+  $block['content'] = theme('text_resize_block');
+  return $block;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function text_resize_theme() {
+  return array(
+    'text_resize_block' => array(),
+  );
+}
+
+// Create a theme function that can be overridden by other theme developers.
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function theme_text_resize_block() {
+  $config = config('text_resize.settings');
+  // Add js, css, and library
+  $content = array(
+    '#attached' => array(
+      'js' => array(
+        array(
+          'data' => "var text_resize_scope = " . backdrop_json_encode($config->get('text_resize_scope')) . ";
+          var text_resize_minimum = " . backdrop_json_encode($config->get('text_resize_minimum')) . ";
+          var text_resize_maximum = " . backdrop_json_encode($config->get('text_resize_maximum')) . ";
+          var text_resize_line_height_allow = " . backdrop_json_encode($config->get('text_resize_line_height_allow')) . ";
+          var text_resize_line_height_min = " . backdrop_json_encode($config->get('text_resize_line_height_min')) . ";
+          var text_resize_line_height_max = " . backdrop_json_encode($config->get('text_resize_line_height_max')) . ";",
+          'type' => 'inline',
+        ),
+        array(
+          'data' => backdrop_get_path('module', 'text_resize') . '/text_resize.js',
+          'type' => 'file',
+        ),
+      ),
+      'css' => array(
+        backdrop_get_path('module', 'text_resize') . '/text_resize.css',
+      ),
+      'library' => array(
+        array('system', 'jquery.cookie'),
+      ),
+    ),
+  );
+  if ($config->get('text_resize_reset_button') == TRUE) {
+    $content['#markup'] = t('<a href="javascript:;" class="changer" id="text_resize_decrease"><sup>-</sup>A</a> <a href="javascript:;" class="changer" id="text_resize_reset">A</a> <a href="javascript:;" class="changer" id="text_resize_increase"><sup>+</sup>A</a><div id="text_resize_clear"></div>');
+  }
+  else {
+    $content['#markup'] = t('<a href="javascript:;" class="changer" id="text_resize_decrease"><sup>-</sup>A</a> <a href="javascript:;" class="changer" id="text_resize_increase"><sup>+</sup>A</a><div id="text_resize_clear"></div>');
+  }
+
+  return render($content);
+}
+

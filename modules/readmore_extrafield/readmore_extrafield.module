@@ -1,0 +1,239 @@
+<?php
+
+/**
+ * @file
+ * This module replaces default Read more link by an extra field.
+ */
+
+define('READMORE_EXTRAFIELD_DEFAULT_TEXT', 'Read more<span class="element-invisible"> about @title</span>');
+
+/**
+ * Implements hook_menu().().
+ */
+function readmore_extrafield_menu() {
+  $items['admin/config/content/readmore_extrafield'] = array(
+    'title' => 'Read More settings',
+    'description' => 'Configure Read More links',
+    'page callback' => 'backdrop_get_form',
+    'page arguments' => array('readmore_extrafield_admin_form'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'readmore_extrafield.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_config_info().
+ */
+function readmore_extrafield_config_info() {
+  $prefixes['readmore_extrafield.settings'] = array(
+    'label' => t('Read More Extra Field settings'),
+    'group' => t('Configuration'),
+  );
+  return $prefixes;
+}
+
+/**
+ * Implements hook_field_extra_fields().().
+ */
+function readmore_extrafield_field_extra_fields() {
+  $extra = array();
+
+  foreach (config_get('readmore_extrafield.settings', 'readmore_extrafield_variables') as $bundle_key => $settings) {
+    if (strpos($bundle_key, '--')) {
+
+      list($type, $bundle) = explode('--', $bundle_key);
+
+      if (is_array($settings) && !empty($settings['rmef_enable'])) {
+        $extra[$type][$bundle] = array();
+      }
+    }
+  }
+
+  foreach ($extra as $type => $list) {
+    foreach (array_keys($list) as $bundle) {
+      $extra[$type][$bundle] = array(
+        'display' => array(
+          'readmore_extrafield' => array(
+            'label' => t('Read more link'),
+            'description' => t('Read more extra field'),
+            'weight' => 0,
+          ),
+        ),
+      );
+    }
+  }
+
+  return $extra;
+}
+
+/**
+ * Implements hook_entity_view().().
+ */
+function readmore_extrafield_entity_view($entity, $type, $view_mode, $langcode) {
+  if (!empty($entity->type) && $view_mode !== 'full') {
+
+    $settings = config_get('readmore_extrafield.settings', 'readmore_extrafield_variables');
+    $settings_key = $type . '--' . $entity->type;
+
+    $extra_fields = field_info_extra_fields($type, $entity->type, 'display');
+
+    $field_name = 'readmore_extrafield';
+    if (isset($extra_fields[$field_name]) && !empty($extra_fields[$field_name]['display'][$view_mode]['visible'])) {
+
+      $text = (isset($settings[$settings_key]['settings']['rmef_link_text'])) ? $settings[$settings_key]['settings']['rmef_link_text'] : READMORE_EXTRAFIELD_DEFAULT_TEXT;
+      $classes = array();
+      if (!empty($settings[$settings_key]['settings']['rmef_link_class'])) {
+        $classes = array_filter(array_filter(explode(' ', $settings[$settings_key]['settings']['rmef_link_class']), 'trim'), 'check_plain');
+      }
+
+      // @see node_build_content()
+      $links = array();
+      $entity->content[$field_name] = array(
+        '#theme' => 'links__node',
+        '#pre_render' => array('backdrop_pre_render_links'),
+        '#attributes' => array('class' => array('links', 'inline')),
+      );
+
+      $node_title_stripped = strip_tags($entity->title);
+      $links['node-readmore'] = array(
+        'title' => t($text, array('@title' => $node_title_stripped)),
+        'href' => 'node/' . $entity->nid,
+        'html' => TRUE,
+        'attributes' => array(
+          'rel' => 'tag',
+          'title' => $node_title_stripped,
+          'class' => $classes,
+        ),
+      );
+
+      $entity->content[$field_name]['node'] = array(
+        '#theme' => 'links__node__node',
+        '#links' => $links,
+        '#attributes' => array('class' => array('links', 'inline')),
+      );
+    }
+
+    if (isset($settings[$settings_key]) && is_array($settings[$settings_key]) && !empty($settings[$settings_key]['rmef_hide'])) {
+      if (isset($entity->content['links']['node'])) {
+        $entity->content['links']['node']['#access'] = FALSE;
+      }
+    }
+  }
+}
+
+/**
+ * Form structure for the Read More settings.
+ *
+ * @param string $entity_type
+ *   The entity type that we're adding the form for, e.g. 'node'.
+ * @param string $bundle
+ *   The bundle that we're adding the form to, e.g. the content type for nodes.
+ *   This might be an empty string if we're creating a new bundle.
+ */
+function readmore_extrafield_admin_bundle_settings_form($entity_type, $bundle) {
+  $form = array();
+
+  $settings = config_get('readmore_extrafield.settings', 'readmore_extrafield_variables');
+  $key = $entity_type . '--' . $bundle;
+
+  $form['rmef_enable'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable <em>Read more</em> extra field'),
+    '#default_value' => isset($settings[$key]['rmef_enable']) ? $settings[$key]['rmef_enable'] : 0,
+    '#attributes' => array(
+      'class' => array('rm-enable-extra-field-' . $key),
+      'data-enabled-description' => t('Enabled'),
+      'data-disabled-description' => t('Disabled'),
+    ),
+  );
+
+  $form['rmef_hide'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Hide default <em>Read more</em> link'),
+    '#default_value' => isset($settings[$key]['rmef_hide']) ? $settings[$key]['rmef_hide'] : 0,
+    '#attributes' => array(
+      'data-enabled-description' => t('Hide default link'),
+      'data-disabled-description' => t('Show default link'),
+    ),
+  );
+
+  $form['settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Settings'),
+    '#states' => array(
+      'invisible' => array(
+        'input.rm-enable-extra-field-' . $key => array('checked' => FALSE),
+      ),
+    ),
+  );
+
+  $form['settings']['rmef_link_text'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Link text'),
+    '#default_value' => isset($settings[$key]['settings']['rmef_link_text']) ? $settings[$key]['settings']['rmef_link_text'] : READMORE_EXTRAFIELD_DEFAULT_TEXT,
+  );
+
+  $form['settings']['rmef_link_class'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Link CSS class'),
+    '#description' => t('Multiple classes separated by space'),
+    '#default_value' => isset($settings[$key]['settings']['rmef_link_class']) ? $settings[$key]['settings']['rmef_link_class'] : '',
+  );
+
+  return $form;
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().().
+ */
+function readmore_extrafield_form_node_type_form_alter(&$form, $form_state) {
+  // Add the Read More settings tab, and extra javascript needed for the fieldset summary.
+  $form['readmore_extrafield'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Read More settings'),
+    '#collapsed' => FALSE,
+    '#collapsible' => TRUE,
+    '#group' => 'additional_settings',
+    '#attached' => array(
+      'js' => array(
+        backdrop_get_path('module', 'readmore_extrafield') . '/readmore_extrafield.js',
+      ),
+    ),
+  );
+
+  $form['readmore_extrafield'] += readmore_extrafield_admin_bundle_settings_form('node', $form['#node_type']->type);
+
+  $form['#submit'][] = 'readmore_extrafield_save_settings';
+}
+
+/**
+ * Form submission handler.
+ *
+ * @see readmore_extrafield_form_node_type_form_alter()
+ */
+function readmore_extrafield_save_settings(&$form, $form_state) {
+
+  if (isset($form_state['values']['rmef_enable'])) {
+
+    $bundle_key = 'node--' . $form['#node_type']->type;
+
+    $settings = config_get('readmore_extrafield.settings', 'readmore_extrafield_variables');
+
+    foreach (array('rmef_enable', 'rmef_hide', 'rmef_link_text', 'rmef_link_class') as $name) {
+      if (isset($form_state['values'][$name])) {
+        $settings[$bundle_key][$name] = $form_state['values'][$name];
+        unset($form_state['values'][$name]);
+      }
+    }
+
+    config_set('readmore_extrafield.settings', 'readmore_extrafield_variables', $settings);
+  }
+
+  // Flush the field module cache.
+  $cache_tables = module_invoke('field', 'flush_caches');
+  foreach ($cache_tables as $table) {
+    cache_clear_all('*', $table, TRUE);
+  }
+}

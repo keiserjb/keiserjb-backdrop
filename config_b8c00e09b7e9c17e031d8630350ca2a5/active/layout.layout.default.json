@@ -8,7 +8,7 @@
     "module": "layout",
     "weight": 0,
     "storage": 2,
-    "layout_template": "boxton",
+    "layout_template": "moscone_flipped",
     "disabled": false,
     "settings": {
         "title": "",
@@ -27,6 +27,10 @@
         "content": [
             "default"
         ],
+        "sidebar": [
+            "7f89df9b-12b7-4f38-9337-55650a6c546c",
+            "d0e614cf-083c-4325-a832-50e9e47c3b74"
+        ],
         "bottom": [
             "569712a8-554b-4746-9d45-697a91f52a3e",
             "8586946d-12ab-4898-8c04-4efe4cc81c5f"
@@ -42,6 +46,7 @@
         "afb0c064-d4eb-472e-a700-ef1a71461017": {
             "plugin": "copy_blocks:region_copy",
             "data": {
+                "status": 1,
                 "module": "copy_blocks",
                 "delta": "region_copy",
                 "settings": {
@@ -68,6 +73,7 @@
         "7ddd08a1-0ead-47e3-8c25-3775f4e540ad": {
             "plugin": "system:breadcrumb",
             "data": {
+                "status": 1,
                 "module": "system",
                 "delta": "breadcrumb",
                 "settings": {
@@ -93,6 +99,7 @@
         "ac638d4c-a0a0-4c7f-ac00-e74a1501a4c9": {
             "plugin": "layout:hero",
             "data": {
+                "status": 0,
                 "module": "layout",
                 "delta": "hero",
                 "settings": {
@@ -158,6 +165,7 @@
         "37cb0596-2b5e-44c3-a000-ad37125df78a": {
             "plugin": "layout:hero",
             "data": {
+                "status": 0,
                 "module": "layout",
                 "delta": "hero",
                 "settings": {
@@ -223,6 +231,7 @@
         "default": {
             "plugin": "system:main",
             "data": {
+                "status": 1,
                 "module": "system",
                 "delta": "main",
                 "settings": {
@@ -243,9 +252,108 @@
                 }
             }
         },
+        "7f89df9b-12b7-4f38-9337-55650a6c546c": {
+            "plugin": "views:blog-block_1",
+            "data": {
+                "status": 1,
+                "module": "views",
+                "delta": "blog-block_1",
+                "settings": {
+                    "link_to_view": 0,
+                    "more_link": false,
+                    "use_pager": false,
+                    "pager_id": 0,
+                    "items_per_page": "5",
+                    "offset": 0,
+                    "path": "blog",
+                    "fields_override": null,
+                    "title_display": "default",
+                    "title": "",
+                    "style": "default",
+                    "block_settings": [],
+                    "contexts": [],
+                    "allowed": [],
+                    "path_override": false,
+                    "exposed": [],
+                    "admin_label": "",
+                    "admin_description": ""
+                },
+                "uuid": "7f89df9b-12b7-4f38-9337-55650a6c546c",
+                "style": {
+                    "plugin": "default",
+                    "data": {
+                        "settings": {
+                            "classes": ""
+                        }
+                    }
+                },
+                "conditions": [
+                    {
+                        "plugin": "path",
+                        "data": {
+                            "settings": {
+                                "visibility_setting": "0",
+                                "paths": "blog",
+                                "load_condition_nojs": "Load condition"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "d0e614cf-083c-4325-a832-50e9e47c3b74": {
+            "plugin": "views:projects-block",
+            "data": {
+                "status": 1,
+                "module": "views",
+                "delta": "projects-block",
+                "settings": {
+                    "link_to_view": 0,
+                    "more_link": false,
+                    "use_pager": false,
+                    "pager_id": 0,
+                    "items_per_page": "1",
+                    "offset": 0,
+                    "path": "projects",
+                    "fields_override": null,
+                    "title_display": "none",
+                    "title": "",
+                    "style": "default",
+                    "block_settings": [],
+                    "contexts": [],
+                    "allowed": [],
+                    "path_override": false,
+                    "exposed": [],
+                    "admin_label": "",
+                    "admin_description": ""
+                },
+                "uuid": "d0e614cf-083c-4325-a832-50e9e47c3b74",
+                "style": {
+                    "plugin": "default",
+                    "data": {
+                        "settings": {
+                            "classes": ""
+                        }
+                    }
+                },
+                "conditions": [
+                    {
+                        "plugin": "path",
+                        "data": {
+                            "settings": {
+                                "visibility_setting": "0",
+                                "paths": "projects",
+                                "load_condition_nojs": "Load condition"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
         "569712a8-554b-4746-9d45-697a91f52a3e": {
             "plugin": "block:location",
             "data": {
+                "status": 1,
                 "module": "block",
                 "delta": "location",
                 "settings": {
@@ -257,7 +365,9 @@
                         "description": "",
                         "reusable": true
                     },
-                    "contexts": []
+                    "contexts": [],
+                    "admin_label": "",
+                    "admin_description": ""
                 },
                 "uuid": "569712a8-554b-4746-9d45-697a91f52a3e",
                 "style": {
@@ -273,6 +383,7 @@
         "8586946d-12ab-4898-8c04-4efe4cc81c5f": {
             "plugin": "rrssb:rrssb",
             "data": {
+                "status": 1,
                 "module": "rrssb",
                 "delta": "rrssb",
                 "settings": {
@@ -296,6 +407,7 @@
         "426b9349-8fe6-4164-a600-cce2e0622208": {
             "plugin": "copy_blocks:region_copy",
             "data": {
+                "status": 1,
                 "module": "copy_blocks",
                 "delta": "region_copy",
                 "settings": {

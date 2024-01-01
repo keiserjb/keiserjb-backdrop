@@ -1,0 +1,17 @@
+{
+    "_config_name": "readmore_extrafield.settings",
+    "readmore_extrafield_variables": {
+        "node--paragraph": {
+            "rmef_enable": 0,
+            "rmef_hide": 0,
+            "rmef_link_text": "Read more<span class=\"element-invisible\"> about @title</span>",
+            "rmef_link_class": ""
+        },
+        "node--project": {
+            "rmef_enable": 0,
+            "rmef_hide": 0,
+            "rmef_link_text": "Read more<span class=\"element-invisible\"> about @title</span>",
+            "rmef_link_class": ""
+        }
+    }
+}

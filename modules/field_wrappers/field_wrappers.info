@@ -1,0 +1,12 @@
+; $Id$
+name = Field Wrappers
+description = Allows site administrators to choose which HTML wrappers are used in fields
+backdrop = 1.x
+type = module
+
+dependencies[] = field
+dependencies[] = system (>1.13.0)
+; Added by Backdrop CMS packaging script on 2022-08-22
+project = field_wrappers
+version = 1.x-1.1.2
+timestamp = 1661209495

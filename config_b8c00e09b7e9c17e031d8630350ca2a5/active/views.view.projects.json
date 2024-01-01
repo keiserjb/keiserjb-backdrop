@@ -32,7 +32,7 @@
                         "items_per_page": "10"
                     }
                 },
-                "style_plugin": "views_bootstrap_grid_plugin_style",
+                "style_plugin": "flexviews",
                 "row_plugin": "node",
                 "fields": {
                     "title": {
@@ -105,10 +105,11 @@
                     "comments": false
                 },
                 "style_options": {
+                    "row_class": "col-md-4",
+                    "default_row_class": 1,
+                    "row_class_special": 1,
                     "uses_fields": 0,
-                    "alignment": "horizontal",
-                    "columns": "4",
-                    "class_prefix": "col-sm"
+                    "layout_type": "fixed_container"
                 }
             }
         },
@@ -130,7 +131,7 @@
                     "context": 0,
                     "context_only_inline": 0
                 },
-                "style_plugin": "views_bootstrap_grid_plugin_style",
+                "style_plugin": "flexviews",
                 "defaults": {
                     "style_plugin": false,
                     "style_options": false,
@@ -142,10 +143,11 @@
                     "sorts": false
                 },
                 "style_options": {
+                    "row_class": "col-md-4",
+                    "default_row_class": 1,
+                    "row_class_special": 1,
                     "uses_fields": 0,
-                    "alignment": "horizontal",
-                    "columns": "4",
-                    "class_prefix": "col-sm"
+                    "layout_type": "fixed_container"
                 },
                 "row_plugin": "node",
                 "row_options": {
@@ -364,8 +366,9 @@
                     "options": []
                 },
                 "pager": {
-                    "type": "none",
+                    "type": "some",
                     "options": {
+                        "items_per_page": "1",
                         "offset": "0"
                     }
                 },
@@ -381,12 +384,12 @@
                     "filter_groups": false
                 },
                 "pager_options": null,
-                "style_plugin": "views_bootstrap_grid_plugin_style",
+                "style_plugin": "default",
                 "style_options": {
-                    "uses_fields": 0,
-                    "alignment": "horizontal",
-                    "columns": "4",
-                    "class_prefix": "col-sm"
+                    "row_class": "",
+                    "default_row_class": 1,
+                    "row_class_special": 1,
+                    "uses_fields": 0
                 },
                 "row_plugin": "node",
                 "row_options": {
@@ -396,10 +399,18 @@
                     "comments": 0
                 },
                 "sorts": {
-                    "weight": {
-                        "id": "weight",
-                        "table": "draggableviews_structure",
-                        "field": "weight"
+                    "random": {
+                        "id": "random",
+                        "table": "views",
+                        "field": "random",
+                        "relationship": "none",
+                        "group_type": "group",
+                        "ui_name": "",
+                        "order": "ASC",
+                        "exposed": false,
+                        "expose": {
+                            "label": ""
+                        }
                     }
                 },
                 "filters": {

@@ -1,0 +1,131 @@
+<?php
+
+/**
+ * @file
+ * Add view / create / update / delete permissions for all Paragraphs types.
+ */
+
+/**
+ * Implements hook_paragraphs_item_access().
+ */
+function paragraphs_bundle_permissions_paragraphs_item_access($entity, $op, $account) {
+  $permissions = &backdrop_static(__FUNCTION__, array());
+
+  if (!in_array($op, array('view', 'update', 'delete', 'create'), TRUE) || $entity === NULL) {
+    // If there is no type/bundle to check against, or the $op is not one of the
+    // supported ones, we return access ignore.
+    return PARAGRAPHS_ITEM_ACCESS_IGNORE;
+  }
+
+  $bundle = $entity->bundle;
+
+  // Set static cache id to use the type/bundle machine name.
+  $cid = $bundle;
+
+  // If we've already checked access for this type/bundle, user and op, return
+  // from cache.
+  if (isset($permissions[$account->uid][$cid][$op])) {
+    return $permissions[$account->uid][$cid][$op];
+  }
+
+  if (user_access('bypass paragraphs bundle content access', $account) || user_access($op . ' paragraph content ' . $bundle, $account)) {
+    $permissions[$account->uid][$cid][$op] = PARAGRAPHS_ITEM_ACCESS_ALLOW;
+  }
+  else {
+    $permissions[$account->uid][$cid][$op] = PARAGRAPHS_ITEM_ACCESS_DENY;
+  }
+
+  return $permissions[$account->uid][$cid][$op];
+}
+
+/**
+ * Implements hook_permission().
+ */
+function paragraphs_bundle_permissions_permission() {
+  $perms = array(
+    'bypass paragraphs bundle content access' => array(
+      'title' => t('Bypass Paragraphs type content access control'),
+      'description' => t('Is able to administer content for all Paragraphs types'),
+    ),
+  );
+
+  // Add permissions for each type/bundle.
+  $bundles = paragraphs_bundle_load();
+  foreach ($bundles as $machine_name => $bundle) {
+    $perms += array(
+      'view paragraph content ' . $machine_name => array(
+        'title' => t('%type_name: View content', array('%type_name' => $bundle->name)),
+        'description' => t('Is able to view Paragraphs content of type %type_name', array('%type_name' => $bundle->name)),
+      ),
+      'create paragraph content ' . $machine_name => array(
+        'title' => t('%type_name: Create content', array('%type_name' => $bundle->name)),
+        'description' => t('Is able to create Paragraphs content of type %type_name', array('%type_name' => $bundle->name)),
+      ),
+      'update paragraph content ' . $machine_name => array(
+        'title' => t('%type_name: Edit content', array('%type_name' => $bundle->name)),
+        'description' => t('Is able to update Paragraphs content of type %type_name', array('%type_name' => $bundle->name)),
+      ),
+      'delete paragraph content ' . $machine_name => array(
+        'title' => t('%type_name: Delete content', array('%type_name' => $bundle->name)),
+        'description' => t('Is able to delete Paragraphs content of type %type_name', array('%type_name' => $bundle->name)),
+      ),
+    );
+  }
+
+  return $perms;
+}
+
+/**
+ * Generate conditional message.
+ *
+ * Generate the conditional part of the message to be displayed when
+ * permissions are added.
+ */
+function paragraphs_bundle_permissions_conditional_message($search) {
+  // Use get_t() instead of t() as the hook_install implementation could be
+  // called during the Backdrop installation phase.
+  $t = get_t();
+  // Define part of the message depending on whether the user has permission
+  // to administer permissions or not.
+  if (user_access("administer permissions")) {
+    // Compile the message with the link.
+    $conditional_message = $t('Review and make changes if needed on the <a href="@url">permissions</a> page.', array(
+      '@url' => paragraphs_bundle_permissions_url($search),
+    ));
+  }
+  else {
+    $conditional_message = $t("Contact an administrator with permission to modify these permissions if different permissions are needed.");
+  }
+  return $conditional_message;
+}
+
+/**
+ * Generate a link to the relevant section of the permissions screen.
+ */
+function paragraphs_bundle_permissions_url($search = '') {
+  // Define the base permission path.
+  $url_path = 'admin/config/people/permissions';
+
+  // If the Filter Permissions module is enabled then we should filter this
+  // module within the path so the filter can be applied server-side.
+  if (module_exists('filter_perms')) {
+    $url_module_filter = 'module-paragraphs_bundle_permissions';
+    $url_path .= '/' . $url_module_filter;
+    // If the search text is just for the module we can remove it as Filter
+    // Permissions will handle this.
+    $search = (($search == 'Paragraphs Type Permissions') ? '' : $search);
+  }
+  // Create a blank $options array so we can include in url function whether or
+  // not a search string is needed.
+  $options = array();
+  // Add the search query to $options if applicable.
+  if (!empty($search)) {
+    $options = array(
+      'query' => array(
+        'search' => $search,
+      ),
+    );
+  }
+  // Generate the url string.
+  return url($url_path, $options);
+}

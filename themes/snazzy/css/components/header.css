@@ -1,0 +1,181 @@
+.front-header-split .l-top {
+  padding: 0;
+}
+.front .l-header .block-content,
+.front .l-top .block-hero .block-content {
+  text-align: initial;
+  min-width: 240px;
+}
+.l-header-inner {
+  padding: 1rem 1rem 0;
+}
+.name-and-slogan {
+  font-size: 26px;
+  padding-bottom: 1rem;
+}
+.site-name span {
+  display: inline-block;
+  font-family: 'Spectral', serif;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.l-header .logo img {
+  max-height: 150px;
+  margin-bottom: 1rem;
+}
+.l-header .logo::after {
+  content: none;
+}
+.front .l-top .block-hero {
+  margin: 0;
+}
+@media (min-width: 960px) {
+  .front .l-header,
+  .front .l-top .block:first-child {
+    display: table;
+    width: 100%;
+    padding: 0;
+  }
+  .front-header-split .l-header > *,
+  .front-header-split .l-top .block:first-child .block-inner {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 4vw;
+  }
+  .front-header-split .l-header,
+  .front-header-split .l-top .block:first-child {
+    width: 50%;
+    height: 100vh;
+  }
+  .front-header-split .l-top .block:first-child {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .admin-bar .front-header-split .l-header {
+    margin-top: -33px;
+  }
+  /* Prevent contextual link from slipping under the admin bar. */
+  .admin-bar .front-header-split .l-top .block:first-child .contextual-links-wrapper,
+  .admin-bar .front-header-split .l-header + .flexible-row .row .l-col .block:first-child .contextual-links-wrapper {
+    margin-top: 43px;
+    margin-right: 10px;
+  }
+  /* Flexible layout templates need special handling */
+  .front-header-split .l-header + .flexible-row .l-flexible-row {
+    display: block;
+  }
+  .front-header-split .l-header + .flexible-row .row .l-col {
+    position: static;
+  }
+  .front-header-split .l-header + .flexible-row .row .l-col .block:first-child {
+    position: absolute;
+    display: table;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
+  .front-header-split .l-header + .flexible-row .row .l-col .block:first-child .block-inner {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 4vw;
+  }
+}
+/** menus in header **/
+.l-header .block {
+  margin: 1rem 0;
+}
+.l-header .block:last-child {
+  margin-bottom: 0;
+}
+.l-header ul.menu {
+  margin: 0;
+  padding: 0;
+}
+.l-header ul.menu li,
+[dir=rtl] .l-header ul.menu li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.l-header ul.menu li a {
+  font-size: 1.2rem;
+  display: block;
+  padding: 15px;
+  letter-spacing: 1px;
+}
+.l-header ul.menu ul li {
+  margin: 0;
+  float: none;
+}
+.l-header ul.menu ul {
+  border: none;
+  padding: 0;
+}
+.js .menu-dropdown a,
+.js .menu-dropdown a:hover,
+.js .menu-dropdown a:focus,
+.js .menu-dropdown a:active {
+  padding-right: 15px;
+}
+.l-header li.has-children ul a {
+  text-indent: 1em;
+}
+.l-header li.has-children ul ul a {
+  text-indent: 2em;
+}
+.layout .menu-dropdown a,
+.layout .menu-dropdown ul a {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: center calc(100% - 1px);
+  background-repeat: no-repeat;
+  background-size: 0% 2px;
+  transition: background-size 0.2s;
+}
+.layout .menu-dropdown a:hover,
+.layout .menu-dropdown ul a:hover,
+.layout .menu-dropdown ul a:focus,
+.layout .menu-dropdown ul a:active {
+  background-size: 100% 2px;
+}
+
+
+/* @todo can this work with menu breakpoint settings? */
+@media (min-width: 48em) {
+  .l-header ul.menu li {
+    margin: 10px 10px 0 0;
+    float: left;
+  }
+  [dir=rtl] .l-header ul.menu li {
+    margin: 10px 0 0 10px;
+    float: right;
+  }
+  .l-header ul.menu ul li,
+  [dir=rtl] .l-header ul.menu ul li {
+    margin: 0;
+    float: none;
+  }
+  .js .l-header ul.menu li a.has-submenu {
+    padding-right: 40px;
+  }
+  [dir=rtl].js .l-header ul.menu li a.has-submenu {
+    padding: 15px 15px 15px 40px !important;/* override core css */
+  }
+  .l-header li.has-children ul a,
+  .l-header li.has-children ul ul a {
+    text-indent: 0;
+  }
+  .l-header .menu-dropdown a span.sub-arrow {
+    border-top-color: inherit;
+  }
+  [dir="rtl"] .l-header .menu-dropdown span.sub-arrow {
+    border-right-color: transparent;
+  }
+  .l-header ul.menu li a::after {
+    bottom: 1px;
+  }
+}

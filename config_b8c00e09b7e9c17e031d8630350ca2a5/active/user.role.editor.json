@@ -34,5 +34,6 @@
         "use text format filtered_html",
         "access site-wide contact form",
         "create terms in tags"
-    ]
+    ],
+    "description": ""
 }

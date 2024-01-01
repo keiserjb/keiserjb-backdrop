@@ -1,0 +1,122 @@
+<?php
+
+/**
+ * @file
+ * This module provides a tokenized block to display a copyright notice.
+ */
+
+
+/**
+ * Implements hook_block_info().
+ */
+function copyright_notice_block_info() {
+
+  $blocks['copyright_notice'] = array(
+    'info' => t('Copyright notice'),
+    'description' => t('Tokenized block to display a copyright notice.'),
+    'cache' => BACKDROP_CACHE_GLOBAL,
+  );
+
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_configure().
+ */
+function copyright_notice_block_configure($delta = '', $settings = array()) {
+
+  $form = array();
+
+  if ($delta == 'copyright_notice') {
+
+    $settings += array(
+      'title' => config_get('copyright_notice.settings', 'title'),
+      'body' => config_get('copyright_notice.settings', 'body'),
+    );
+
+    $variables = array(
+      'text' => t('Browse available tokens.'),
+      'token_types' => array('date'),
+    );
+
+    $form['title'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Display title'),
+      '#description' => t('The title of the block as shown to the user. This will affect all places where this block is used.'),
+      '#default_value' => $settings['title'],
+      '#maxlength' => 255,
+      '#states' => array(
+        'visible' => array(
+          '[name=title_display]' => array('value' => LAYOUT_TITLE_DEFAULT),
+        ),
+      ),
+    );
+    $form['body'] = array(
+      '#type' => 'text_format',
+      '#title' => t('Block content'),
+      '#description' => theme('token_tree_link', $variables),
+      '#default_value' => $settings['body']['value'],
+      '#format' => $settings['body']['format'],
+      '#rows' => 8,
+      '#element_validate' => array('token_element_validate'),
+      '#token_types' => array('date'),
+     );
+  }
+
+  return $form;
+}
+
+
+/**
+ * Implements hook_block_save().
+ */
+function copyright_notice_block_save($delta, &$edit = array()) {
+
+  if ($delta == 'copyright_notice') {
+
+    $config = config('copyright_notice.settings');
+    $config->set('title', $edit['title']);
+    $config->set('body', $edit['body']);
+    $config->save();
+
+    unset($edit['title']);
+    unset($edit['body']);
+  }
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function copyright_notice_block_view($delta = '', $settings = array(), $contexts = array()) {
+
+  $block = array();
+
+  if ($delta == 'copyright_notice') {
+
+    $settings += array(
+      'title' => config_get('copyright_notice.settings', 'title'),
+      'body' => config_get('copyright_notice.settings', 'body'),
+    );
+
+    $block['subject'] = strlen($settings['title']) ? check_plain($settings['title']) : NULL;
+    $block['content'] = check_markup(token_replace($settings['body']['value']), $settings['body']['format'], '', TRUE);
+  }
+
+  return $block;
+}
+
+
+/**
+ * Implements hook_config_info().
+ */
+function copyright_notice_config_info() {
+
+  $prefixes['copyright_notice.settings'] = array(
+    'label' => t('Copyright Notice settings'),
+    'group' => t('Configuration'),
+  );
+
+  return $prefixes;
+}

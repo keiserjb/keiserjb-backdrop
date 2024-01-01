@@ -3,61 +3,36 @@
     "format": "filtered_html",
     "name": "Filtered HTML",
     "weight": 0,
-    "editor": "ckeditor",
+    "editor": "ckeditor5",
     "editor_settings": {
-        "toolbar": [
-            [
-                {
-                    "name": "Formatting",
-                    "items": [
-                        "Bold",
-                        "Italic",
-                        "Blockquote",
-                        "Format"
-                    ]
-                },
-                {
-                    "name": "Lists",
-                    "items": [
-                        "BulletedList",
-                        "NumberedList"
-                    ]
-                },
-                {
-                    "name": "Alignment",
-                    "items": [
-                        "JustifyLeft",
-                        "JustifyCenter",
-                        "JustifyRight"
-                    ]
-                },
-                {
-                    "name": "Linking",
-                    "items": [
-                        "BackdropLink",
-                        "BackdropUnlink"
-                    ]
-                },
-                {
-                    "name": "Media",
-                    "items": [
-                        "BackdropImage"
-                    ]
-                },
-                {
-                    "name": "Tools",
-                    "items": [
-                        "Source",
-                        "Maximize"
-                    ]
-                }
-            ]
+        "cketoolbar": [
+            "bold",
+            "italic",
+            "blockQuote",
+            "heading",
+            "style",
+            "|",
+            "bulletedList",
+            "numberedList",
+            "|",
+            "indent",
+            "alignment:left",
+            "alignment:center",
+            "alignment:right",
+            "|",
+            "backdropLink",
+            "backdropImage",
+            "|",
+            "sourceEditing",
+            "removeFormat",
+            "code"
         ],
         "image_upload": {
             "status": 1,
             "orientate": 0,
             "scheme": "public",
-            "directory": "",
+            "alt_required": 1,
+            "directory": "inline-images",
             "max_size": "",
             "max_dimensions": {
                 "width": "",
@@ -71,10 +46,16 @@
             "max_size": "",
             "file_extensions": "txt pdf"
         },
+        "style_list": [],
+        "heading_list": {
+            "h2": "h2",
+            "h3": "h3",
+            "h4": "h4",
+            "h5": "h5",
+            "h6": "h6"
+        },
         "plugins": {
-            "style": {
-                "style_list": []
-            }
+            "editor_settings__plugins__active_tab": ""
         }
     },
     "filters": {
@@ -93,10 +74,8 @@
         "filter_url": {
             "status": 1,
             "weight": 0,
-            "settings": {
-                "filter_url_length": "72"
-            },
-            "module": "filter"
+            "module": "filter",
+            "settings": []
         },
         "filter_htmlcorrector": {
             "status": 1,
@@ -120,9 +99,7 @@
             "status": 1,
             "weight": 1,
             "settings": {
-                "allowed_html": "<a> <em> <strong> <cite> <blockquote> <code> <ul> <ol> <li> <dl> <dt> <dd> <h3> <h4> <h5> <p> <img> <figure> <figcaption>",
-                "filter_html_help": 1,
-                "filter_html_nofollow": 0
+                "allowed_html": "<a> <em> <strong> <cite> <blockquote> <code> <ul> <ol> <li> <dl> <dt> <dd> <h3> <h4> <h5> <p> <img> <figure> <figcaption> <h2> <h6>"
             },
             "module": "filter"
         }

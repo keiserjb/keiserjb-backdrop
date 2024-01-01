@@ -1,0 +1,53 @@
+<?php
+/**
+ * @file
+ * Install, update, and uninstall functions for the Font Awesome module.
+ */
+
+/**
+ * Add v4_shim option to settings and initialize.
+ */
+function font_awesome_update_1102(&$sandbox) {
+  $config = config('font_awesome.settings');
+  $config->set('v4_shim', 0);
+  $config->save();
+}
+
+/**
+ * Remove 'pseudo' config value.
+ */
+function font_awesome_update_1101(&$sandbox) {
+  config_clear('font_awesome.settings', 'pseudo');
+}
+
+/**
+ * Update config.
+ */
+function font_awesome_update_1100(&$sandbox) {
+  $config = config('font_awesome.settings');
+  if ($config->get('enabled') == TRUE) {
+    $config->set('fontawesome', 'v4');
+  }
+  else {
+    $config->set('fontawesome', '');
+  }
+  $config->clear('enabled');
+  $config->save();
+}
+
+/**
+ * Update variable name.
+ */
+function font_awesome_update_1001(&$sandbox) {
+  $config = config('font_awesome.settings');
+  $config->set('enabled', $config->get('font_awesome_1'));
+  $config->clear('font_awesome_1');
+  $config->save();
+}
+
+/**
+ * Implements hook_update_last_removed().
+ */
+function font_awesome_update_last_removed() {
+  return 1000;
+}

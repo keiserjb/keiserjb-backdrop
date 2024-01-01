@@ -11,5 +11,6 @@
         "upload editor images",
         "use text format filtered_html",
         "access site-wide contact form"
-    ]
+    ],
+    "description": ""
 }

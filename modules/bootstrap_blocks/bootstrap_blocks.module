@@ -1,0 +1,320 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function bootstrap_blocks_theme($existing, $type, $theme, $path) {
+  $base = array(
+    'preprocess functions' => array('bootstrap_blocks_preprocess_bblock'),
+    'variables' => array('bblock_id' => null),
+    'variables' => array('text_align' => null),
+  );
+  return array(
+    'accordion' =>array(
+      'variables' => array(
+        'tabs_padding'       => null,
+        'tabs_margin'        => null,
+        'always_open' => null,
+        'tabs' => array(), 
+        'bblock_id' => null, 
+        'text_align' => null, 
+      ),
+      'template' => 'templates/accordion',
+    ) + $base,
+
+    'tabs' =>array(
+      'variables' => array(
+        'bblock_id' => null, 
+        'text_align' => null, 
+        'tabs_padding'       => null,
+        'tabs_margin'        => null,
+        'link_style'        => null,
+        'tabs'        => array(),
+      ),
+      'template' => 'templates/tabs',
+    ) + $base,
+
+    'tabs_vertical' =>array(
+      'variables' => array(
+        'bblock_id' => null, 
+        'text_align' => null, 
+        'tabs_padding'       => null,
+        'tabs_margin'        => null,
+        'tabs'        => array(),
+      ),
+      'template' => 'templates/tabs-vertical',
+    ) + $base,
+
+    'complete_card' =>array(
+      'variables' => array(
+        'card_header'      => null,
+        'card_title'      => null,
+        'card_title_tag'      => null,
+        'card_content'    => null,
+        'card_footer'    => null,
+        'card_padding'    => null,
+        'card_margin'     => null,
+        'card_round'      => null, 
+        'text_align'      => null, 
+        'bblock_id' => null, 
+        'text_align' => null, 
+      ),
+      'template' => 'templates/complete-card',
+    ) + $base,
+
+    'card_group' =>array(
+      'variables' => array(
+        'card_title_tag'      => null,
+        'card_padding'    => null,
+        'card_margin'     => null,
+        'card_round'      => null, 
+        'text_align'      => null, 
+        'bblock_id' => null, 
+        'text_align' => null, 
+        'cards' => array(), 
+      ),
+      'template' => 'templates/card-group',
+    ) + $base,
+
+    'card_grid' =>array(
+      'variables' => array(
+        'card_columns'      => null,
+        'card_gutter'      => null,
+        'card_title_tag'      => null,
+        'card_padding'    => null,
+        'card_margin'     => null,
+        'card_round'      => null, 
+        'text_align'      => null, 
+        'bblock_id' => null, 
+        'text_align' => null, 
+        'cards' => array(), 
+      ),
+      'template' => 'templates/card-grid',
+    ) + $base,
+
+    'image_card' =>array(
+      'variables' => array(
+        'image'      => null,
+        'image_path'      => null,
+        'card_title'      => null,
+        'card_title_tag'      => null,
+        'card_content'    => null,
+        'card_footer'    => null,
+        'card_padding'    => null,
+        'card_margin'     => null,
+        'card_round'      => null, 
+        'text_align'      => null, 
+        'bblock_id' => null, 
+        'text_align' => null, 
+        'image_position' => null, 
+      ),
+      'template' => 'templates/image-card',
+    ) + $base,
+    
+    'image_horizontal_card' =>array(
+      'variables' => array(
+        'image'      => null,
+        'image_path'      => null,
+        'card_title'      => null,
+        'card_title_tag'      => null,
+        'card_content'    => null,
+        'card_footer'    => null,
+        'card_padding'    => null,
+        'card_margin'     => null,
+        'card_round'      => null, 
+        'text_align'      => null, 
+        'bblock_id' => null, 
+        'text_align' => null, 
+        'image_position' => null, 
+      ),
+      'template' => 'templates/image-horizontal-card',
+    ) + $base,
+    
+    'hero' =>array(
+      'variables' => array(
+        'image'      => null,
+        'image_path'      => null,
+        'card_header'      => null,
+        'card_title'      => null,
+        'card_title_tag'      => null,
+        'card_content'    => null,
+        'card_footer'    => null,
+        'card_padding'    => null,
+        'card_margin'     => null,
+        'card_round'      => null, 
+        'text_align'      => null, 
+        'bblock_id' => null, 
+        'text_align' => null, 
+      ),
+      'template' => 'templates/hero',
+    ) + $base,
+
+  );
+}
+
+function bootstrap_blocks_block_info() {
+  $blocks['bootstrap_blocks'] = array(
+    'info' => t('Bootstrap blocks'),
+    'description' => t('Bootstrap blocks.'),
+    'class' => 'BootstrapBlock',
+    // 'required contexts' => array('node' => 'node'),
+  );
+
+  return $blocks;
+}
+
+function bootstrap_blocks_get_children() {
+  $children = [
+    'accordion' => [
+      'info' => t('Accordion'),
+      'description' => t('Accordion.'),
+      'class' => 'Accordion',
+      ],
+    'complete_card' => [
+      'info' => t('CompleteCard'),
+      'description' => t('CompleteCard.'),
+      'class' => 'CompleteCard',
+      ],
+    'hero' => [
+      'info' => t('Hero'),
+      'description' => t('Hero.'),
+      'class' => 'Hero',
+      ],
+    'image_card' => [
+      'info' => t('ImageCard'),
+      'description' => t('ImageCard'),
+      'class' => 'ImageCard',
+      ],
+    'tabs' => [
+      'info' => t('Tabs'),
+      'description' => t('Displays.'),
+      'class' => 'Tabs',
+      ],
+    'tabs_vertical' => [
+      'info' => t('TabsVertical'),
+      'description' => t('Displays.'),
+      'class' => 'TabsVertical',
+      ],
+    'card_group' => [
+      'info' => t('CardGroup'),
+      'description' => t('CardGroup.'),
+      'class' => 'CardGroup',
+      ],
+    'card_grid' => [
+      'info' => t('CardGrid'),
+      'description' => t('CardGrid.'),
+      'class' => 'CardGrid',
+      ],
+  ];
+
+  return $children;
+}
+
+/**
+ * Implements hook_autoload_info().
+ */
+function bootstrap_blocks_autoload_info() {
+  $autoload = array();
+  $autoload['BootstrapBlocks'] = 'includes/BootstrapBlocks.inc';
+  $autoload['BootstrapBlock'] = 'includes/BootstrapBlock.inc';
+  foreach (bootstrap_blocks_get_children() as $child) {
+    $autoload[$child['class']] = 'includes/' . $child['class'] . '.inc';
+  }
+  return $autoload;
+}
+
+/**
+ * AJAX callback to update the style settings within the block configure form.
+ */
+function bootstrap_blocks_add_tab_ajax($form, $form_state) {
+  return $form['tabs'];
+}
+
+/**
+ * AJAX callback to update the style settings within the block configure form.
+ */
+function bootstrap_blocks_add_card_ajax($form, $form_state) {
+  return $form['cards'];
+}
+
+/**
+ * AJAX callback to update the style settings within the block configure form.
+ */
+function bootstrap_blocks_add_tab_submit($form, &$form_state) {
+  $form_state['tabs'][] = ['title' => '', 'content' => ''];
+  $form_state['rebuild'] = TRUE;
+}
+
+/**
+ * AJAX callback to update the style settings within the block configure form.
+ */
+function bootstrap_blocks_add_card_submit($form, &$form_state) {
+  $form_state['cards'][] = ['card_title' => '', 'card_content' => '', 'card_header' => '', 'card_footer' => ''];
+  $form_state['rebuild'] = TRUE;
+}
+
+/**
+ * AJAX callback to update the style settings within the block configure form.
+ */
+function bootstrap_blocks_preprocess_bblock(&$variables) {
+  if (!empty($variables['bblock_id'])) {
+    $variables['bblock_id'] = strtolower(backdrop_clean_css_identifier($variables['bblock_id']));
+  }
+  else {
+    $variables['bblock_id'] = 'bblock-block';
+  }
+
+  if ($variables['text_align'] == 'left') {
+    $variables['text_align'] = '';
+  }
+  elseif ($variables['text_align'] == 'right') {
+    $variables['text_align'] = 'text-end';
+  }
+  elseif ($variables['text_align'] == 'center') {
+    $variables['text_align'] = 'text-center';
+  }
+    
+  if (isset($variables['card_columns'])) {
+    if ($variables['card_columns'] == 'auto') {
+      $variables['card_columns'] = '';
+    }
+    else {
+      $variables['card_columns'] = 'row-cols-1 row-cols-md-' . $variables['card_columns'];
+    }
+  }
+    
+  if (isset($variables['link_style'])) {
+    if ($variables['link_style'] == 'buttons') {
+      $variables['link_style_class'] = 'nav-pills';
+    }
+    else {
+      $variables['link_style_class'] = 'nav-tabs';
+    }
+  }
+    
+  if (!empty($variables['always_open'])) {
+    $variables['bs_parent'] = '';
+  }
+  else {
+    $variables['bs_parent'] = 'data-bs-parent="#' . $variables['bblock_id'] . '"';
+  }
+  if ($variables['theme_hook_original'] == 'card_grid' || $variables['theme_hook_original'] == 'card_group') {
+    foreach ($variables['cards'] as $index => $card) {
+      $variables['cards'][$index]['image_url'] = FALSE;
+      $url = explode('url::', $card['card_header']);
+      if (isset($url[1]) && empty($url[0]) && valid_url($url[1])) {
+        $variables['cards'][$index]['image_url'] = TRUE;
+        // We assume if the scheme is set this is a full absolute path.
+        if (parse_url($url[1], PHP_URL_SCHEME)) {
+          $variables['cards'][$index]['card_header'] = $url[1];
+        }
+        // Else this is will need to be a path relative to the public folder.
+        else {
+          $variables['cards'][$index]['card_header'] = file_create_url(file_build_uri($url[1]));
+        }
+      }
+    }
+  }
+
+}
+

@@ -1,0 +1,14 @@
+type = module
+name = Title Display
+description = Enables moving the title field within display modes.
+backdrop = 1.x
+
+package = Fields
+tags[] = Administration
+tags[] = Content
+tags[] = Structure
+
+; Added by Backdrop CMS packaging script on 2022-10-17
+project = title_display
+version = 1.x-1.2.2
+timestamp = 1666039418

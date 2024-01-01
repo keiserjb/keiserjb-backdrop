@@ -9,6 +9,13 @@
                 "weight": "0"
             }
         },
-        "display": []
+        "display": {
+            "title": {
+                "teaser": {
+                    "weight": "0",
+                    "visible": true
+                }
+            }
+        }
     }
 }

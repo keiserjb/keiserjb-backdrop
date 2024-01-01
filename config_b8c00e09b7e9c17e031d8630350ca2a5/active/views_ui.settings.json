@@ -1,15 +1,15 @@
 {
     "_config_name": "views_ui.settings",
-    "show_master_display": false,
-    "show_sql_query": false,
-    "show_preview_information": false,
-    "show_sql_query_where": "above",
-    "show_performance_statistics": false,
-    "always_live_preview": false,
-    "display_embed": false,
-    "custom_theme": false,
     "wizard_default_display": {
         "page": "page",
         "block": 0
-    }
+    },
+    "show_default_display": 1,
+    "display_embed": 0,
+    "custom_theme": "_default",
+    "always_live_preview": 0,
+    "show_preview_information": 0,
+    "show_sql_query_where": "above",
+    "show_sql_query": 0,
+    "show_performance_statistics": 0
 }

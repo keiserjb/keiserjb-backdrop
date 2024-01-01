@@ -1,0 +1,12 @@
+name = Devel Subthemer
+description = Builds a subtheme from a provided base.
+package = Development
+backdrop = 1.x
+type = module
+
+configure = admin/config/development/devel-subthemer
+
+; Added by Backdrop CMS packaging script on 2022-03-26
+project = devel_subthemer
+version = 1.x-1.0.1
+timestamp = 1648320067

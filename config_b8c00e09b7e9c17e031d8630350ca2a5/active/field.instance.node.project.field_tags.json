@@ -28,13 +28,20 @@
             "label": "hidden",
             "type": "taxonomy_term_reference_link",
             "weight": "3",
-            "settings": [],
+            "settings": {
+                "field_wrappers": {
+                    "field_wrapper": "-",
+                    "label_wrapper": "-",
+                    "item_wrapper": "-",
+                    "field_wrapper_class": ""
+                }
+            },
             "module": "taxonomy"
         },
         "teaser": {
             "label": "hidden",
             "type": "hidden",
-            "weight": "3",
+            "weight": "4",
             "settings": []
         }
     }

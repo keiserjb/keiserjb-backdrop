@@ -1,0 +1,86 @@
+// Darkmode Check.
+function ginInitDarkmode() {
+  const darkModeClass = 'gin--dark-mode';
+  if (
+    localStorage.getItem('Backdrop.gin.darkmode') == 1 ||
+    (localStorage.getItem('Backdrop.gin.darkmode') === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  ) {
+    document.documentElement.classList.add(darkModeClass);
+  } else {
+    document.documentElement.classList.contains(darkModeClass) === true && document.documentElement.classList.remove(darkModeClass);
+  }
+}
+
+ginInitDarkmode();
+
+// GinDarkMode is not set yet.
+window.addEventListener('DOMContentLoaded', () => {
+  if (!localStorage.getItem('Backdrop.gin.darkmode')) {
+    localStorage.setItem('Backdrop.gin.darkmode', Backdrop.settings.gin.darkmode);
+    ginInitDarkmode();
+  }
+});
+
+// Toolbar Check.
+// if (localStorage.getItem('Backdrop.gin.toolbarExpanded')) {
+//   const style = document.createElement('style');
+//   const className = 'gin-toolbar-inline-styles';
+//   style.className = className;
+
+//   if (localStorage.getItem('Backdrop.gin.toolbarExpanded') === 'true') {
+//     style.innerHTML = `
+//     @media (min-width: 976px) {
+//       body.gin--vertical-toolbar:not([data-toolbar-menu=open]) {
+//         padding-inline-start: 256px;
+//         transition: none;
+//       }
+
+//       .gin--vertical-toolbar .toolbar-menu-administration {
+//         min-width: var(--gin-toolbar-width, 256px);
+//         transition: none;
+//       }
+
+//       .gin--vertical-toolbar .toolbar-menu-administration > .toolbar-menu > .menu-item > .toolbar-icon,
+//       .gin--vertical-toolbar .toolbar-menu-administration > .toolbar-menu > .menu-item > .toolbar-box > .toolbar-icon {
+//         min-width: calc(var(--gin-toolbar-width, 256px) - 16px);
+//       }
+//     }
+//     `;
+
+//     const scriptTag = document.querySelector('script');
+//     scriptTag.parentNode.insertBefore(style, scriptTag);
+//   } else if (document.getElementsByClassName(className).length > 0) {
+//     document.getElementsByClassName(className)[0].remove();
+//   }
+// }
+
+// Sidebar check.
+// if (localStorage.getItem('Backdrop.gin.sidebarExpanded.desktop')) {
+//   const style = document.createElement('style');
+//   const className = 'gin-sidebar-inline-styles';
+//   style.className = className;
+
+//   if (window.innerWidth < 1024 || localStorage.getItem('Backdrop.gin.sidebarExpanded.desktop') === 'false') {
+//     style.innerHTML = `
+//     body {
+//       --gin-sidebar-offset: 0px;
+//       padding-inline-end: 0;
+//       transition: none;
+//     }
+
+//     .layout-region-node-secondary {
+//       transform: translateX(var(--gin-sidebar-width, 360px));
+//       transition: none;
+//     }
+
+//     .meta-sidebar__overlay {
+//       display: none;
+//     }
+//     `;
+
+//     const scriptTag = document.querySelector('script');
+//     scriptTag.parentNode.insertBefore(style, scriptTag);
+//   } else if (document.getElementsByClassName(className).length > 0) {
+//     document.getElementsByClassName(className)[0].remove();
+//   }
+// }

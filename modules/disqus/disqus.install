@@ -1,0 +1,145 @@
+<?php
+
+/**
+ * @file
+ * Provides any required installation or upgrade path requirements.
+ */
+
+/**
+ * Implementation of hook_schema().
+ */
+function disqus_schema() {
+  $schema = array();
+  $schema['disqus'] = array(
+    'fields' => array(
+      'did' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'nid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'status' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('did'),
+    'indexes' => array(
+      'nid' => array('nid'),
+      'status' => array('status'),
+    ),
+  );
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function disqus_uninstall() {
+ // Nothing.
+}
+
+/**
+ * Updates from Drupal 6 to 7.
+ */
+function disqus_update_7000() {
+  // Nothing.
+}
+
+/**
+ * Updates Disqus with support for toggling comments per node.
+ */
+function disqus_update_7001() {
+  if (!db_table_exists('disqus')) {
+    backdrop_install_schema('disqus');
+  }
+}
+
+
+/**
+ * Remove deprecated variable.
+ */
+function disqus_update_7002() {
+  variable_del('disqus_userapikey');
+}
+
+function disqus_update_1000() {
+  $config = config('disqus.settings');
+  $config->set('disqus_combination_widget_colortheme', update_variable_get('disqus_combination_widget_colortheme'));
+  $config->set('disqus_combination_widget_defaulttabview', update_variable_get('disqus_combination_widget_defaulttabview'));
+  $config->set('disqus_combination_widget_excerpt_length', update_variable_get('disqus_combination_widget_excerpt_length'));
+  $config->set('disqus_combination_widget_hide_mods', update_variable_get('disqus_combination_widget_hide_mods'));
+  $config->set('disqus_combination_widget_items', update_variable_get('disqus_combination_widget_items'));
+  
+  $config->set('disqus_developer', update_variable_get('disqus_developer'));
+  $config->set('disqus_domain', update_variable_get('disqus_domain'));
+  $config->set('disqus_inherit_login', update_variable_get('disqus_inherit_login'));
+  $config->set('disqus_localization', update_variable_get('disqus_localization'));
+  $config->set('disqus_location', update_variable_get('disqus_location'));
+  
+  $config->set('disqus_logo', update_variable_get('disqus_logo'));
+  $config->set('disqus_nodetypes', update_variable_get('disqus_nodetypes'));
+  $config->set('disqus_popular_threads_items', update_variable_get('disqus_popular_threads_items'));
+  $config->set('disqus_publickey', update_variable_get('disqus_publickey'));
+  $config->set('disqus_recent_comments_avatarsize', update_variable_get('disqus_recent_comments_avatarsize'));
+  
+  $config->set('disqus_recent_comments_excerpt_length', update_variable_get('disqus_recent_comments_excerpt_length'));
+  $config->set('disqus_recent_comments_items', update_variable_get('disqus_recent_comments_items'));
+  $config->set('disqus_recent_comments_showavatars', update_variable_get('disqus_recent_comments_showavatars')); 
+  $config->set('disqus_secretkey', update_variable_get('disqus_secretkey'));
+  $config->set('disqus_sso', update_variable_get('disqus_sso'));
+  
+  $config->set('disqus_top_commenters_avatarsize', update_variable_get('disqus_top_commenters_avatarsize'));
+  $config->set('disqus_top_commenters_hide_mods', update_variable_get('disqus_top_commenters_hide_mods'));
+  $config->set('disqus_top_commenters_items', update_variable_get('disqus_top_commenters_items'));
+  $config->set('disqus_top_commenters_showavatars', update_variable_get('disqus_top_commenters_showavatars'));
+  $config->set('disqus_use_site_logo', update_variable_get('disqus_use_site_logo'));
+  $config->set('disqus_weight', update_variable_get('disqus_weight'));
+  $config->set('disqus_api_update', update_variable_get('disqus_api_update'));
+  $config->set('disqus_api_delete', update_variable_get('disqus_api_delete'));
+  $config->set('disqus_useraccesstoken', update_variable_get('disqus_useraccesstoken'));
+  $config->save();
+
+  
+  // Delete variables.
+  update_variable_del('disqus_combination_widget_colortheme');
+  update_variable_del('disqus_combination_widget_defaulttabview');
+  update_variable_del('disqus_combination_widget_excerpt_length');
+  update_variable_del('disqus_combination_widget_hide_mods');
+  update_variable_del('disqus_combination_widget_items');
+  
+  update_variable_del('disqus_developer');
+  update_variable_del('disqus_domain');
+  update_variable_del('disqus_inherit_login');
+  update_variable_del('disqus_localization');
+  update_variable_del('disqus_location');
+  
+  update_variable_del('disqus_logo');
+  update_variable_del('disqus_nodetypes');
+  update_variable_del('disqus_popular_threads_items');
+  update_variable_del('disqus_publickey');
+  update_variable_del('disqus_recent_comments_avatarsize');
+  
+  update_variable_del('disqus_recent_comments_excerpt_length');
+  update_variable_del('disqus_recent_comments_items');
+  update_variable_del('disqus_recent_comments_showavatars');
+  update_variable_del('disqus_secretkey');
+  update_variable_del('disqus_sso');
+  
+  update_variable_del('disqus_top_commenters_avatarsize');
+  update_variable_del('disqus_top_commenters_hide_mods');
+  update_variable_del('disqus_top_commenters_items');
+  update_variable_del('disqus_top_commenters_showavatars');
+  update_variable_del('disqus_use_site_logo');
+  update_variable_del('disqus_weight');
+  
+  update_variable_del('disqus_api_update');
+  update_variable_del('disqus_api_delete');
+  update_variable_del('disqus_useraccesstoken');
+}

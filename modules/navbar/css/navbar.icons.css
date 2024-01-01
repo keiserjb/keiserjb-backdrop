@@ -1,0 +1,431 @@
+/**
+ * @file navbar.icons.css
+ *
+ * Styling for navbar module icons.
+ */
+
+#navbar-administration .navbar-icon {
+  padding-left: 2.75em; /* LTR */
+  position: relative;
+}
+#navbar-administration .navbar-icon:before {
+  background-attachment: scroll;
+  background-color: transparent;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  content: '';
+  display: block;
+  height: 100%;
+  left: 0.6667em; /* LTR */
+  position: absolute;
+  top: 0;
+  width: 20px;
+}
+.no-svg #navbar-administration .navbar-icon:before {
+  background-size: auto auto;
+}
+#navbar-administration button.navbar-icon {
+  background-color: transparent;
+  border: 0;
+  font-size: 1em;
+}
+#navbar-administration .navbar-menu ul .navbar-icon {
+  padding-left: 1.3333em; /* LTR */
+}
+#navbar-administration .navbar-menu ul a.navbar-icon:before {
+  display: none;
+}
+#navbar-administration .navbar-tray-vertical .navbar-menu ul a {
+  padding-left: 2.75em; /* LTR */
+}
+#navbar-administration .navbar-tray-vertical .navbar-menu ul ul a {
+  padding-left: 3.75em; /* LTR */
+}
+#navbar-administration .navbar-tray-vertical .navbar-menu a {
+  padding-left: 2.75em; /* LTR */
+  padding-right: 4em; /* LTR */
+}
+
+/**
+ * Top level icons.
+ */
+.navbar-bar .navbar-icon-menu:before {
+  background-image: url("../icons/bebebe/hamburger.svg");
+}
+.no-svg .navbar-bar .navbar-icon-menu:before {
+  background-image: url("../icons/bebebe/hamburger.png");
+}
+.navbar-bar .navbar-icon-menu:active:before,
+.navbar-bar .navbar-icon-menu.navbar-active:before {
+  background-image: url("../icons/ffffff/hamburger.svg");
+}
+.no-svg .navbar-bar .navbar-icon-menu:active:before,
+.no-svg .navbar-bar .navbar-icon-menu.navbar-active:before {
+  background-image: url("../icons/ffffff/hamburger.png");
+}
+.navbar-bar .navbar-icon-help:before {
+  background-image: url("../icons/bebebe/questionmark-disc.svg");
+}
+.no-svg .navbar-bar .navbar-icon-help:before {
+  background-image: url("../icons/bebebe/questionmark-disc.png");
+}
+.navbar-bar .navbar-icon-help:active:before,
+.navbar-bar .navbar-icon-help.navbar-active:before {
+  background-image: url("../icons/ffffff/questionmark-disc.svg");
+}
+.no-svg .navbar-bar .navbar-icon-help:active:before,
+.no-svg .navbar-bar .navbar-icon-help.navbar-active:before {
+  background-image: url("../icons/ffffff/questionmark-disc.png");
+}
+#navbar-administration .navbar-bar .navbar-icon.element-hidden {
+  display: none;
+}
+
+/**
+ * Shortcut icon.
+ */
+.navbar-bar .navbar-icon-shortcut:before {
+  background-image: url("../icons/bebebe/star.svg");
+}
+.no-svg .navbar-bar .navbar-icon-shortcut:before {
+  background-image: url("../icons/bebebe/star.png");
+}
+.navbar-bar .navbar-icon-shortcut:active:before,
+.navbar-bar .navbar-icon-shortcut.navbar-active:before {
+  background-image: url("../icons/ffffff/star.svg");
+}
+.no-svg .navbar-bar .navbar-icon-shortcut:active:before,
+.no-svg .navbar-bar .navbar-icon-shortcut.navbar-active:before {
+  background-image: url("../icons/ffffff/star.png");
+}
+
+/**
+ * User icon.
+ */
+.navbar-bar .navbar-icon-user:before {
+  background-image: url("../icons/bebebe/person.svg");
+}
+.no-svg .navbar-bar .navbar-icon-user:before {
+  background-image: url("../icons/bebebe/person.png");
+}
+.navbar-bar .navbar-icon-user:active:before,
+.navbar-bar .navbar-icon-user.navbar-active:before {
+  background-image: url("../icons/ffffff/person.svg");
+}
+.no-svg .navbar-bar .navbar-icon-user:active:before,
+.no-svg .navbar-bar .navbar-icon-user.navbar-active:before {
+  background-image: url("../icons/ffffff/person.png");
+}
+
+/**
+ * Main menu icons.
+ */
+.navbar-icon-dashboard:before {
+  background-image: url("../icons/787878/dashboard.svg");
+}
+.no-svg .navbar-icon-dashboard:before {
+  background-image: url("../icons/787878/dashboard.png");
+}
+.navbar-icon-content:before {
+  background-image: url("../icons/787878/file.svg");
+}
+.no-svg .navbar-icon-content:before {
+  background-image: url("../icons/787878/file.png");
+}
+.navbar-icon-structure:before {
+  background-image: url("../icons/787878/orgchart.svg");
+}
+.no-svg .navbar-icon-structure:before {
+  background-image: url("../icons/787878/orgchart.png");
+}
+.navbar-icon-appearance:before {
+  background-image: url("../icons/787878/paintbrush.svg");
+}
+.no-svg .navbar-icon-appearance:before {
+  background-image: url("../icons/787878/paintbrush.png");
+}
+.navbar-icon-user-accounts:before {
+  background-image: url("../icons/787878/people.svg");
+}
+.no-svg .navbar-icon-user-accounts:before {
+  background-image: url("../icons/787878/people.png");
+}
+.navbar-icon-functionality:before {
+  background-image: url("../icons/787878/puzzlepiece.svg");
+}
+.no-svg .navbar-icon-functionality:before {
+  background-image: url("../icons/787878/puzzlepiece.png");
+}
+.navbar-icon-configuration:before {
+  background-image: url("../icons/787878/cog.svg");
+}
+.no-svg .navbar-icon-configuration:before {
+  background-image: url("../icons/787878/cog.png");
+}
+.navbar-icon-development:before {
+  background-image: url("../icons/787878/devel.svg");
+}
+.no-svg .navbar-icon-development:before {
+  background-image: url("../icons/787878/devel.png");
+}
+.navbar-icon-reports:before {
+  background-image: url("../icons/787878/barchart.svg");
+}
+.no-svg .navbar-icon-reports:before {
+  background-image: url("../icons/787878/barchart.png");
+}
+.navbar-icon-help:before {
+  background-image: url("../icons/787878/questionmark-disc.svg");
+}
+.no-svg .navbar-icon-help:before {
+  background-image: url("../icons/787878/questionmark-disc.png");
+}
+
+@media only screen and (min-width: 16.5em) {
+  #navbar-administration .navbar-bar .navbar-icon {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+    text-indent: -9999px;
+    width: 4em;
+  }
+  #navbar-administration .navbar-bar .navbar-icon:before {
+    background-size: 42% auto;
+    left: 0; /* LTR */
+    width: 100%;
+  }
+  .no-svg #navbar-administration .navbar-bar .navbar-icon:before {
+    background-size: auto auto;
+  }
+}
+
+@media only screen and (min-width: 36em) {
+  #navbar-administration .navbar-bar .navbar-icon {
+    background-position: left center; /* LTR */
+    padding-left: 2.75em; /* LTR */
+    padding-right: 1.3333em; /* LTR */
+    text-indent: 0;
+    width: auto;
+  }
+  #navbar-administration .navbar-bar .navbar-icon:before {
+    background-size: 100% auto;
+    left: 0.6667em; /* LTR */
+    width: 20px;
+  }
+  .no-svg #navbar-administration .navbar-bar .navbar-icon:before {
+    background-size: auto auto;
+  }
+}
+
+/**
+ *  Accessibility/focus
+ */
+#navbar-administration .navbar-tab a {
+  border-left: 2px solid transparent; /* LTR */
+}
+#navbar-administration .navbar-tab a:focus {
+  outline: none;
+  border-color: #ddd;
+}
+#navbar-administration .navbar-lining button:focus {
+  outline: none;
+}
+#navbar-administration .navbar-tray-horizontal a,
+#navbar-administration .navbar-box a {
+  border-left: 2px solid transparent; /* LTR */
+}
+#navbar-administration .navbar-tray-horizontal a:focus,
+#navbar-administration .navbar-box a:focus {
+  outline: none;
+  text-decoration: none;
+}
+#navbar-administration .navbar-box a:hover:focus {
+  text-decoration: underline;
+}
+#navbar-administration .navbar-icon.navbar-handle:focus {
+  outline: none;
+}
+
+/**
+ * Handle.
+ */
+#navbar-administration .navbar-icon.navbar-handle {
+  width: 4em;
+  text-indent: -9999px;
+}
+#navbar-administration .navbar-icon.navbar-handle:before {
+  left: 1.6667em; /* LTR */
+}
+.no-svg #navbar-administration .navbar-icon.navbar-handle:before {
+  left: 1.6667em; /* LTR */
+}
+#navbar-administration .navbar-icon.navbar-handle.open:before {
+  background-image: url("../icons/0074bd/arrow-down.svg");
+}
+.no-svg #navbar-administration .navbar-icon.navbar-handle.open:before {
+  background-image: url("../icons/0074bd/arrow-down.png");
+}
+#navbar-administration .navbar-menu .navbar-menu .navbar-icon.navbar-handle.open:before {
+  background-image: url("../icons/0074bd/arrow-down.svg");
+  background-size: 75%;
+}
+.no-svg #navbar-administration .navbar-menu .navbar-menu .navbar-icon.navbar-handle.open:before {
+  background-image: url("../icons/0074bd/arrow-down.png");
+  background-size: auto auto;
+}
+#navbar-administration .navbar-icon-escape-admin:before {
+  background-image: url("../icons/bebebe/chevron-disc-left.svg");
+}
+.no-svg #navbar-administration .navbar-icon-escape-admin:before {
+  background-image: url("../icons/bebebe/chevron-disc-left.png");
+}
+
+/**
+ * Orientation toggle.
+ */
+#navbar-administration .navbar-toggle-orientation button {
+  height: 16px;
+  padding: 0;
+  text-indent: -999em;
+  width: 20px;
+}
+#navbar-administration .navbar-toggle-orientation button:before {
+  left: 0; /* LTR */
+}
+/**
+ * In order to support a hover effect on the SVG images, while also supporting
+ * RTL text direction and no SVG support, this little icon requires some very
+ * specific targeting, setting and unsetting.
+ */
+#navbar-administration .navbar-toggle-orientation [value="vertical"]:before {
+  background-image: url("../icons/bebebe/push-left.svg"); /* LTR */
+}
+#navbar-administration .navbar-toggle-orientation [value="vertical"]:hover:before {
+  background-image: url("../icons/787878/push-left.svg"); /* LTR */
+}
+.no-svg #navbar-administration .navbar-toggle-orientation [value="vertical"]:before {
+  background-image: url("../icons/bebebe/push-left.png"); /* LTR */
+}
+.no-svg #navbar-administration .navbar-toggle-orientation [value="vertical"]:hover:before {
+  background-image: url("../icons/787878/push-left.png"); /* LTR */
+}
+
+#navbar-administration .navbar-toggle-orientation [value="horizontal"]:before {
+  background-image: url("../icons/bebebe/push-up.svg");
+}
+#navbar-administration .navbar-toggle-orientation [value="horizontal"]:hover:before {
+  background-image: url("../icons/787878/push-up.svg");
+}
+.no-svg #navbar-administration .navbar-toggle-orientation [value="horizontal"]:before {
+  background-image: url("../icons/bebebe/push-up.png");
+}
+.no-svg #navbar-administration .navbar-toggle-orientation [value="horizontal"]:hover:before {
+  background-image: url("../icons/787878/push-up.png");
+}
+
+/**
+ * RTL
+ */
+
+[dir="rtl"] #navbar-administration .navbar-icon {
+  padding-left: 1.3333em;
+  padding-right: 2.75em;
+}
+[dir="rtl"] #navbar-administration .navbar-icon:before {
+  left: auto;
+  right: 0.6667em;
+}
+[dir="rtl"] #navbar-administration .navbar-menu ul .navbar-icon {
+  padding-left: 0;
+  padding-right: 1.3333em;
+}
+[dir="rtl"] #navbar-administration .navbar-tray-vertical .navbar-menu ul a {
+  padding-left: 35px;
+  padding-right: 2.75em;
+}
+[dir="rtl"] #navbar-administration .navbar-tray-vertical .navbar-menu ul ul a {
+  padding-left: 35px;
+  padding-right: 3.75em;
+}
+[dir="rtl"] #navbar-administration .navbar-tray-vertical .navbar-menu a {
+  padding-left: 4em;
+  padding-right: 2.75em;
+}
+/**
+ * Top level icons.
+ */
+[dir="rtl"] #navbar-administration .navbar-icon-escape-admin:before {
+  background-image: url("../icons/bebebe/chevron-disc-right.svg");
+}
+[dir="rtl"] .no-svg #navbar-administration .navbar-icon-escape-admin:before {
+  background-image: url("../icons/bebebe/chevron-disc-right.png");
+}
+
+@media only screen and (min-width: 16.5em) {
+  [dir="rtl"] #navbar-administration .navbar-bar .navbar-icon:before {
+    left: auto;
+    right: 0;
+  }
+}
+
+@media only screen and (min-width: 36em) {
+  [dir="rtl"] #navbar-administration .navbar-bar .navbar-icon {
+    background-position: right center;
+    padding-left: 1.3333em;
+    padding-right: 2.75em;
+  }
+  [dir="rtl"] #navbar-administration .navbar-bar .navbar-icon:before {
+    left: auto;
+    right: 0.6667em;
+  }
+}
+
+/**
+ *  Accessibility/focus
+ */
+[dir="rtl"] #navbar-administration .navbar-tab a {
+  border-left: none;
+  border-right: 2px solid transparent;
+}
+[dir="rtl"] #navbar-administration .navbar-tray-horizontal a,
+[dir="rtl"] #navbar-administration .navbar-box a {
+  border-left: none;
+  border-right: 2px solid transparent;
+}
+
+/**
+ * Handle.
+ */
+[dir="rtl"] #navbar-administration .navbar-icon.navbar-handle:before {
+  left: auto;
+  right: 1.6667em;
+}
+[dir="rtl"] .no-svg #navbar-administration .navbar-icon.navbar-handle:before {
+  left: auto;
+  right: 1.6667em;
+}
+
+/**
+ * Orientation toggle.
+ */
+[dir="rtl"] #navbar-administration .navbar-toggle-orientation button:before {
+  left: auto;
+  right: 0;
+}
+[dir="rtl"] #navbar-administration .navbar-toggle-orientation .navbar-icon {
+  padding-right: 0;
+}
+[dir="rtl"] #navbar-administration .navbar-toggle-orientation [value="vertical"]:before {
+  background-image: url("../icons/bebebe/push-right.svg");
+}
+[dir="rtl"] #navbar-administration .navbar-toggle-orientation [value="vertical"]:hover:before {
+  background-image: url("../icons/787878/push-right.svg");
+}
+[dir="rtl"] .no-svg #navbar-administration .navbar-toggle-orientation [value="vertical"]:before {
+  background-image: url("../icons/bebebe/push-right.png");
+}
+[dir="rtl"] .no-svg #navbar-administration .navbar-toggle-orientation [value="vertical"]:hover:before {
+  background-image: url("../icons/787878/push-right.png");
+}

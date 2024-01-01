@@ -1,0 +1,11 @@
+name = Views B Grid
+description = Provides ability to put Views content in responsive columns that matches the grid columns in Backdrop core.
+backdrop = 1.x
+type = module
+package = Views
+dependencies[] = views
+
+; Added by Backdrop CMS packaging script on 2020-10-08
+project = views_b_grid
+version = 1.x-1.0.0
+timestamp = 1602167501

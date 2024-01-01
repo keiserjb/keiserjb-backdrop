@@ -1,0 +1,16 @@
+[NavbarShortcutLinksTestCase]
+name = Navbar shortcut link functionality
+description = Create, view, edit, delete, and change shortcut links.
+group = Menu
+file = navbar.test
+
+[NavbarShortcutSetsTestCase]
+name = Navbar shortcut set functionality
+description = Create, view, edit, delete, and change shortcut sets.
+group = Menu
+file = navbar.test
+
+; Added by Backdrop CMS packaging script on 2022-02-21
+project = navbar
+version = 1.x-1.8.0
+timestamp = 1645449013

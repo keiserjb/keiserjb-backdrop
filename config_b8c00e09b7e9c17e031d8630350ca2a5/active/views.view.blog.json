@@ -85,10 +85,11 @@
                 },
                 "title": "Blog",
                 "row_options": {
-                    "build_mode": "teaser",
-                    "title": true,
-                    "links": true,
-                    "comments": false
+                    "relationship": "none",
+                    "view_mode": "teaser",
+                    "title": 1,
+                    "links": 0,
+                    "comments": 0
                 }
             }
         },
@@ -137,35 +138,30 @@
                     "options": []
                 },
                 "pager": {
-                    "type": "full",
+                    "type": "some",
                     "options": {
-                        "items_per_page": "3",
-                        "offset": "0",
-                        "id": "0",
-                        "total_pages": "",
-                        "quantity": "9",
-                        "tags": {
-                            "first": "« first",
-                            "previous": "‹ previous",
-                            "next": "next ›",
-                            "last": "last »"
-                        },
-                        "expose": {
-                            "items_per_page": 0,
-                            "items_per_page_label": "Items per page",
-                            "items_per_page_options": "5, 10, 20, 40, 60",
-                            "items_per_page_options_all": 0,
-                            "items_per_page_options_all_label": "- All -",
-                            "offset": 0,
-                            "offset_label": "Offset"
-                        }
+                        "items_per_page": "5",
+                        "offset": "0"
                     }
                 },
                 "defaults": {
                     "pager": false,
-                    "pager_options": false
+                    "pager_options": false,
+                    "style_plugin": false,
+                    "style_options": false,
+                    "row_plugin": false,
+                    "row_options": false
                 },
-                "pager_options": null
+                "pager_options": null,
+                "style_plugin": "default",
+                "style_options": [],
+                "row_plugin": "fields",
+                "row_options": {
+                    "default_field_elements": 1,
+                    "inline": [],
+                    "separator": "",
+                    "hide_empty": 0
+                }
             }
         }
     }

@@ -5,7 +5,7 @@
     "title": "Location",
     "description": "",
     "body": {
-        "value": "<p>2308 W 7th St<br />\r\nMuncie, IN 47302<br />\r\n904-910-4845<br />\r\n<a href=\"mailto:keiserjb@gmail.com\">keiserjb@gmail.com</a></p>\r\n",
+        "value": "<p>\r\n    2308 W 7th St<br>\r\n    Muncie, IN 47302<br>\r\n    904-910-4845<br>\r\n    <a href=\"mailto:keiserjb@gmail.com\">keiserjb@gmail.com</a>\r\n</p>\r\n<p>\r\n    <a href=\"https://www.drupal.org/u/keiserjb\" target=\"_blank\">keiserjb</a> on Drupal.org\r\n</p>",
         "format": "filtered_html"
     },
     "default_langcode": "und"

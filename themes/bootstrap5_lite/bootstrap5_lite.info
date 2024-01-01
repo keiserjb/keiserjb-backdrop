@@ -1,0 +1,19 @@
+name = Bootstrap 5 Lite
+description = Built to use Bootstrap; a sleek, intuitive, and powerful front-end framework for faster and easier web development.
+backdrop = 1.x
+type = theme
+
+settings[bootstrap5_lite_cdn] = 5.0.1
+settings[bootstrap5_lite_bootswatch] = ""
+settings[bootstrap5_lite_container] = container
+settings[bootstrap5_lite_navbar_position] = static-top
+settings[bootstrap5_lite_navbar_menu_position] = navbar-left
+
+tags[] = Bootstrap
+
+stylesheets[all][] = css/style.css
+
+; Added by Backdrop CMS packaging script on 2023-09-10
+project = bootstrap5_lite
+version = 1.x-1.0.1
+timestamp = 1694368578

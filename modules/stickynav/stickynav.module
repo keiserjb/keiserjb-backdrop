@@ -1,0 +1,105 @@
+<?php
+/**
+ * @file
+ * Make a menu or some other element on the page stick on top when you scroll.
+ * down
+ */
+
+/**
+ * Implements hook_init().
+ */
+function stickynav_init() {
+  global $user, $theme;
+  $config = config('stickynav.settings');
+
+  // Check if user has an exclusion role.
+  $excluded_roles = $config->get('stickynav-roles-' . $theme);
+  if (isset($excluded_roles) && array_intersect($excluded_roles, $user->roles)) {
+    return;
+  }
+
+  // Check if the library should be loaded on the current path and theme.
+  $show_on_path = stickynav_check_path($config->get('pathvisibility'), $config->get('paths'));
+  if (!$show_on_path) {
+    return;
+  }
+
+  $selector = $config->get('stickynav-selector-' . $theme);
+  $offset_selector = $config->get('stickynav-offset-selector-' . $theme);
+  $custom_offset = $config->get('stickynav-custom-offset' . $theme);
+  // Will only add the sticky nav assets if the theme and selector are set.
+  if ($config->get('stickynav-enabled-' . $theme) && trim($selector)) {
+    backdrop_add_css(backdrop_get_path('module', 'stickynav') .
+      '/css/stickynav.css');
+    backdrop_add_js(backdrop_get_path('module', 'stickynav') . '/js/stickynav.js');
+    $settings = array(
+      'stickynav' => array(
+        'selector' => check_plain($selector),
+        'offsets' => array(
+          'selector' => check_plain($offset_selector),
+          'custom_offset' => check_plain($custom_offset),
+        ),
+      ),
+    );
+    backdrop_add_js($settings, 'setting');
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function stickynav_permission() {
+  return array(
+    'administer stickynav' => array(
+      'title' => t('Administer Sticky Nav'),
+      'description' => t('Permission to activate and manage Sticky Nav.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function stickynav_menu() {
+  $items['admin/config/user-interface/stickynav'] = array(
+    'title' => 'Sticky Nav',
+    'description' => 'Settings for sticky navigation on your website',
+    'page callback' => 'backdrop_get_form',
+    'page arguments' => array('stickynav_admin_form'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer stickynav'),
+    'file' => 'stickynav.admin.inc',
+  );
+  return $items;
+}
+
+/**
+  * Implements hook_config_info().
+  */
+function stickynav_config_info() {
+  $prefixes['stickynav.settings'] = array(
+    'label' => t('Sticky Nav'),
+    'group' => t('Configuration'),
+  );
+  return $prefixes;
+}
+
+/**
+ * Check if the library should be loaded on the current page.
+ *
+ * @see https://api.backdropcms.org/api/backdrop/core%21modules%21layout%21plugins%21access%21path_layout_access.inc/function/PathLayoutAccess%3A%3AcheckAccess/1
+ */
+function stickynav_check_path($visibility, $pages) {
+  $base_path = $_GET['q'];
+  $path = backdrop_get_path_alias($base_path);
+  $page_match = backdrop_match_path($path, $pages);
+
+  if ($path !== $base_path) {
+    $page_match = $page_match || backdrop_match_path($base_path, $pages);
+  }
+
+  if (!$visibility) {
+    $page_match = !$page_match;
+  }
+  return $page_match;
+}

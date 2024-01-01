@@ -33,7 +33,9 @@
         "scheduling_enabled": true,
         "hidden_path": false,
         "language": 0,
-        "node_permissions": true
+        "node_permissions": true,
+        "draft_enabled": 1,
+        "skip_required": 0
     },
     "base": "node_content",
     "module": "node",

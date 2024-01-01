@@ -1,0 +1,12 @@
+{
+    "_config_name": "navbar.settings",
+    "navbar_shortcut_max_slots": 7,
+    "components": [
+        "navbar.shortcut",
+        "navbar.user",
+        "navbar.user_count",
+        "navbar.alert",
+        "navbar.search"
+    ],
+    "navbar_theme": "light"
+}

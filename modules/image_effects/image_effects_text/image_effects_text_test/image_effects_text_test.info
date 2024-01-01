@@ -1,0 +1,15 @@
+name = Image Effects Text test
+description = Defines image styles that test the text effect.
+backdrop = 1.x
+package = Media
+type = module
+
+dependencies[] = image
+dependencies[] = image_effects_text
+dependencies[] = image_effects_canvasactions
+dependencies[] = system_stream_wrapper
+
+; Added by Backdrop CMS packaging script on 2023-09-25
+project = image_effects
+version = 1.x-1.14.0
+timestamp = 1695668698

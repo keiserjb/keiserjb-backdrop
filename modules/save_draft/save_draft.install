@@ -1,0 +1,68 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the save draft module.
+ */
+
+/**
+ * Implements hook_install().
+ *
+ * Enable Save draft by default on each content type.
+ */
+function save_draft_install() {
+  foreach (node_type_get_types() as $type) {
+    $config = config('node.type.' . $type->type);
+    $config->set('settings.draft_enabled', 1);
+    $config->set('settings.skip_required', 0);
+    $config->save();
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function save_draft_uninstall() {
+  foreach (node_type_get_types() as $type) {
+    $config = config('node.type.' . $type->type);
+    $config->clear('settings.draft_enabled');
+    $config->clear('settings.skip_required');
+    $config->save();
+  }
+}
+
+/**
+ * Update config so variables are stored in the node type config.
+ */
+function save_draft_update_1000() {
+  // Remove initial config for the module and replace with node type config
+  $config = config('save_draft.settings');
+  if ($config) {
+    foreach (node_type_get_types() as $type) {
+      $setting['draft_enabled'] = $config->get('enabled_' . $type->type);
+      $setting['skip_required'] = $config->get('skip_required_' . $type->type);
+      config_set('node.type.' . $type->type, 'settings.draft_enabled', $setting['draft_enabled']);
+      config_set('node.type.' . $type->type, 'settings.skip_required', $setting['skip_required']);
+      $config->delete('save_draft.settings');
+    }
+    $config->save();
+  }
+}
+
+/**
+ * Upgrade path from Drupal 7 variables.
+ */
+function save_draft_update_1001() {
+  foreach (node_type_get_types() as $type) {
+    // Migrate variables to config.
+    $config = config('node.type.' . $type->type);
+    $config->set('settings.draft_enabled', update_variable_get('save_draft_enabled_' . $type->type, 1));
+    $config->set('settings.skip_required', update_variable_get('save_draft_skip_required_' . $type->type, 0));
+    $config->save();
+    
+    // Delete variables.
+    update_variable_del('save_draft_enabled_' . $type->type);
+    update_variable_del('save_draft_skip_required_' . $type->type);
+    update_variable_del('save_draft_show_message_' . $type->type);
+  }
+}

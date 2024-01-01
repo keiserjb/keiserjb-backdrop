@@ -1,0 +1,9 @@
+{
+    "_config_name": "paragraphs.type.body",
+    "bundle": "body",
+    "name": "Body",
+    "label": "Body",
+    "description": "",
+    "locked": 1,
+    "allow_unpublish": 1
+}
