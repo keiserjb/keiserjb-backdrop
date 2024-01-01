@@ -1,0 +1,91 @@
+<?php
+/**
+ * @file
+ * Allows setting a preferred text format per text field.
+ */
+
+/**
+ * Implements hook_form_FORM_ID_alter() for field_ui_field_edit_form.
+ */
+function preferred_text_format_form_field_ui_field_edit_form_alter(&$form, &$form_state, $form_id) {
+  if (!empty($form['instance']['settings']['text_processing'])) {
+    // Remove 'user selects text format' from the Text Processing option (as it
+    // might no longer be the case).
+    $form['instance']['settings']['text_processing']['#options'][1] = t('Filtered text');
+
+    // Make sure the preferred_text_format field sits directly beneath the
+    // text_processing field.
+    if (!isset($form['instance']['settings']['text_processing']['#weight'])) {
+      $form['instance']['settings']['text_processing']['#weight'] = 0;
+      $weight = 0;
+    }
+    else {
+      $weight = $form['instance']['settings']['text_processing']['#weight'];
+    }
+
+    // Get options for the preferred_text_format field.
+    $options = array();
+    foreach (filter_formats() as $format) {
+      $options[$format->format] = $format->name;
+    }
+
+    // Add preferred_text_format field.
+    $form['instance']['settings']['preferred_text_format'] = array(
+      '#type' => 'select',
+      '#title' => t('Preferred text format'),
+      '#description' => t("Choose the text format that should be used for this field. Set to 'None' to allow the user to select the text format.<br>Note that other text formats may still be available to the user if they don't have access to this one, or if a different text format in already in use."),
+      '#options' => $options,
+      '#default_value' => isset($form['#instance']['settings']['preferred_text_format']) ? $form['#instance']['settings']['preferred_text_format'] : '',
+      '#empty_value' => '',
+      '#weight' => $weight,
+      '#states' => array(
+        'visible' => array(
+          'input[name="instance[settings][text_processing]"]' => array('value' => 1),
+        ),
+      ),
+    );
+  }
+}
+
+/**
+ * Implements hook_element_info_alter().
+ */
+function preferred_text_format_element_info_alter(&$type) {
+  // Add custom process callback function.
+  if (isset($type['text_format'])) {
+    $type['text_format']['#process'][] = 'preferred_text_format_process';
+  }
+}
+
+/**
+ * Callback function for processing the text_format element.
+ */
+function preferred_text_format_process($element, &$form_state, $form) {
+  global $user;
+
+  // Get preferred format.
+  $instance = field_info_instance($element['#entity_type'], $element['#field_name'], $element['#bundle']);
+  $preferred_format = $instance['settings']['preferred_text_format'];
+
+  // Don't do anything if there's no preferred format, or if the user doesn't
+  // have access to the preferred format.
+  if (!empty($preferred_format) && in_array($preferred_format, filter_formats($user))) {
+    // Get default (current) format.
+    $default_format = $element['#format'];
+
+    // Remove all formats other than the preferred and default ones.
+    foreach (array_keys($element['format']['format']['#options']) as $format) {
+      if ($format != $preferred_format && $format != $default_format) {
+        unset($element['format']['format']['#options'][$format]);
+      }
+    }
+
+    // Remove the default format if the field is empty.
+    if (empty($element['#default_value'])) {
+      unset($element['format']['format']['#options'][$default_format]);
+    }
+  }
+
+  return $element;
+}
+
