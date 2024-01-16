@@ -7,7 +7,7 @@
     "description": "Enter a comma-separated list of words to describe your content.",
     "widget": {
         "type": "taxonomy_autocomplete",
-        "weight": -4,
+        "weight": "3",
         "settings": {
             "size": 60,
             "autocomplete_path": "taxonomy/autocomplete",
@@ -17,18 +17,24 @@
     },
     "display": {
         "default": {
+            "label": "abovec",
             "type": "taxonomy_term_reference_link",
-            "weight": 10,
-            "label": "hidden",
-            "settings": [],
+            "weight": "10",
+            "settings": {
+                "field_wrappers": {
+                    "field_wrapper": "-",
+                    "label_wrapper": "-",
+                    "item_wrapper": "-",
+                    "field_wrapper_class": ""
+                }
+            },
             "module": "taxonomy"
         },
         "teaser": {
-            "type": "taxonomy_term_reference_link",
-            "weight": 10,
             "label": "hidden",
-            "settings": [],
-            "module": "taxonomy"
+            "type": "hidden",
+            "weight": "2",
+            "settings": []
         }
     },
     "required": 0,

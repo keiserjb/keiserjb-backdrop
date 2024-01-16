@@ -13,6 +13,7 @@
         "max_dimensions": "",
         "min_dimensions": "",
         "alt_field": 1,
+        "alt_field_required": 1,
         "title_field": 1,
         "orientate": 0,
         "max_resolution": "",
@@ -21,7 +22,7 @@
         "user_register_form": false
     },
     "widget": {
-        "weight": -1,
+        "weight": "1",
         "type": "image_image",
         "module": "image",
         "active": 1,
@@ -35,23 +36,37 @@
         "default": {
             "label": "hidden",
             "type": "image",
+            "weight": "-1",
             "settings": {
                 "image_style": "large",
                 "image_link": "",
-                "image_float": ""
+                "image_float": "",
+                "image_load": "auto",
+                "field_wrappers": {
+                    "field_wrapper": "-",
+                    "label_wrapper": "-",
+                    "item_wrapper": "-",
+                    "field_wrapper_class": ""
+                }
             },
-            "weight": -1,
             "module": "image"
         },
         "teaser": {
             "label": "hidden",
             "type": "image",
+            "weight": "0",
             "settings": {
                 "image_style": "medium",
                 "image_link": "content",
-                "image_float": "right"
+                "image_float": "right",
+                "image_load": "auto",
+                "field_wrappers": {
+                    "field_wrapper": "-",
+                    "label_wrapper": "-",
+                    "item_wrapper": "-",
+                    "field_wrapper_class": ""
+                }
             },
-            "weight": -1,
             "module": "image"
         }
     },

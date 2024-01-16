@@ -27,11 +27,11 @@
         "max_dimensions": "",
         "min_dimensions": "",
         "alt_field": 1,
+        "alt_field_required": 1,
         "title_field": 1,
         "orientate": 0,
         "default_image": "",
-        "user_register_form": false,
-        "alt_field_required": 0
+        "user_register_form": false
     },
     "display": {
         "default": {

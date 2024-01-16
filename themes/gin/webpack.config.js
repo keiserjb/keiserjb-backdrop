@@ -21,6 +21,7 @@ module.exports = {
     'sidebar': ['./js/sidebar.js'],
     'sticky': ['./js/sticky.js'],
     'tabs': ['./js/tabs.js'],
+    'tableheader': ['./js/tableheader.js'],
     // ################################################
     // CSS
     // ################################################
@@ -35,8 +36,8 @@ module.exports = {
     'components/coffee': ['./styles/components/coffee.scss'],
     'components/contextual_links': ['./styles/components/contextual_links.scss'],
     'components/description_toggle': ['./styles/components/description_toggle.scss'],
-    'components/gin_dashboard': ['./styles/components/dashboard.scss'],
-    'components/dialog': ['./styles/components/dialog.scss'],
+    'components/gin_dashboard': ['./styles/components/gin_dashboard.scss'],
+    'components/gin_dialog': ['./styles/components/gin_dialog.scss'],
     'components/edit_form': ['./styles/components/edit_form.scss'],
     'components/inline_entity_form': ['./styles/components/inline_entity_form.scss'],
     'components/project_installer': ['./styles/components/project_installer.scss'],
@@ -46,6 +47,7 @@ module.exports = {
     'components/revisions': ['./styles/components/revisions.scss'],
     'components/settings': ['./styles/components/settings.scss'],
     'components/sidebar': ['./styles/components/sidebar.scss'],
+    'components/tableselect': ['./styles/components/tableselect.scss'],
     'components/tabs': ['./styles/components/tabs.scss'],
     'components/tableselect': ['./styles/components/tableselect.scss'],
     'components/toolbar_secondary': ['./styles/components/toolbar_secondary.scss'],

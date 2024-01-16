@@ -6,7 +6,7 @@ type = module
 
 dependencies[] = field
 dependencies[] = system (>1.13.0)
-; Added by Backdrop CMS packaging script on 2022-08-22
+; Added by Backdrop CMS packaging script on 2024-01-08
 project = field_wrappers
-version = 1.x-1.1.2
-timestamp = 1661209495
+version = 1.x-1.1.3
+timestamp = 1704741787

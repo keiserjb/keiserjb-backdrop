@@ -76,7 +76,7 @@ function gin_menu_local_action($variables) {
     'button-primary',
   );
   if (!empty($link['localized_options']['attributes']['class']) && is_array($link['localized_options']['attributes']['class'])) {
-    $link['localized_options']['attributes']['class'][] += $classes;
+    $link['localized_options']['attributes']['class'] += $classes;
   }
   else {
     $link['localized_options']['attributes']['class'] = $classes;
@@ -526,4 +526,14 @@ function gin_pager_link($variables) {
   // @see http://drupal.org/node/1410574
   $attributes['href'] = url($_GET['q'], array('query' => $query));
   return '<a' . backdrop_attributes($attributes) . '>' . check_plain($text) . '</a>';
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function gin_views_pre_render(&$view) {
+  if ($view->name == 'image_library') {
+    $view->field["uri"]->options["image_style"] = 'medium';
+    $view->field["uri"]->options["thumbnail_style"] = 'medium';
+  }
 }

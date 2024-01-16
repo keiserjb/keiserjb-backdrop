@@ -8,6 +8,7 @@ stylesheets[all][] = dist/css/theme/variables.css
 ; stylesheets[all][] = dist/css/theme/accent.css
 stylesheets[all][] = dist/css/theme/font.css
 stylesheets[all][] = dist/css/base/gin.css
+stylesheets[all][] = dist/css/components/gin_dialog.css
 ; stylesheets[all][] = dist/css/component/ckeditor.css
 stylesheets[all][] = dist/css/components/breadcrumb.css
 stylesheets[all][] = dist/css/components/tabs.css
@@ -35,7 +36,7 @@ settings[preset_accent_color] = blue
 settings[preset_focus_color] = gin
 settings[layout_density] = default
 
-; Added by Backdrop CMS packaging script on 2023-12-22
+; Added by Backdrop CMS packaging script on 2024-01-10
 project = gin
-version = 1.x-3.0.0-alpha7
-timestamp = 1703272329
+version = 1.x-3.0.0-alpha9
+timestamp = 1704928193

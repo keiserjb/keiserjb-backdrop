@@ -25,7 +25,7 @@
     },
     "display": {
         "default": {
-            "label": "hidden",
+            "label": "abovec",
             "type": "taxonomy_term_reference_link",
             "weight": "3",
             "settings": {

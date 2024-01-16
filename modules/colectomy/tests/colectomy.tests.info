@@ -1,0 +1,10 @@
+[ColectomyTestCase]
+name = Colectomy
+description = Ensures the labels of fields appear without colons.
+group = Colectomy
+file = colectomy.test
+
+; Added by Backdrop CMS packaging script on 2023-12-21
+project = colectomy
+version = 1.x-1.0.0
+timestamp = 1703153492
