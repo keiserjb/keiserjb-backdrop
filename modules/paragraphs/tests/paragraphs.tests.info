@@ -10,7 +10,7 @@ description = Test status functionality for Paragraphs bundles and items.
 group = Paragraphs
 file = paragraphs.test
 
-; Added by Backdrop CMS packaging script on 2023-08-22
+; Added by Backdrop CMS packaging script on 2024-02-16
 project = paragraphs
-version = 1.x-1.2.4
-timestamp = 1692715149
+version = 1.x-1.2.5
+timestamp = 1708113533

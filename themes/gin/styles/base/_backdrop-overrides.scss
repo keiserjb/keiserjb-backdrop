@@ -1,5 +1,8 @@
 /* Backdrop system overrides, Claro insertions, etc. */
 
+// Periodically it may be good to pull out sections that got too large and
+// deserve their own files.
+
 // Default variables (may need adjustment later).
 :root {
   --line-height: 1.5;
@@ -692,4 +695,43 @@ fieldset.vbo-fieldset-select-all {
       display: inline-block;
     }
   }
+}
+
+/* Feeds UI */
+div.feeds-container.plain {
+  background-color: transparent;
+  border-color: var(--gin-border-color);
+}
+div.left-bar {
+  border-color: var(--gin-border-color);
+}
+
+/**
+ * Diff display. Used in configuration management sync.
+ */
+ins.diffchange {
+  background-color: var(--gin-bg-green-light);
+  tr:hover & {
+    background-color: var(--gin-bg-green-light);
+    color: var(--gin-color-green);
+  }
+}
+
+del.diffchange {
+  background-color: var(--gin-bg-danger-light);
+  tr:hover & {
+    background-color: var(--gin-bg-danger-light);
+    color: var(--gin-color-danger);
+  }
+}
+
+.diff-addedline,
+tr.odd .diff-addedline,
+tr:hover .diff-addedline {
+  background-color: var(--gin-bg-green-light);
+}
+.diff-deletedline,
+tr.odd .diff-deletedline,
+tr:hover .diff-deletedline {
+  background-color: var(--gin-bg-danger-light);
 }

@@ -33,6 +33,7 @@ module.exports = {
     'components/breadcrumb': ['./styles/components/breadcrumb.scss'],
     'components/chosenjs': ['./styles/components/chosenjs.scss'],
     'components/ckeditor': ['./styles/components/ckeditor.scss'],
+    'components/ckeditor5': ['./styles/components/ckeditor5.scss'],
     'components/coffee': ['./styles/components/coffee.scss'],
     'components/contextual_links': ['./styles/components/contextual_links.scss'],
     'components/description_toggle': ['./styles/components/description_toggle.scss'],
@@ -52,6 +53,8 @@ module.exports = {
     'components/tableselect': ['./styles/components/tableselect.scss'],
     'components/toolbar_secondary': ['./styles/components/toolbar_secondary.scss'],
     'components/webform': ['./styles/components/webform.scss'],
+    'components/workbench': ['./styles/components/workbench.scss'],
+    'components/workspaces': ['./styles/components/workspaces.scss'],
     // Layout
     'layout/gin_admin_bar': ['./styles/layout/gin_admin_bar.scss'],
     // Theme

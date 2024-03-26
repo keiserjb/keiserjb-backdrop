@@ -1261,7 +1261,7 @@ function backup_migrate_ui_manual_restore_form_submit($form, &$form_state) {
   $validators = array('file_validate_extensions' => array('gz zip sql mysql bz bz2'));
 
   $values = $form_state['values'];
-  if ($values['from'] == 'upload' && $file = file_save_upload('backup_migrate_restore_upload', $validators)) {
+  if ($values['from'] == 'upload' && $file = file_save_upload('backup_migrate_restore_upload', $validators, FALSE, FILE_EXISTS_REPLACE)) {
     backup_migrate_perform_restore('upload', $file->uri, $values);
   }
   else if ($values['from'] == 'saved' && $file = $values['file']) {
@@ -1968,4 +1968,20 @@ function backup_migrate_array_name_value($a) {
 function _backup_migrate_is_valid_memory_limit($value) {
   $test = preg_match('/^(-1|[0-9]+|[0-9]*(\.[0-9]+)?[mg])$/i', $value);
   return $test;
+}
+
+/**
+ * Implements hook_autoload_info().
+ * 
+ * TODO: Most classes are loaded through include_once since this is the way
+ * this was done in D7. Those should eventually be replaced by including them
+ * in the autoload hook below. For now, only the needed ones are included.
+ */
+function backup_migrate_autoload_info() {
+  return array(
+    'backup_migrate_files_destination_archivesource' => 'includes/sources.archivesource.inc',
+    'BackupMigrateFilesDestinationDbConfigSource' => 'includes/BackupMigrateFilesDestinationDbConfigSource.inc',
+    'backup_migrate_destination_filesource' => 'includes/sources.filesource.inc',
+    'BackupMigrateFilesDestinationConfigSource' => 'includes/BackupMigrateFilesDestinationConfigSource.inc',
+  );
 }
