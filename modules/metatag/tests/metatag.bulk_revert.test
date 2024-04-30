@@ -4,6 +4,8 @@
  * Tests for the Metatag module to ensure the bulk revert functionality works
  */
 
+include_once __DIR__ . '/metatag.helper.test';
+
 class MetatagBulkRevertTest extends MetatagTestHelper {
   /**
    * {@inheritdoc}
@@ -43,7 +45,7 @@ class MetatagBulkRevertTest extends MetatagTestHelper {
     // Confirm each of the languages has a checkbox.
     $this->assertFieldByName("languages[" . LANGUAGE_NONE . "]");
     foreach (language_list() as $language) {
-      $this->assertFieldByName("languages[{$language->language}]");
+      $this->assertFieldByName("languages[{$language->langcode}]");
     }
   }
 

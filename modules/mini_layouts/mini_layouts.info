@@ -8,9 +8,9 @@ tags[] = Site Architecture
 version = BACKDROP_VERSION
 backdrop = 1.x
 
-configure = admin/structure/mini_layouts
+configure = admin/structure/mini-layouts
 
-; Added by Backdrop CMS packaging script on 2022-05-17
+; Added by Backdrop CMS packaging script on 2024-04-10
 project = mini_layouts
-version = 1.x-1.0.1
-timestamp = 1652832650
+version = 1.x-1.0.2
+timestamp = 1712789109

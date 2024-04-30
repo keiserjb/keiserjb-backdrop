@@ -222,10 +222,10 @@
               );
 
               // Update the slider when the fields are updated.
-              $min.blur(function () {
+              $min.on("blur", function () {
                 befUpdateSlider($(this), 0, sliderOptions);
               });
-              $max.blur(function () {
+              $max.on("blur", function () {
                 befUpdateSlider($(this), 1, sliderOptions);
               });
             }
@@ -270,7 +270,7 @@
               );
 
               // Update the slider when the field is updated.
-              $input.blur(function () {
+              $input.on("blur", function () {
                 befUpdateSlider($(this), null, sliderOptions);
               });
             }
@@ -320,12 +320,13 @@
 
         // Attach selection toggle and form submit on click to each link.
         $(this).find('a').on('click', function (event) {
+          var $active_text = $(this).text();
           var $wrapper = $(this).parents('.bef-select-as-links');
           var $options = $wrapper.find('select option');
           // We have to prevent the page load triggered by the links.
           event.preventDefault();
           event.stopPropagation();
-          // Un select if previously seleted toogle is selected.
+          // Unselect if previously selected toggle is selected.
           var link_text = $(this).text();
           removed = '';
           $($options).each(function (i) {
@@ -349,13 +350,8 @@
           $wrapper.parents('form').find('.views-submit-button *[type=submit]').trigger('click');
         });
 
-        $('.bef-select-as-link').ready(function () {
-          $('.bef-select-as-link').find('a').removeClass('active');
-          $('.bef-new-value').each(function (i, val) {
-            id = $(this).parent().find('select').attr('id') + '-' + $(this).val();
-            $('#' + id).find('a').addClass('active');
-          });
-        });
+        // Announce the current filter to screen readers.
+        Backdrop.announce(Backdrop.t('The page has been filtered to show !linktext content.', { '!linktext': $active_text }));
       });
     }
   };

@@ -150,7 +150,7 @@ function metatag_config_overview() {
         'href' => 'admin/config/metadata/metatags/config/' . $config['instance'] . '/delete',
       );
     }
-    if (module_exists('i18n_string') && !$settings->get('i18n_disabled', FALSE)) {
+    if (module_exists('i18n_string') && !config_get('metatag.settings', 'i18n_disabled')) {
       $operations['translate'] = array(
         'title' => t('Translate'),
         'href' => 'admin/config/metadata/metatags/config/' . $config['instance'] . '/translate',
@@ -269,9 +269,12 @@ function metatag_config_edit_form($form, &$form_state, $config) {
 
   $contexts = explode(':', $config['instance']);
   $options['context'] = $contexts[0];
+  $options['token types'] = array();
   if ($contexts[0] != 'global') {
     $info = entity_get_info($contexts[0]);
-    $options['token types'] = array($info['token type']);
+    if ($info) {
+      $options['token types'][] = $info['token type'];
+    }
     // Allow the defined tokens to be modified.
     backdrop_alter('metatag_token_types', $options);
   }
@@ -686,7 +689,7 @@ function metatag_admin_settings_form() {
     $form['i18n'] = array(
       '#type' => 'fieldset',
       '#title' => t('Internationalization options'),
-      '#description' => t('Additional options are available when using the <a href="@url">Internationalization module</a>.', array('@url' => 'https://www.drupal.org/project/i18n')),
+      '#description' => t('Additional options are available when using the <a href="@url">Internationalization module</a>.', array('@url' => 'https://backdropcms.org/project/i18n')),
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
     );

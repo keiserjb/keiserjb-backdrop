@@ -804,7 +804,7 @@ dateFormat: "dd-mm-yy"
     // Collect BEF's Javascript settings, add to Backdrop.settings at the end.
     // Historical note: We used to only add BEF's Javascript when absolutely
     // needed. Eventually, much of that functionality worked its way into the
-    // normal usage of BEF so that we now turn those Jvaascript behaviors on
+    // normal usage of BEF so that we now turn those Javascript behaviors on
     // by default. (See https://drupal.org/node/1807114).
     $bef_add_js = TRUE;
     $bef_js = array(
@@ -1258,16 +1258,10 @@ dateFormat: "dd-mm-yy"
           $bef_js['datepicker'] = TRUE;
           $bef_js['datepicker_options'] = array();
 
-          if ((
-            // Single Date API-based input element.
-            isset($form[$filter_id]['value']['#type'])
-              && 'date_text' == $form[$filter_id]['value']['#type']
-          )
-          // Double Date-API-based input elements such as "in-between".
-          || (isset($form[$filter_id]['min']) && isset($form[$filter_id]['max'])
-            && 'date_text' == $form[$filter_id]['min']['#type']
-            && 'date_text' == $form[$filter_id]['max']['#type']
-          )) {
+          // Single or Double (e.g. "in-between") Date API-based input elements.
+          $single_date = isset($form[$filter_id]['value']['#type']) && 'date_text' == $form[$filter_id]['value']['#type'];
+          $double_date = isset($form[$filter_id]['min']) && isset($form[$filter_id]['max']) && 'date_text' == $form[$filter_id]['min']['#type'] && 'date_text' == $form[$filter_id]['max']['#type'];
+          if ($single_date || $double_date) {
             /*
              * Convert Date API formatting to jQuery formatDate formatting.
              *
@@ -1312,7 +1306,7 @@ dateFormat: "dd-mm-yy"
               // ISO-8601 week number of year, weeks starting on Monday (added
               // in PHP 4.1.0) Example: 42 (the 42nd week in the year).
               // 'W' => ' ',
-              //
+
               /* Month */
               // A full textual representation of a month, such as January or
               // March  January through December.
@@ -1328,7 +1322,7 @@ dateFormat: "dd-mm-yy"
               'n' => 'm',
               // Number of days in the given month 28 through 31.
               // 't' => ' ',
-              //
+
               /* Year */
               // Whether it's a leap year  1 if it is a leap year, 0 otherwise.
               // 'L' => ' ',
@@ -1480,6 +1474,7 @@ dateFormat: "dd-mm-yy"
 
         case 'bef_links':
           $bef_add_js = TRUE;
+          $bef_add_css = TRUE;
           $form[$filter_id]['#theme'] = 'select_as_links';
 
           // Exposed form displayed as blocks can appear on pages other than
@@ -1827,6 +1822,12 @@ dateFormat: "dd-mm-yy"
 
       backdrop_add_js(array('better_exposed_filters' => $bef_js), 'setting');
       backdrop_add_js(backdrop_get_path('module', 'better_exposed_filters') . '/js/better_exposed_filters.js');
+      // If using AJAX, we need to ensure we have the libraries to announce
+      // changes for screen readers.
+      if ($this->view->use_ajax) {
+        backdrop_add_library('system', 'backdrop.ajax');
+        backdrop_add_library('system', 'backdrop.announce');
+      }
     }
     if ($bef_add_css) {
       backdrop_add_css(backdrop_get_path('module', 'better_exposed_filters') . '/css/better_exposed_filters.css');

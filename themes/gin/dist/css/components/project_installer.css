@@ -1,10 +1,10 @@
 /* Project Installer */
 
-.installer-browser .installer-browser-block {
+.installer-browser .installer-browser-region .installer-browser-block {
   background-color: transparent;
 }
 
-.installer-browser .installer-browser-block h2 {
+.installer-browser .installer-browser-region .installer-browser-block h2 {
   border-radius: var(--gin-border-m);
   background-color: var(--gin-bg-header);
 }
@@ -37,7 +37,8 @@
   background-color: transparent;
   border-radius: var(--gin-border-s);
   padding: calc(var(--gin-spacing-s) - (var(--gin-spacing-l) - var(--gin-spacing-s)) / 2) var(--gin-spacing-s);
-  margin-inline-start: var(--gin-spacing-xs);
+  -webkit-margin-start: var(--gin-spacing-xs);
+          margin-inline-start: var(--gin-spacing-xs);
 }
 
 .project-status a:hover {

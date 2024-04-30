@@ -9,7 +9,6 @@
 .menu-toggle-button {
   position: relative;
   display: inline-block;
-  width: 26px;
   text-indent: 28px;
   min-width: 1.5rem;
   min-height: 1.5rem;
@@ -29,9 +28,8 @@
 
 .menu-toggle-button-text {
   vertical-align: middle;
-  padding: 0 .5em;
+  padding: 0.5em;
   text-transform: uppercase;
-  font-weight: 600;
 }
 
 /* Remove empty space if "hamburger" button has no text.

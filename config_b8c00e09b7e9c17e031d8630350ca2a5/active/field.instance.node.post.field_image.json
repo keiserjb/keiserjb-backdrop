@@ -8,9 +8,9 @@
     "required": 0,
     "settings": {
         "file_directory": "field/image",
-        "file_extensions": "png gif jpg jpeg",
+        "file_extensions": "png gif jpg jpeg webp",
         "max_filesize": "",
-        "max_dimensions": "",
+        "max_dimensions": "1000x1000",
         "min_dimensions": "",
         "alt_field": 1,
         "alt_field_required": 1,
@@ -38,9 +38,9 @@
             "type": "image",
             "weight": "-1",
             "settings": {
-                "image_style": "large",
+                "image_style": "medium",
                 "image_link": "",
-                "image_float": "",
+                "image_float": "left",
                 "image_load": "auto",
                 "field_wrappers": {
                     "field_wrapper": "-",
@@ -58,7 +58,7 @@
             "settings": {
                 "image_style": "medium",
                 "image_link": "content",
-                "image_float": "right",
+                "image_float": "left",
                 "image_load": "auto",
                 "field_wrappers": {
                     "field_wrapper": "-",

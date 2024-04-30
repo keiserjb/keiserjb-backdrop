@@ -35,8 +35,8 @@
             "directory": "inline-images",
             "max_size": "",
             "max_dimensions": {
-                "width": "",
-                "height": ""
+                "width": "1000",
+                "height": "1000"
             }
         },
         "file_upload": {
@@ -53,9 +53,6 @@
             "h4": "h4",
             "h5": "h5",
             "h6": "h6"
-        },
-        "plugins": {
-            "editor_settings__plugins__active_tab": ""
         }
     },
     "filters": {

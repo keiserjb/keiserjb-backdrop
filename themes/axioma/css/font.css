@@ -66,11 +66,16 @@ pre {
   font-family: inherit;
 }
 
+.menu-toggle-button-text {
+    font-size: 1rem;
+}
+
 th,
 em,
 label,
 caption,
 textarea,
+.menu-toggle-button-text,
 ul.menu:not(.menu-tree) a {
   font-weight: 500;
 }
@@ -96,6 +101,8 @@ label,
 .more-help-link,
 .node-readmore,
 .permalink,
+a.form-cancel,
+a.form-delete,
 input.form-submit,
 button.form-submit,
 .vertical-tab-link,

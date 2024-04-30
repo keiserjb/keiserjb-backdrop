@@ -14,20 +14,19 @@ function metatag_views_autoload_info() {
  * Implements hook_views_api().
  */
 function metatag_views_views_api() {
-  return array('api' => 3.0);
-}
-
-function metatag_views_views_plugins() {
-  $plugins = array();
-  $plugins['display_extender']['metatags'] = array(
-    'title' => t('Meta tags'),
-    'help' => t('Provides meta tags for views.'),
-    'handler' => 'metatag_views_plugin_display_extender_metatags',
-    'enabled' => TRUE,
+  return array(
+    'api' => 3,
     'path' => backdrop_get_path('module', 'metatag_views'),
   );
+}
 
-  return $plugins;
+/**
+ * Implements hook_metatag_token_types_alter().
+ */
+function metatag_views_metatag_token_types_alter(&$options) {
+  if ($options['context'] == 'view') {
+    $options['token types'][] = 'view';
+  }
 }
 
 /**
@@ -74,9 +73,9 @@ function metatag_views_views_preview_info_alter(&$rows, $view) {
  * Implements hook_preprocess_HOOK().
  */
 function metatag_views_preprocess_page(&$variables) {
-  // By default do not add meta tags to admin pages. To enable meta tags on
-  // admin pages set the 'metatag_tag_admin_pages' variable to TRUE.
-  if (path_is_admin(current_path()) && !variable_get('metatag_tag_admin_pages', FALSE)) {
+  // By default, do not add meta tags to admin pages. To enable meta tags on
+  // admin pages set the 'tag_admin_pages' config value to TRUE.
+  if (path_is_admin(current_path()) && config('metatag.settings')->get('tag_admin_pages') == FALSE) {
     return;
   }
 
@@ -124,7 +123,7 @@ function metatag_views_preprocess_page(&$variables) {
       // Build options for meta tag rendering.
       $options = array();
       $options['token data']['view'] = $view;
-      $options['language'] = $language->language;
+      $options['language'] = $language->langcode;
 
       // Add the metatags.
       $processed_metatags = metatag_metatags_view($instance, $metatags, $options);

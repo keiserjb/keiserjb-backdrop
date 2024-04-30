@@ -37,7 +37,7 @@ settings[preset_focus_color] = gin
 settings[layout_density] = default
 settings[show_description_toggle] = false
 
-; Added by Backdrop CMS packaging script on 2024-02-27
+; Added by Backdrop CMS packaging script on 2024-04-17
 project = gin
-version = 1.x-3.0.0-alpha11
-timestamp = 1709073231
+version = 1.x-3.0.0-beta-2
+timestamp = 1713388465

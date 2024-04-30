@@ -19,6 +19,8 @@ function mini_layouts_admin_list() {
   $rows = array();
   foreach ($mini_layouts_block_info as $name => $block_info) {
     $row = array();
+    // Note that if the Block Title is set, that is displayed instead of the
+    // Admin Label, which is a bit weird.
     $row[] = theme('label_machine_name__block', array(
       'label' => $block_info['info'],
       'machine_name' => $name,
@@ -61,6 +63,7 @@ function mini_layouts_admin_list() {
     '#rows' => $rows,
     '#header' => $header,
     '#empty' => t('No mini layouts blocks have been created yet.'),
+    '#attributes' => array('class' =>   array('mini-layouts-list')),
   );
 }
 
@@ -130,14 +133,14 @@ function mini_layouts_admin_configure($form, &$form_state, $name = NULL) {
   );
   $form['name'] = array(
     '#type' => 'machine_name',
-    '#default_value' => $mini_layout->name,
+    '#default_value' => $name ? $mini_layout->name : '',
     '#maxlength' => 128,
     '#machine_name' => array(
-      'exists' => 'mini_layouts_load',
+      'exists' => 'mini_layouts_name_exists',
       'source' => array('title'),
     ),
     '#description' => t('A unique machine-readable name for this Block. It must only contain lowercase letters, numbers, and underscores.'),
-    '#disabled' => isset($mini_layout->name),
+    '#disabled' => $name,
   );
   $form['description'] = array(
     '#type' => 'textfield',
@@ -462,7 +465,7 @@ function mini_layouts_admin_configure_submit($form, &$form_state) {
   layout_clear_layout_tempstore($mini_layout->name);
   backdrop_static_reset('mini_layouts_block_info');
 
-  backdrop_set_message(t('The mini layout has been created.'));
+  backdrop_set_message(t('The mini layout has been saved.'));
   $form_state['redirect'] = 'admin/structure/mini-layouts/manage/' . $mini_layout->name . '/configure';
 }
 

@@ -4,6 +4,8 @@
  * Tests for the Metatag module for Profile2 integration.
  */
 
+include_once __DIR__ . '/metatag.helper.test';
+
 // Inherit from the User test so that its tests can be confirmed to still work
 // when the Profile2 module is enabled.
 class MetatagCoreWithProfile2Test extends MetatagCoreUserTest {
@@ -118,7 +120,7 @@ class MetatagCoreWithProfile2Test extends MetatagCoreUserTest {
     $this->assertText(strip_tags(t('The changes have been saved.')));
 
     // Clear all caches.
-    drupal_flush_all_caches();
+    backdrop_flush_all_caches();
 
     // Confirm the user profile tags still work correctly.
     $this->assertUserEntityTags($this->adminUser);

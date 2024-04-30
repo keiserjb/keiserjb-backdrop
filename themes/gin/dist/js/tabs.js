@@ -9,17 +9,17 @@ $ = jQuery, Backdrop.behaviors.responsivePrimaryTabs = {
         right: parseInt($tabsWrapper.css("padding-right").replace("px", "")),
         left: parseInt($tabsWrapper.css("padding-left").replace("px", ""))
       };
-      tabHeight = $("li:first-child", $primaryTabs).outerHeight(), $tabsWrapper.once("responsive-tabs", (function() {
-        $primaryTabs.after('<div class="expand-dropdown-tabs-control" aria-hidden="true" style="height: ' + tabHeight + 'px"><span class="expand-dropdown-tabs-label"></span></div>'), 
-        $(".expand-dropdown-tabs-control", $tabsWrapper).click((function() {
-          $tabsWrapper.toggleClass("expand-dropdown-tabs"), $(this).toggleClass("js-active"), 
-          expandedTabsHeaderPadding > 0 && $tabsWrapper.hasClass("expand-dropdown-tabs") ? ($mobileHeaderPadder.css("height", expandedTabsHeaderPadding + "px"), 
+      $tabsWrapper.once("responsive-tabs", (function() {
+        $primaryTabs.after('<div class="expand-dropdown-tabs-control" tabindex="0" aria-hidden="true"><span class="expand-dropdown-tabs-label"></span></div>'), 
+        $(".expand-dropdown-tabs-control", $tabsWrapper).on("keypress click", (function(e) {
+          "click" !== e.type && 13 !== e.which || ($tabsWrapper.toggleClass("expand-dropdown-tabs"), 
+          $(this).toggleClass("js-active"), expandedTabsHeaderPadding > 0 && $tabsWrapper.hasClass("expand-dropdown-tabs") ? ($mobileHeaderPadder.css("height", expandedTabsHeaderPadding + "px"), 
           $body.prepend($mobileHeaderPadder), $body.scrollTop($body.scrollTop() + expandedTabsHeaderPadding)) : ($mobileHeaderPadder.remove(), 
-          $body.scrollTop($body.scrollTop() - expandedTabsHeaderPadding));
+          $body.scrollTop($body.scrollTop() - expandedTabsHeaderPadding)));
         })), expandControlWidth = $(".expand-dropdown-tabs-control", $tabsWrapper).outerWidth(), 
         $tabs.find("a").wrapInner('<span class="responsive-tabs-link-text-wrapper"></span>'), 
         calculateTabWidths(), adjustTabsDisplay();
-      })), $("html").click((function(e) {
+      })), $("html").on("click", (function(e) {
         var $target = $(e.target);
         responsiveTabs && !$target.is(".responsive-tabs-processed") && $target.parents(".responsive-tabs-processed").length < 1 && closeTabsDropdown();
       })), Backdrop.isFontLoaded("Ginter", (function() {

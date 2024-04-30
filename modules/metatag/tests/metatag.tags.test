@@ -4,6 +4,8 @@
  * Tests that each of the Metatag base tags work correctly.
  */
 
+include_once __DIR__ . '/metatag.helper.test';
+
 class MetatagTagsTestBase extends MetatagTestHelper {
 
   /**
@@ -20,6 +22,15 @@ class MetatagTagsTestBase extends MetatagTestHelper {
     // Create an admin user that can manage meta tags.
     $account = $this->createAdminUser();
     $this->backdropLogin($account);
+
+    // Ensure any tested tags are enabled at the start.
+    $config = config('metatag.settings');
+    $enabled_tags = $config->get('enabled_tags');
+    foreach ($this->tags as $tag_name) {
+      $enabled_tags[$tag_name] = $tag_name;
+    }
+    $config->set('enabled_tags', $enabled_tags);
+    $config->save();
   }
 
   /**
@@ -94,9 +105,9 @@ class MetatagTagsTestBase extends MetatagTestHelper {
 }
 
 /**
- *
+ * Tests the built-in tags provided directly by metatag.module.
  */
-class MetatagTagsTest extends MetatagTagsTestBase {
+class MetatagBuiltInTagsTest extends MetatagTagsTestBase {
 
   /**
    * {@inheritdoc}
