@@ -22,15 +22,7 @@
             "management": 0
         },
         "comment_enabled": false,
-        "comment_per_page": "50",
-        "comment_mode": 1,
-        "comment_anonymous": 0,
         "comment_subject_field": false,
-        "comment_user_picture": 1,
-        "comment_form_location": 1,
-        "comment_preview": "1",
-        "comment_close_enabled": 0,
-        "comment_close_days": "14",
         "menu_parent": "main-menu:0",
         "scheduling_enabled": 1,
         "hidden_path": 0,
@@ -38,7 +30,6 @@
         "node_permissions": true,
         "draft_enabled": 1,
         "skip_required": 0,
-        "comment_title_options": "auto",
         "node_submitted_format": "[node:created:medium] by [node:author]"
     },
     "base": "node_content",

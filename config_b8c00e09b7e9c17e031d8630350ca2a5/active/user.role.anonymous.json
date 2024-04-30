@@ -5,7 +5,6 @@
     "weight": "0",
     "permissions": [
         "access content",
-        "access comments",
         "use text format filtered_html",
         "access site-wide contact form"
     ],

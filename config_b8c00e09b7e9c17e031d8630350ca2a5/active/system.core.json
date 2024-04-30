@@ -24,7 +24,7 @@
     "field_purge_batch_size": 200,
     "file_default_allowed_extensions": "jpg jpeg gif png txt doc docx xls xlsx pdf ppt pptx pps ppsx odt ods odp mp3 mov mp4 m4a m4v mpeg avi ogg oga ogv weba webp webm",
     "file_default_scheme": "public",
-    "file_private_path": "",
+    "file_private_path": "files/private",
     "file_public_path": "files",
     "file_temporary_path": "/tmp",
     "file_transliterate_lowercase": 0,

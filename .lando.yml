@@ -6,14 +6,19 @@ config:
 services:
   pma:
     type: phpmyadmin
-  appserver:
-    extras:
-      - apt-get update -y
-      - apt-get install sudo nano jq -y
-      - wget -qO bee.zip https://github.com/backdrop-contrib/bee/archive/1.x-1.x.zip
-      - unzip -q bee.zip && rm bee.zip
-      - mv bee-1.x-1.x /usr/local/bin/bee
 tooling:
-  bee:
+  x-on:
     service: appserver
-    cmd: /usr/local/bin/bee/bee.php
+    description: Enable Xdebug.
+    user: root
+    cmd:
+      - docker-php-ext-enable xdebug && kill -USR2 $(pgrep -o php-fpm) > /dev/null || /etc/init.d/apache2 reload
+      - tput setaf 2 && echo "Xdebug On" && tput sgr 0 && echo
+  x-off:
+    service: appserver
+    description: Disable Xdebug.
+    user: root
+    cmd:
+      - rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && kill -USR2 $(pgrep -o php-fpm) > /dev/null || /etc/init.d/apache2 reload
+      - tput setaf 1 && echo "Xdebug Off" && tput sgr 0 && echo
+
