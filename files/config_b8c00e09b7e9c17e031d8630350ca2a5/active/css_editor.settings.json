@@ -1,0 +1,10 @@
+{
+    "_config_name": "css_editor.settings",
+    "css_editor_enabled_themes": {
+        "axioma": "axioma",
+        "basis": 0,
+        "bootstrap5_lite": 0,
+        "keiserjb_bootstrap": 0,
+        "seven": 0
+    }
+}

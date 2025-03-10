@@ -1,0 +1,61 @@
+{
+    "_config_name": "field.instance.node.post.field_image",
+    "field_name": "field_image",
+    "entity_type": "node",
+    "label": "Image",
+    "bundle": "post",
+    "description": "Upload an image to go with this post.",
+    "required": 0,
+    "settings": {
+        "file_directory": "field/image",
+        "file_extensions": "png gif jpg jpeg",
+        "max_filesize": "",
+        "max_dimensions": "",
+        "min_dimensions": "",
+        "alt_field": 1,
+        "title_field": 1,
+        "orientate": 0,
+        "max_resolution": "",
+        "min_resolution": "",
+        "default_image": "",
+        "user_register_form": false
+    },
+    "widget": {
+        "weight": -1,
+        "type": "image_image",
+        "module": "image",
+        "active": 1,
+        "settings": {
+            "progress_indicator": "throbber",
+            "browser_view": "image_library",
+            "preview_image_style": "thumbnail"
+        }
+    },
+    "display": {
+        "default": {
+            "label": "hidden",
+            "type": "image",
+            "settings": {
+                "image_style": "large",
+                "image_link": "",
+                "image_float": ""
+            },
+            "weight": -1,
+            "module": "image"
+        },
+        "teaser": {
+            "label": "hidden",
+            "type": "image",
+            "settings": {
+                "image_style": "medium",
+                "image_link": "content",
+                "image_float": "right"
+            },
+            "weight": -1,
+            "module": "image"
+        }
+    },
+    "deleted": 0,
+    "default_value": null,
+    "default_value_function": null
+}

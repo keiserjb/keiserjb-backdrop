@@ -1,0 +1,24 @@
+{
+    "_config_name": "jarallax.settings",
+    "config": {
+        "type": "scroll",
+        "speed": ""
+    },
+    "pages": {
+        "visibility": "0",
+        "pages": "admin/*"
+    },
+    "theme": {
+        "visibility": "1",
+        "themes": {
+            "basis": "basis"
+        }
+    },
+    "triggers_fieldset": {
+        "trigger1": {
+            "element": ".block-hero",
+            "type": "",
+            "speed": ""
+        }
+    }
+}
