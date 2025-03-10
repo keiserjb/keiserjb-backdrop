@@ -1,0 +1,15 @@
+{
+    "_config_name": "bootstrap5_lite.settings",
+    "bootstrap__active_tab": "",
+    "bootstrap5_lite_cdn": "5.3.1",
+    "bootstrap5_lite_bootswatch": "",
+    "bootstrap5_lite_navbar_position": "static-top",
+    "bootstrap5_lite_navbar_menu_position": "navbar-left",
+    "bootstrap5_lite_navbar_inverse": 0,
+    "bootstrap5_lite_navbar_user_menu": 0,
+    "bootstrap5_lite_breadcrumb_home": 0,
+    "bootstrap5_lite_breadcrumb_title": 0,
+    "bootstrap5_lite_container": "container",
+    "bootstrap5_lite_datetime": 0,
+    "color": null
+}
